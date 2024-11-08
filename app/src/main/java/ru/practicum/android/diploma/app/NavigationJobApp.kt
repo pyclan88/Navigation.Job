@@ -5,6 +5,10 @@ import android.content.Context
 
 class NavigationJobApp : Application() {
 
+    init {
+        instance = this
+    }
+
     override fun onCreate() {
         super.onCreate()
 
@@ -14,7 +18,7 @@ class NavigationJobApp : Application() {
         private var instance: NavigationJobApp? = null
 
         fun applicationContext(): Context {
-            return instance!!
+            return instance!!.applicationContext
         }
     }
 }
