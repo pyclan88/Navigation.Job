@@ -60,22 +60,22 @@ dependencies {
     androidTestImplementation(libs.uiTests.junitExt)
     androidTestImplementation(libs.uiTests.espressoCore)
     // endregion
-    //di
+    // di
 
-    //network
+    // network
     implementation(libs.retrofit)
-    //serialization
+    // serialization
     implementation(libs.converter.gson)
-    //navigation
+    // navigation
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
-    //db
+    // db
     implementation(libs.room.runtime)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-    //coroutines
+    // coroutines
     implementation(libs.kotlinx.coroutines.android)
-    //glide
+    // glide
     implementation (libs.glide)
     annotationProcessor (libs.compiler)
 }
