@@ -4,23 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import ru.practicum.android.diploma.databinding.FragmentTeamBinding
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.util.BindingFragment
 
-class TeamFragment : Fragment() {
+class TeamFragment : BindingFragment<FragmentTeamBinding>() {
 
-    private var _binding: FragmentTeamBinding? = null
-    private val binding
-        get() = _binding!!
-
-    override fun onCreateView(
+    override fun createBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentTeamBinding.inflate(inflater, container, false)
-        return binding.root
+        container: ViewGroup?
+    ): FragmentTeamBinding {
+        return FragmentTeamBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,10 +32,4 @@ class TeamFragment : Fragment() {
             textView.text = contributors.getOrNull(index) ?: ""
         }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 }
