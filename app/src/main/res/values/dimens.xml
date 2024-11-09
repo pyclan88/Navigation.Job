@@ -3,6 +3,7 @@
     <dimen name="text_mark_12sp">12sp</dimen>
     <dimen name="text_mark_16sp">16sp</dimen>
     <dimen name="text_mark_22sp">22sp</dimen>
+    <dimen name="text_mark_32sp">32sp</dimen>
 
     <dimen name="mark_0dp">0dp</dimen>
     <dimen name="mark_4dp">4dp</dimen>
