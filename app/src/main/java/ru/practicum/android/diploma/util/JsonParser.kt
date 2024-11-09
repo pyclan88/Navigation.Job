@@ -17,15 +17,19 @@ class JsonParser {
         return try {
             gson.fromJson(jsonString, typeToken.type)
         } catch (e: JsonIOException) {
-            Log.e("JsonParserError", "Ошибка ввода-вывода JSON: ${e.message}")
+            Log.e(JSON_LOG_TAG, "Ошибка ввода-вывода JSON: ${e.message}")
             null
         } catch (e: IllegalStateException) {
-            Log.e("JsonParserError", "Некорректное состояние при парсинге JSON: ${e.message}")
+            Log.e(JSON_LOG_TAG, "Некорректное состояние при парсинге JSON: ${e.message}")
             null
         } catch (e: JsonSyntaxException) {
-            Log.e("JsonParserError", "Ошибка синтаксиса JSON: ${e.message}")
+            Log.e(JSON_LOG_TAG, "Ошибка синтаксиса JSON: ${e.message}")
             null
         }
 
+    }
+
+    companion object {
+        const val JSON_LOG_TAG = "JsonParserError"
     }
 }
