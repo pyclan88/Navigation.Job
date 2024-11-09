@@ -4,4 +4,5 @@
     <string name="contributors_title">Над приложением работали</string>
     <string name="favorite_title">Избранное</string>
     <string name="filters_title">Настройки фильтрации</string>
+    <string name="search_title">Поиск вакансий</string>
 </resources>
