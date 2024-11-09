@@ -2,6 +2,8 @@ package ru.practicum.android.diploma.app
 
 import android.app.Application
 import android.content.Context
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class NavigationJobApp : Application() {
 
@@ -11,6 +13,10 @@ class NavigationJobApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        startKoin {
+            androidContext(this@NavigationJobApp)
+            modules()
+        }
 
     }
 
