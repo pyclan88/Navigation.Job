@@ -61,7 +61,7 @@ dependencies {
     androidTestImplementation(libs.uiTests.espressoCore)
     // endregion
     // di
-
+    implementation(libs.koin.android)
     // network
     implementation(libs.retrofit)
     // serialization
