@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Practicum-Android-Diploma</string>
+    <string name="team_header">Команда</string>
+    <string name="contributors_title">Над приложением работали</string>
 </resources>
