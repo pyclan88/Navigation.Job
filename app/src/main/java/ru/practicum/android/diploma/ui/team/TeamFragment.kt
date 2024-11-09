@@ -23,11 +23,11 @@ class TeamFragment : BindingFragment<FragmentTeamBinding>() {
         val contributors = resources.getStringArray(R.array.contributors).toList().shuffled()
 
         listOf(
-            binding.contributor0,
-            binding.contributor1,
-            binding.contributor2,
-            binding.contributor3,
-            binding.contributor4
+            binding.tvContributor0,
+            binding.tvContributor1,
+            binding.tvContributor2,
+            binding.tvContributor3,
+            binding.tvContributor4
         ).forEachIndexed { index, textView ->
             textView.text = contributors.getOrNull(index) ?: ""
         }

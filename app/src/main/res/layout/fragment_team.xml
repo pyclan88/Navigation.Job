@@ -9,7 +9,7 @@
     tools:context=".ui.team.TeamFragment">
 
     <TextView
-        android:id="@+id/team_header"
+        android:id="@+id/tv_team_header"
         style="@style/HeaderTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/contributors_title"
+        android:id="@+id/tv_contributors_title"
         style="@style/TitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,61 +29,61 @@
         android:text="@string/contributors_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/team_header" />
+        app:layout_constraintTop_toBottomOf="@id/tv_team_header" />
 
     <TextView
-        android:id="@+id/contributor_0"
+        android:id="@+id/tv_contributor_0"
         style="@style/SubtitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contributors_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_contributors_title"
         tools:text="Анна Архиповна Тестирование" />
 
     <TextView
-        android:id="@+id/contributor_1"
+        android:id="@+id/tv_contributor_1"
         style="@style/SubtitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contributor_0"
+        app:layout_constraintTop_toBottomOf="@id/tv_contributor_0"
         tools:text="Ольга Петровна Оценка" />
 
     <TextView
-        android:id="@+id/contributor_2"
+        android:id="@+id/tv_contributor_2"
         style="@style/SubtitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contributor_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_contributor_1"
         tools:text="Вениамин Петрович Дизайн" />
 
     <TextView
-        android:id="@+id/contributor_3"
+        android:id="@+id/tv_contributor_3"
         style="@style/SubtitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contributor_2"
+        app:layout_constraintTop_toBottomOf="@id/tv_contributor_2"
         tools:text="Антон Андроидович" />
 
     <TextView
-        android:id="@+id/contributor_4"
+        android:id="@+id/tv_contributor_4"
         style="@style/SubtitleTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contributor_3"
+        app:layout_constraintTop_toBottomOf="@id/tv_contributor_3"
         tools:text="Гадя Петрович Хренова" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
