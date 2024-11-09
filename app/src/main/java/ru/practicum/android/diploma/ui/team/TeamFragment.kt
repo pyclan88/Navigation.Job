@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.practicum.android.diploma.databinding.FragmentTeamBinding
+
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.databinding.FragmentTeamBinding
 import ru.practicum.android.diploma.util.BindingFragment
 
 class TeamFragment : BindingFragment<FragmentTeamBinding>() {
