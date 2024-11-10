@@ -15,7 +15,6 @@ class TeamFragment : BindingFragment<FragmentTeamBinding>() {
         container: ViewGroup?
     ) = FragmentTeamBinding.inflate(inflater, container, false)
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
