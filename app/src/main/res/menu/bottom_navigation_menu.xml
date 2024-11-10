@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/searchFragment"
+        android:id="@+id/search_fragment"
         android:icon="@drawable/ic_main"
         android:title="@string/main_bottom_navigation" />
 
     <item
-        android:id="@+id/favoriteFragment"
+        android:id="@+id/favorite_fragment"
         android:icon="@drawable/ic_favorite"
         android:title="@string/favorite_title" />
 
     <item
-        android:id="@+id/teamFragment"
+        android:id="@+id/team_fragment"
         android:icon="@drawable/ic_team"
         android:title="@string/team_header" />
 
