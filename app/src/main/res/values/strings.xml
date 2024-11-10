@@ -2,4 +2,8 @@
     <string name="app_name">Practicum-Android-Diploma</string>
     <string name="team_header">Команда</string>
     <string name="contributors_title">Над приложением работали</string>
+    <string name="favorite_title">Избранное</string>
+    <string name="filters_title">Настройки фильтрации</string>
+    <string name="search_title">Поиск вакансий</string>
+    <string name="vacancy_title">Вакансия</string>
 </resources>
