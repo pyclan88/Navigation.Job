@@ -6,4 +6,6 @@
     <string name="filters_title">Настройки фильтрации</string>
     <string name="search_title">Поиск вакансий</string>
     <string name="vacancy_title">Вакансия</string>
+    <string name="main_bottom_navigation">Главная</string>
+
 </resources>
