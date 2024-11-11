@@ -1,11 +1,11 @@
 package ru.practicum.android.diploma.ui.root
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-// import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
@@ -41,7 +41,6 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun networkRequestExample(accessToken: String) {
-        // ...
+        Log.e(RootActivity::class.simpleName, accessToken)
     }
-
 }
