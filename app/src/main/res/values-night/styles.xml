@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BottomIconStyle">
+        <item name="android:background">@color/black</item>
+        <item name="itemIconTint">@drawable/bottom_nav_selector_mode</item>
+        <item name="itemTextColor">@drawable/bottom_nav_selector_mode</item>
+        <item name="itemRippleColor">@color/blue</item>
+    </style>
+
+</resources>
