@@ -10,7 +10,7 @@ interface HeadHunterApiService {
 
     @GET("/vacancies")
     suspend fun searchVacancyRequest(
-        @Header("Bearer") token: String = NavigationJobApp.getToken(),
+        @Header("Bearer") token: String = NavigationJobApp.HEAD_HUNTER_TOKEN,
         @Query("page") page: String,
         @Query("per_page") perPage: String = "20"
     ): VacancySearchResponse

@@ -27,11 +27,7 @@ class NavigationJobApp : Application() {
 
     companion object {
         private var instance: NavigationJobApp? = null
-        private const val HEAD_HUNTER_TOKEN = " APPLG17UBFH0BCT1O3OR2N2OU8CVKM03I33K0TLLMSU07HDKJVGF3ICCJCV6ND0N"
-
-        fun getToken(): String {
-            return HEAD_HUNTER_TOKEN
-        }
+        const val HEAD_HUNTER_TOKEN = " APPLG17UBFH0BCT1O3OR2N2OU8CVKM03I33K0TLLMSU07HDKJVGF3ICCJCV6ND0N"
 
         fun applicationContext(): Context {
             return instance!!.applicationContext
