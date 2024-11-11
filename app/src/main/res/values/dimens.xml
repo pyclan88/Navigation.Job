@@ -5,6 +5,7 @@
     <dimen name="text_mark_22sp">22sp</dimen>
     <dimen name="text_mark_32sp">32sp</dimen>
 
+    <dimen name="mark_n12dp">-12dp</dimen>
     <dimen name="mark_0dp">0dp</dimen>
     <dimen name="mark_1dp">1dp</dimen>
     <dimen name="mark_4dp">4dp</dimen>
@@ -21,4 +22,5 @@
     <dimen name="mark_24dp">24dp</dimen>
     <dimen name="mark_30dp">30dp</dimen>
     <dimen name="mark_32dp">32dp</dimen>
+    <dimen name="mark_48dp">48dp</dimen>
 </resources>

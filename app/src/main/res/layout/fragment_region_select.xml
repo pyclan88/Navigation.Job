@@ -1,99 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_to_black"
-    android:paddingHorizontal="@dimen/text_mark_16sp"
-    tools:context=".ui.vacancy.VacancyFragment">
+    android:paddingHorizontal="@dimen/text_mark_16sp">
 
     <ImageButton
-        android:id="@+id/ib_back_from_vacancy"
+        android:id="@+id/ib_back_from_region_select"
         android:layout_width="@dimen/mark_48dp"
         android:layout_height="@dimen/mark_48dp"
         android:layout_marginStart="@dimen/mark_n12dp"
         android:backgroundTint="?attr/white_to_black"
         android:src="@drawable/ic_arrow_back"
-        app:layout_constraintBottom_toBottomOf="@id/tv_vacancy_header"
-        app:layout_constraintEnd_toStartOf="@id/tv_vacancy_header"
+        app:layout_constraintBottom_toBottomOf="@id/tv_region_select_header"
+        app:layout_constraintEnd_toStartOf="@id/tv_region_select_header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_vacancy_header"
+        app:layout_constraintTop_toTopOf="@id/tv_region_select_header"
         app:tint="?attr/black_to_white" />
 
     <TextView
-        android:id="@+id/tv_vacancy_header"
+        android:id="@+id/tv_region_select_header"
         style="@style/HeaderTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/mark_4dp"
         android:paddingVertical="@dimen/mark_20dp"
-        android:text="@string/vacancy_title"
-        app:layout_constraintStart_toEndOf="@id/ib_back_from_vacancy"
+        android:text="@string/region_select"
+        app:layout_constraintStart_toEndOf="@id/ib_back_from_region_select"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_no_vacancy"
+        android:id="@+id/group_no_such_region"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="iv_no_vacancy_placeholder, tv_no_vacancy" />
+        app:constraint_referenced_ids="iv_no_such_region_placeholder, tv_no_such_region" />
 
     <ImageView
-        android:id="@+id/iv_no_vacancy_placeholder"
+        android:id="@+id/iv_no_such_region_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@drawable/vacancy_not_found_or_deleted_andy"
-        app:layout_constraintBottom_toTopOf="@id/tv_no_vacancy"
+        android:src="@drawable/placeholder_no_vacancy_list_or_region_plate_cat"
+        app:layout_constraintBottom_toTopOf="@id/tv_no_such_region"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_vacancy_header"
+        app:layout_constraintTop_toBottomOf="@id/tv_region_select_header"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/tv_no_vacancy"
+        android:id="@+id/tv_no_such_region"
         style="@style/HeaderTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_16dp"
         android:gravity="center"
-        android:text="@string/no_vacancy"
+        android:text="@string/no_such_region"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_no_vacancy_placeholder" />
+        app:layout_constraintTop_toBottomOf="@id/iv_no_such_region_placeholder" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_server_error"
+        android:id="@+id/group_no_region_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="iv_server_error_placeholder, tv_server_error" />
+        android:visibility="gone"
+        app:constraint_referenced_ids="iv_no_region_list_placeholder, tv_loading_error" />
 
     <ImageView
-        android:id="@+id/iv_server_error_placeholder"
+        android:id="@+id/iv_no_region_list_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@drawable/placeholder_vacancy_server_error_cat"
-        app:layout_constraintBottom_toTopOf="@id/tv_server_error"
+        android:src="@drawable/placeholder_no_region_list_carpet"
+        app:layout_constraintBottom_toTopOf="@id/tv_loading_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_vacancy_header"
+        app:layout_constraintTop_toBottomOf="@id/tv_region_select_header"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/tv_server_error"
+        android:id="@+id/tv_loading_error"
         style="@style/HeaderTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_16dp"
         android:gravity="center"
-        android:text="@string/server_error"
+        android:text="@string/no_region_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_server_error_placeholder" />
+        app:layout_constraintTop_toBottomOf="@id/iv_no_region_list_placeholder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
