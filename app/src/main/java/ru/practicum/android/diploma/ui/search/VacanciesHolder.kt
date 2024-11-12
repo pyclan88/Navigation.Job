@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.search.ui
+package ru.practicum.android.diploma.ui.search
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
