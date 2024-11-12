@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_to_black"
-    android:paddingHorizontal="@dimen/text_mark_16sp"
+    android:paddingHorizontal="@dimen/mark_16dp"
     tools:context=".ui.favorite.FavoriteFragment">
 
     <TextView
+        android:id="@+id/tv_favorite_header"
         style="@style/HeaderTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,5 +18,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_list_is_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="iv_list_is_empty_placeholder, tv_list_is_empty" />
+
+    <ImageView
+        android:id="@+id/iv_list_is_empty_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/favorite_empty_list_andy"
+        app:layout_constraintBottom_toTopOf="@id/tv_list_is_empty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_favorite_header"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tv_list_is_empty"
+        style="@style/HeaderTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mark_16dp"
+        android:gravity="center"
+        android:text="@string/list_is_empty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_list_is_empty_placeholder" />
+
+    <include
+        android:id="@+id/group_no_vacancy"
+        layout="@layout/no_vacancy_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_favorite_header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
