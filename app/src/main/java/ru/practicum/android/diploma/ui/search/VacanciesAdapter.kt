@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 
 class VacanciesAdapter : RecyclerView.Adapter<VacanciesHolder>() {
 
-    val vacancies = ArrayList<Vacancy>()
+    private var vacancies: List<Vacancy> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacanciesHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
@@ -20,6 +20,11 @@ class VacanciesAdapter : RecyclerView.Adapter<VacanciesHolder>() {
     }
 
     override fun getItemCount(): Int = vacancies.size
+
+    fun setVacancies(list: List<Vacancy>) {
+        vacancies = list
+        notifyDataSetChanged()
+    }
 
     interface VacancyClickListener {
         fun onVacancyClick(vacancy: Vacancy)
