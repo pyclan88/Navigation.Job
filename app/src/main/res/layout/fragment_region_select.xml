@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/white_to_black"
-    tools:context=".ui.vacancy.VacancyFragment">
+    android:background="?attr/white_to_black">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline_16dp"
@@ -22,78 +20,78 @@
         app:layout_constraintGuide_end="@dimen/mark_16dp" />
 
     <Toolbar
-        android:id="@+id/tb_back_from_vacancy"
+        android:id="@+id/tb_back_from_region_select"
         style="@style/ToolbarTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:navigationIcon="@drawable/ic_arrow_back"
-        android:title="@string/vacancy_title"
+        android:title="@string/region_select"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_no_vacancy"
+        android:id="@+id/group_no_such_region"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="iv_no_vacancy_placeholder, tv_no_vacancy" />
+        android:visibility="visible"
+        app:constraint_referenced_ids="iv_no_such_region_placeholder, tv_no_such_region" />
 
     <ImageView
-        android:id="@+id/iv_no_vacancy_placeholder"
+        android:id="@+id/iv_no_such_region_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@drawable/vacancy_not_found_or_deleted_andy"
-        app:layout_constraintBottom_toTopOf="@id/tv_no_vacancy"
+        android:src="@drawable/placeholder_no_vacancy_list_or_region_plate_cat"
+        app:layout_constraintBottom_toTopOf="@id/tv_no_such_region"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tb_back_from_vacancy"
+        app:layout_constraintTop_toBottomOf="@id/tb_back_from_region_select"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/tv_no_vacancy"
+        android:id="@+id/tv_no_such_region"
         style="@style/HeaderTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_16dp"
         android:gravity="center"
-        android:text="@string/no_vacancy"
+        android:text="@string/no_such_region"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_no_vacancy_placeholder" />
+        app:layout_constraintTop_toBottomOf="@id/iv_no_such_region_placeholder" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_server_error"
+        android:id="@+id/group_no_region_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="iv_server_error_placeholder, tv_server_error" />
+        app:constraint_referenced_ids="iv_no_region_list_placeholder, tv_loading_error" />
 
     <ImageView
-        android:id="@+id/iv_server_error_placeholder"
+        android:id="@+id/iv_no_region_list_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@drawable/placeholder_vacancy_server_error_cat"
-        app:layout_constraintBottom_toTopOf="@id/tv_server_error"
+        android:src="@drawable/placeholder_no_region_list_carpet"
+        app:layout_constraintBottom_toTopOf="@id/tv_loading_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tb_back_from_vacancy"
+        app:layout_constraintTop_toBottomOf="@id/tb_back_from_region_select"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/tv_server_error"
+        android:id="@+id/tv_loading_error"
         style="@style/HeaderTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_16dp"
         android:gravity="center"
-        android:text="@string/server_error"
+        android:text="@string/no_region_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_server_error_placeholder" />
+        app:layout_constraintTop_toBottomOf="@id/iv_no_region_list_placeholder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
