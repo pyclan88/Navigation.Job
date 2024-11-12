@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.root
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
@@ -39,8 +38,9 @@ class RootActivity : AppCompatActivity() {
         // Пример использования access token для HeadHunter API
         // networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
     }
-
+    /* раскоментить при необходимости
     private fun networkRequestExample(accessToken: String) {
         Log.e(RootActivity::class.simpleName, accessToken)
     }
+     */
 }
