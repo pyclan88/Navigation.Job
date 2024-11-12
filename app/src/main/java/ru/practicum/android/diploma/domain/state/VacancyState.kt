@@ -1,8 +1,8 @@
 package ru.practicum.android.diploma.domain.state
 
-import androidx.annotation.DrawableRes
+import ru.practicum.android.diploma.domain.models.Vacancy
 
-internal data class State(
+internal data class VacancyState(
     val input: Input,
     val vacanciesList: VacanciesList
 ) {
@@ -21,8 +21,10 @@ internal data class State(
     }
 }
 
+/*
 internal class Vacancy(
     val title: String,
     @DrawableRes val icon: Int
     // todo etc
 )
+*/

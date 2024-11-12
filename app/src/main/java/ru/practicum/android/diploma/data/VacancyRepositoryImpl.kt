@@ -8,13 +8,14 @@ import ru.practicum.android.diploma.data.mapper.VacancyResponseMapper
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.domain.api.VacancyRepository
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
 
 class VacancyRepositoryImpl(
     private val networkClient: NetworkClient, private val mapper: VacancyResponseMapper
 ) : VacancyRepository {
 
-    override fun searchVacancy(expression: String, page: String): Flow<Resource<List<Any>>> = flow {
+    override fun searchVacancy(expression: String, page: String): Flow<Resource<List<Vacancy>>> = flow {
         val response = networkClient.doRequest(searchVacancy(expression, page))
         when (response.resultCode) {
             RetrofitNetworkClient.FAILED_INTERNET_CONNECTION_CODE -> {
