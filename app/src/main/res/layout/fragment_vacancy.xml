@@ -23,25 +23,13 @@
 
     <Toolbar
         android:id="@+id/tb_back_from_vacancy"
+        style="@style/ToolbarTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:navigationIcon="@drawable/ic_arrow_back"
         android:title="@string/vacancy_title"
-        android:contentInsetStartWithNavigation="@dimen/mark_0dp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_vacancy_header"
-        app:layout_constraintEnd_toStartOf="@id/tv_vacancy_header"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_vacancy_header" />
-
-    <TextView
-        android:id="@+id/tv_vacancy_header"
-        style="@style/HeaderTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mark_4dp"
-        android:paddingVertical="@dimen/mark_20dp"
-        android:text="@string/vacancy_title"
-        app:layout_constraintStart_toEndOf="@id/tb_back_from_vacancy"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
@@ -60,7 +48,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_no_vacancy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_vacancy_header"
+        app:layout_constraintTop_toBottomOf="@id/tb_back_from_vacancy"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView

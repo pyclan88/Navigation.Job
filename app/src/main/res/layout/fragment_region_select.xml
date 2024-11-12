@@ -21,25 +21,13 @@
 
     <Toolbar
         android:id="@+id/tb_back_from_region_select"
+        style="@style/ToolbarTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentInsetStartWithNavigation="@dimen/mark_0dp"
         android:navigationIcon="@drawable/ic_arrow_back"
         android:title="@string/region_select"
-        app:layout_constraintBottom_toBottomOf="@id/tv_region_select_header"
-        app:layout_constraintEnd_toStartOf="@id/tv_region_select_header"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_region_select_header" />
-
-    <TextView
-        android:id="@+id/tv_region_select_header"
-        style="@style/HeaderTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mark_4dp"
-        android:paddingVertical="@dimen/mark_20dp"
-        android:text="@string/region_select"
-        app:layout_constraintStart_toEndOf="@id/tb_back_from_region_select"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Group
@@ -58,7 +46,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_no_such_region"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_region_select_header"
+        app:layout_constraintTop_toBottomOf="@id/tb_back_from_region_select"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
