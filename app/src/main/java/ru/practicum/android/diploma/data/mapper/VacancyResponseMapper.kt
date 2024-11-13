@@ -14,16 +14,16 @@ class VacancyResponseMapper {
             id = vacancy.id,
             imageUrl = vacancy.employer.url,
             name = vacancy.name,
-            city = getValueOrDefault(vacancy.area?.name, "Не указано"),
-            salaryFrom = getValueOrDefault(vacancy.salary?.from?.toString(), "Не указано"),
-            salaryTo = getValueOrDefault(vacancy.salary?.to?.toString(), "Не указано"),
-            currency = getValueOrDefault(vacancy.salary?.currency, "Не указана"),
+            city = getValueOrDefault(vacancy.area?.name, empty_param),
+            salaryFrom = getValueOrDefault(vacancy.salary?.from?.toString(), empty_param),
+            salaryTo = getValueOrDefault(vacancy.salary?.to?.toString(), empty_param),
+            currency = getValueOrDefault(vacancy.salary?.currency, empty_param),
             employerName = vacancy.employer.name,
-            experience = getValueOrDefault(vacancy.experience?.name, "Не указано"),
-            employmentName = getValueOrDefault(vacancy.employment?.name, "Не указано"),
-            schedule = getValueOrDefault(vacancy.schedule?.name, "Не указано"),
-            descriptionResponsibility = getValueOrDefault(vacancy.snippet.responsibility, "Не указано"),
-            descriptionRequirement = getValueOrDefault(vacancy.snippet.requirement, "Не указано"),
+            experience = getValueOrDefault(vacancy.experience?.name, empty_param),
+            employmentName = getValueOrDefault(vacancy.employment?.name, empty_param),
+            schedule = getValueOrDefault(vacancy.schedule?.name, empty_param),
+            descriptionResponsibility = getValueOrDefault(vacancy.snippet.responsibility, empty_param),
+            descriptionRequirement = getValueOrDefault(vacancy.snippet.requirement, empty_param),
             descriptionConditions = "???", // Может быть заполнено позже
             descriptionSkills = "???" // Может быть заполнено позже
         )
@@ -31,5 +31,9 @@ class VacancyResponseMapper {
 
     fun <T> getValueOrDefault(value: T?, defaultValue: String): String {
         return value?.toString() ?: defaultValue
+    }
+
+    companion object {
+        const val empty_param = "Не указано"
     }
 }

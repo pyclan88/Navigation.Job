@@ -9,8 +9,8 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
 
 class GetVacanciesUseCase(private val repository: VacancyRepository) {
-    suspend fun execute(expression: String, page: String): Pair<List<Vacancy>?, String?> = withContext(Dispatchers.IO) {
-        return@withContext repository.searchVacancy(expression = expression, page = page).let {
+    suspend fun execute(expression: String, page: String) = withContext(Dispatchers.IO) {
+         repository.searchVacancy(expression = expression, page = page).let {
             when (it) {
                 is Resource.Success -> {
                     Pair(it.data, null)
