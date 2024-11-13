@@ -6,5 +6,5 @@ import ru.practicum.android.diploma.util.Resource
 
 interface VacancyRepository {
 
-    fun searchVacancy(expression: String, page: String): Flow<Resource<List<Vacancy>>>
+    suspend fun searchVacancy(expression: String, page: String): Resource<List<Vacancy>>
 }

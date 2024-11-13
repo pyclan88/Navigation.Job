@@ -1,18 +1,14 @@
 package ru.practicum.android.diploma.ui.team
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.koin.android.ext.android.inject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentTeamBinding
-import ru.practicum.android.diploma.domain.usecase.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.BindingFragment
 
 class TeamFragment : BindingFragment<FragmentTeamBinding>() {
-    private val testUseCase: GetVacanciesUseCase by inject()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -33,7 +29,5 @@ class TeamFragment : BindingFragment<FragmentTeamBinding>() {
         ).forEachIndexed { index, textView ->
             textView.text = contributors.getOrNull(index) ?: ""
         }
-        val result = testUseCase.execute("Android разработчик", "1")
-        Log.e("testRequest", "$result")
     }
 }

@@ -1,14 +1,16 @@
 package ru.practicum.android.diploma.domain.usecase
 
-import kotlinx.coroutines.flow.Flow
+import android.util.Log
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.api.VacancyRepository
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
 
 class GetVacanciesUseCase(private val repository: VacancyRepository) {
-     fun execute(expression: String, page: String): Flow<Pair<List<Vacancy>?, String?>> {
-        return repository.searchVacancy(expression = expression, page = page).map {
+    suspend fun execute(expression: String, page: String): Pair<List<Vacancy>?, String?> = withContext(Dispatchers.IO) {
+        return@withContext repository.searchVacancy(expression = expression, page = page).let {
             when (it) {
                 is Resource.Success -> {
                     Pair(it.data, null)

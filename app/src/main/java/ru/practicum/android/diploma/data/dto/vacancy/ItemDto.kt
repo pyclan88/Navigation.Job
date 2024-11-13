@@ -20,7 +20,7 @@ data class ItemDto(
     @SerializedName("archived")
     val archived: Boolean,
     @SerializedName("area")
-    val area: AreaDto,
+    val area: AreaDto?,
     @SerializedName("branding")
     val branding: BrandingDto,
     @SerializedName("contacts")
@@ -32,9 +32,9 @@ data class ItemDto(
     @SerializedName("employer")
     val employer: EmployerDto,
     @SerializedName("employment")
-    val employment: EmploymentDto,
+    val employment: EmploymentDto?,
     @SerializedName("experience")
-    val experience: ExperienceDto,
+    val experience: ExperienceDto?,
     @SerializedName("has_test")
     val hasTest: Boolean,
     @SerializedName("id")
@@ -58,9 +58,9 @@ data class ItemDto(
     @SerializedName("response_url")
     val responseUrl: Any,
     @SerializedName("salary")
-    val salary: SalaryDto,
+    val salary: SalaryDto?,
     @SerializedName("schedule")
-    val schedule: ScheduleDto,
+    val schedule: ScheduleDto?,
     @SerializedName("show_logo_in_search")
     val showLogoInSearch: Boolean,
     @SerializedName("snippet")
