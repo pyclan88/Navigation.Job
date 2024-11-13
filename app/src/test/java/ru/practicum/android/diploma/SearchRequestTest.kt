@@ -18,11 +18,11 @@ class SearchRequestTest {
     fun testGetVacancies() = runTest {
         // Настройте ваши ожидания
         val expectedResult = mockk<Pair<List<Vacancy>?, String?>>()
-        coEvery { testUseCase.execute("Android разработчик", "1") } returns expectedResult
+        coEvery { testUseCase.execute("Android разработчик", 1) } returns expectedResult
 
         // Запустите ваш код в корутине
         val resultDeferred = async(Dispatchers.IO) {
-            testUseCase.execute("Android разработчик", "1")
+            testUseCase.execute("Android разработчик", 1)
         }
 
         // Получите результат
