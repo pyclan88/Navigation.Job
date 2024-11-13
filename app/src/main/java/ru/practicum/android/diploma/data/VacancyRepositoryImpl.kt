@@ -15,7 +15,8 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Resource
 
 class VacancyRepositoryImpl(
-    private val networkClient: NetworkClient, private val mapper: VacancyResponseMapper
+    private val networkClient: NetworkClient,
+    private val mapper: VacancyResponseMapper
 ) : VacancyRepository {
     override suspend fun searchVacancy(expression: String, page: String): Resource<List<Vacancy>> {
         return withContext(Dispatchers.IO) {
