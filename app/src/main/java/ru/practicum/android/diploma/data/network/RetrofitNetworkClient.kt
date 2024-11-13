@@ -20,9 +20,10 @@ class RetrofitNetworkClient(
         } else {
             withContext(Dispatchers.IO) {
                 try {
-                    headHunterApiService.searchVacancyRequest(
+                    headHunterApiService.searchVacancy(
                         text = dto.expression,
-                        page = dto.page
+                        page = dto.page,
+                        perPage = dto.perPage
                     ).apply { resultCode = SUCCESS_CODE }
                 } catch (e: Throwable) {
                     Log.e("stackTrace", "${e.printStackTrace()}")
