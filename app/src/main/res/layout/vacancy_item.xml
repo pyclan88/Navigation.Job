@@ -34,7 +34,7 @@
     <TextView
         android:id="@+id/vacancy_title"
         style="@style/VacancyItemTitleTextStyle"
-        android:layout_width="@dimen/mark_0dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/mark_12dp"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
@@ -45,7 +45,7 @@
     <TextView
         android:id="@+id/vacancy_employer"
         style="@style/VacancyItemContentTextStyle"
-        android:layout_width="@dimen/mark_0dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
         app:layout_constraintStart_toStartOf="@id/vacancy_title"
@@ -55,7 +55,7 @@
     <TextView
         android:id="@+id/vacancy_salary"
         style="@style/VacancyItemContentTextStyle"
-        android:layout_width="@dimen/mark_0dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
         app:layout_constraintStart_toStartOf="@id/vacancy_employer"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="HeaderTextStyle">
+    <style name="PlaceholderTextStyle">
         <item name="android:textColor">?attr/black_to_white</item>
         <item name="android:textSize">@dimen/text_mark_22sp</item>
         <item name="fontFamily">@font/ys_display_medium</item>
@@ -26,13 +26,14 @@
         <item name="itemRippleColor">@color/blue</item>
     </style>
 
-    <style name="ToolbarTitleStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="android:contentInsetStartWithNavigation">@dimen/mark_0dp</item>
+    <style name="ToolbarHeaderStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetEnd">@dimen/mark_8dp</item>
+        <item name="android:contentInsetStartWithNavigation">0dp</item>
+        <item name="android:titleMarginStart">0dp</item>
         <item name="android:titleTextAppearance">@style/ToolbarTextStyle</item>
     </style>
 
     <style name="ToolbarTextStyle" parent="@style/Base.TextAppearance.AppCompat.Title">
-        <item name="android:textColor">?attr/black_to_white</item>
         <item name="android:textSize">@dimen/text_mark_22sp</item>
         <item name="fontFamily">@font/ys_display_medium</item>
     </style>
