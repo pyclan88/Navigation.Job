@@ -9,7 +9,7 @@
     tools:context=".ui.filters.FiltersFragment">
 
     <TextView
-        style="@style/HeaderTextStyle"
+        style="@style/PlaceholderTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/mark_20dp"
@@ -17,5 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
