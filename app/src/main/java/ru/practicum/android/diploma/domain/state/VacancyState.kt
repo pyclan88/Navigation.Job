@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.domain.state
 
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-internal data class VacancyState(
+data class VacancyState(
     val input: Input,
     val vacanciesList: VacanciesList
 ) {
@@ -20,11 +20,3 @@ internal data class VacancyState(
         data class Data(val vacancies: List<Vacancy>) : VacanciesList
     }
 }
-
-/*
-internal class Vacancy(
-    val title: String,
-    @DrawableRes val icon: Int
-    // todo etc
-)
-*/
