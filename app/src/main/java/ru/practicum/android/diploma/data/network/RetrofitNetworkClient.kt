@@ -25,6 +25,7 @@ class RetrofitNetworkClient(
                         page = dto.page
                     ).apply { resultCode = SUCCESS_CODE }
                 } catch (e: Throwable) {
+                    Log.e("stackTrace", "${e.printStackTrace()}")
                     Log.e(RetrofitNetworkClient::class.simpleName, e.message, e)
                     Response().apply { resultCode = SERVER_ERROR_CODE }
                 }

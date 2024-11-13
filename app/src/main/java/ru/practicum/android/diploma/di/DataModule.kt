@@ -3,11 +3,36 @@ package ru.practicum.android.diploma.di
 import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import ru.practicum.android.diploma.data.db.AppDatabase
+import ru.practicum.android.diploma.data.mapper.VacancyResponseMapper
+import ru.practicum.android.diploma.data.network.HeadHunterApiService
+import ru.practicum.android.diploma.data.network.NetworkClient
+import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+
+private const val HEAD_HUNTER_BASE_URL = "https://api.hh.ru"
 
 val dataModule = module {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
             .build()
+    }
+
+    single<HeadHunterApiService> {
+        Retrofit.Builder()
+            .baseUrl(HEAD_HUNTER_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(HeadHunterApiService::class.java)
+    }
+
+    factory {
+        VacancyResponseMapper()
+    }
+
+    single<NetworkClient> {
+        RetrofitNetworkClient(get())
     }
 }
