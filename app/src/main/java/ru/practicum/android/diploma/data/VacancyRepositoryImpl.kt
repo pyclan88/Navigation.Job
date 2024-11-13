@@ -2,8 +2,6 @@ package ru.practicum.android.diploma.data
 
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.data.dto.VacancySearchResponse
@@ -18,7 +16,8 @@ class VacancyRepositoryImpl(
     private val networkClient: NetworkClient,
     private val mapper: VacancyResponseMapper
 ) : VacancyRepository {
-    override suspend fun searchVacancy(expression: String, page: String): Resource<List<Vacancy>> {
+
+    override suspend fun searchVacancy(expression: String, page: Int): Resource<List<Vacancy>> {
         return withContext(Dispatchers.IO) {
             val response = networkClient.doRequest(VacancySearchRequest(expression, page))
             when (response.resultCode) {
