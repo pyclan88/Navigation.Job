@@ -5,19 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_to_black"
-    android:paddingHorizontal="@dimen/mark_16dp"
     tools:context=".ui.filters.FiltersFragment">
 
-    <TextView
-        style="@style/PlaceholderTextStyle"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline_16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/mark_16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline_16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/mark_16dp" />
+
+    <Toolbar
+        android:id="@+id/tb_header"
+        style="@style/ToolbarHeaderStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/mark_20dp"
-        android:text="@string/filters_title"
+        android:navigationIcon="@drawable/ic_arrow_back"
+        android:title="@string/filters_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

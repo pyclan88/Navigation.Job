@@ -8,7 +8,6 @@ import ru.practicum.android.diploma.util.ImageAndTextHelper
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
-
 class ImageAndTextHelperImpl : ImageAndTextHelper {
     override fun setImageAndText(
         context: Context,
