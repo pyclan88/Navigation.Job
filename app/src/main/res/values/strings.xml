@@ -17,5 +17,6 @@
     <string name="list_is_empty">Список пуст</string>
     <string name="search_hint">Введите запрос</string>
     <string name="menu_filter">Фильтр</string>
+    <string name="not_vacancies">Таких вакансий нет</string>
 
 </resources>

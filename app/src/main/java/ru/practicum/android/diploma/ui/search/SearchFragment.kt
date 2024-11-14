@@ -8,7 +8,6 @@ import androidx.core.widget.doOnTextChanged
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.ImageAndTextHelperImpl
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Data
@@ -44,14 +43,15 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 pbSearch.invisible()
                 ivLookingForPlaceholder.invisible()
                 groupPlaceholder.visible()
+                tvCountVacancies.visible()
+                tvCountVacancies.text = resources.getText(R.string.not_vacancies)
                 imageAndTextHelper.setImageAndText(
                     requireContext(),
-                    binding.ivPlaceholder,
-                    binding.tvPlaceholder,
+                    ivPlaceholder,
+                    tvPlaceholder,
                     R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
                     resources.getString(R.string.no_vacancy_list)
                 )
-                groupPlaceholder.visible()
             }
 
             is VacancyState.VacanciesList.NoInternet -> {}
@@ -60,6 +60,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 rvVacancies.invisible()
                 ivLookingForPlaceholder.invisible()
                 groupPlaceholder.invisible()
+                tvCountVacancies.invisible()
             }
 
             is VacancyState.VacanciesList.Error -> {}
@@ -70,6 +71,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 ivLookingForPlaceholder.invisible()
                 vacanciesAdapter.setVacancies(state.vacanciesList.vacancies)
                 groupPlaceholder.invisible()
+                // Пока что скрою tvCountVacancies, потом нужно будет передать количество найденных вакансий
+                tvCountVacancies.invisible()
             }
         }
     }

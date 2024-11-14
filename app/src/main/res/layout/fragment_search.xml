@@ -50,10 +50,10 @@
         app:layout_constraintTop_toBottomOf="@id/tb_header" />
 
     <TextView
-        android:id="@+id/tv_count_vacation"
+        android:id="@+id/tv_count_vacancies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/mark_8dp"
+        android:layout_marginTop="@dimen/mark_12dp"
         android:background="@drawable/blue_shape"
         android:fontFamily="@font/ys_display_regular"
         android:paddingHorizontal="@dimen/mark_12dp"
@@ -76,7 +76,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_count_vacation"
+        app:layout_constraintTop_toBottomOf="@id/tv_count_vacancies"
         tools:itemCount="3"
         tools:listitem="@layout/vacancy_item" />
 

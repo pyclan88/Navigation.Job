@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.util
 import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.Group
 
 interface ImageAndTextHelper {
 
@@ -14,7 +13,4 @@ interface ImageAndTextHelper {
         imageResId: Int,
         text: String
     )
-
-    fun setGroupVisibility(group: Group, isVisible: Boolean)
-
 }
