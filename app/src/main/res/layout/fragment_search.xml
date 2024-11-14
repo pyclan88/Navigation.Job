@@ -74,8 +74,8 @@
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline_16dp"
-        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_count_vacation"
         tools:itemCount="3"
         tools:listitem="@layout/vacancy_item" />
