@@ -42,29 +42,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun render(state: VacancyState) {
         when (state.vacanciesList) {
             is VacancyState.VacanciesList.Empty -> showEmpty()
-            is VacancyState.VacanciesList.ErrorEmpty -> showErrorEmpty()
             is VacancyState.VacanciesList.NoInternet -> showNoInternet()
             is VacancyState.VacanciesList.Loading -> showLoading()
             is VacancyState.VacanciesList.Error -> showError()
             is Data -> showContent(state.vacanciesList.vacancies)
-        }
-    }
-
-    private fun showErrorEmpty() {
-        with(binding) {
-            rvVacancies.invisible()
-            pbSearch.invisible()
-            ivLookingForPlaceholder.invisible()
-            groupPlaceholder.visible()
-            tvCountVacancies.visible()
-            tvCountVacancies.text = resources.getText(R.string.not_vacancies)
-            imageAndTextHelper.setImageAndText(
-                requireContext(),
-                ivPlaceholder,
-                tvPlaceholder,
-                R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
-                resources.getString(R.string.no_vacancy_list)
-            )
         }
     }
 
@@ -111,13 +92,14 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
             groupPlaceholder.visible()
-            tvCountVacancies.invisible()
+            tvCountVacancies.visible()
+            tvCountVacancies.text = resources.getText(R.string.not_vacancies)
             imageAndTextHelper.setImageAndText(
                 requireContext(),
                 ivPlaceholder,
                 tvPlaceholder,
-                R.drawable.placeholder_no_region_list_carpet,
-                resources.getString(R.string.no_region_list)
+                R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
+                resources.getString(R.string.no_vacancy_list)
             )
         }
     }

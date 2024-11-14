@@ -48,7 +48,7 @@ class SearchViewModel(
                 }
 
                 emptyList<Vacancy>() -> {
-                    VacanciesList.ErrorEmpty
+                    VacanciesList.Error
                 }
 
                 else -> VacanciesList.Data(result.first!!)
