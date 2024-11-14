@@ -14,6 +14,7 @@ data class VacancyState(
 
     sealed interface VacanciesList {
         data object Empty : VacanciesList
+        data object ErrorEmpty : VacanciesList
         data object NoInternet : VacanciesList
         data object Loading : VacanciesList
         data object Error : VacanciesList

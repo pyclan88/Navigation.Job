@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.core.widget.doOnTextChanged
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,6 +42,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun render(state: VacancyState) {
         when (state.vacanciesList) {
             is VacancyState.VacanciesList.Empty -> showEmpty()
+            is VacancyState.VacanciesList.ErrorEmpty -> showErrorEmpty()
             is VacancyState.VacanciesList.NoInternet -> showNoInternet()
             is VacancyState.VacanciesList.Loading -> showLoading()
             is VacancyState.VacanciesList.Error -> showError()
@@ -47,7 +50,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
     }
 
-    private fun showEmpty() {
+    private fun showErrorEmpty() {
         with(binding) {
             rvVacancies.invisible()
             pbSearch.invisible()
@@ -62,6 +65,16 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
                 resources.getString(R.string.no_vacancy_list)
             )
+        }
+    }
+
+    private fun showEmpty() {
+        with(binding) {
+            pbSearch.invisible()
+            rvVacancies.invisible()
+            ivLookingForPlaceholder.visible()
+            groupPlaceholder.invisible()
+            tvCountVacancies.invisible()
         }
     }
 
@@ -122,6 +135,17 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun configureSearchInput() = binding.etSearch.doOnTextChanged { text, _, _, _ ->
+        with(binding.ivEditTextButton) {
+            setImageResource(if (text.isNullOrEmpty()) R.drawable.ic_search else R.drawable.ic_close)
+            setOnClickListener {
+                val inputMethodManager =
+                    requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(binding.ivEditTextButton.windowToken, 0)
+                binding.etSearch.setText(EMPTY_STRING)
+                viewModel.changeStateToEmpty()
+                clearFocus()
+            }
+        }
         text?.let { viewModel.searchDebounce(it.toString()) }
     }
 
@@ -129,4 +153,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.rvVacancies.adapter = vacanciesAdapter
     }
 
+    companion object {
+        const val EMPTY_STRING = ""
+    }
 }

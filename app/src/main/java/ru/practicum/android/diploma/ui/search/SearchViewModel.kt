@@ -26,6 +26,11 @@ class SearchViewModel(
         useLastParam = true
     ) { changedText -> search(changedText) }
 
+    fun changeStateToEmpty() {
+        val inputState = Input.Empty
+        _state.postValue(VacancyState(inputState, VacanciesList.Empty))
+    }
+
     fun search(expression: String) = viewModelScope.launch {
         val inputState = Input.Text(expression)
         _state.postValue(VacancyState(inputState, VacanciesList.Loading))
@@ -43,7 +48,7 @@ class SearchViewModel(
                 }
 
                 emptyList<Vacancy>() -> {
-                    VacanciesList.Empty
+                    VacanciesList.ErrorEmpty
                 }
 
                 else -> VacanciesList.Data(result.first!!)
@@ -51,7 +56,11 @@ class SearchViewModel(
         _state.postValue(VacancyState(inputState, vacanciesState))
     }
 
-    fun searchDebounce(expression: String) = searchDebounceAction(expression)
+    fun searchDebounce(expression: String) {
+        if (expression != "") {
+            searchDebounceAction(expression)
+        }
+    }
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2_000L
