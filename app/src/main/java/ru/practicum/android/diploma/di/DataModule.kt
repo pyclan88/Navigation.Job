@@ -1,13 +1,14 @@
 package ru.practicum.android.diploma.di
 
 import androidx.room.Room
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.mapper.VacancyResponseMapper
+import ru.practicum.android.diploma.data.network.AuthorizationInterceptor
 import ru.practicum.android.diploma.data.network.HeadHunterApiService
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
@@ -20,8 +21,15 @@ val dataModule = module {
             .build()
     }
 
+    single<OkHttpClient> {
+        OkHttpClient.Builder()
+            .addInterceptor(AuthorizationInterceptor)
+            .build()
+    }
+
     single<HeadHunterApiService> {
         Retrofit.Builder()
+            .client(get())
             .baseUrl(HEAD_HUNTER_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

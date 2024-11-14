@@ -16,13 +16,13 @@ class VacanciesAdapter : RecyclerView.Adapter<VacanciesHolder>() {
     }
 
     override fun onBindViewHolder(holder: VacanciesHolder, position: Int) {
-        // holder.bind(vacancies[position])
+        holder.bind(vacancies[position])
     }
 
     override fun getItemCount(): Int = vacancies.size
 
-    fun setVacancies(list: List<Vacancy>) {
-        vacancies = list
+    fun setVacancies(vacancies: List<Vacancy>) {
+        this.vacancies = vacancies
         notifyDataSetChanged()
     }
 
