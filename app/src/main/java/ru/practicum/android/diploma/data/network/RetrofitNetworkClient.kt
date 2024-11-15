@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.data.network
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
@@ -25,7 +26,7 @@ class RetrofitNetworkClient(
                     is VacancyDetailsRequest -> getVacancyDetails(dto)
                     else -> Response().apply { resultCode = BAD_REQUEST_CODE }
                 }
-            } catch (e: Throwable) {
+            } catch (e: HttpException) {
                 Response().apply { resultCode = SERVER_ERROR_CODE }
             }
         }
