@@ -123,7 +123,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 val inputMethodManager =
                     requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(binding.ivEditTextButton.windowToken, 0)
-                binding.etSearch.setText(EMPTY_STRING)
+                binding.etSearch.text.clear()
                 viewModel.clearSearch()
                 clearFocus()
             }
