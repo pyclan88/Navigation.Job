@@ -23,4 +23,6 @@
     <string name="conditions">Условия</string>
     <string name="key_skills">Ключевые навыки</string>
     <string name="menu_filter">Фильтр</string>
+    <string name="not_vacancies">Таких вакансий нет</string>
+
 </resources>
