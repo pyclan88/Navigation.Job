@@ -4,7 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
-import ru.practicum.android.diploma.data.dto.VacancySearchResponse
+import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.mapper.VacancyResponseMapper
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
@@ -27,7 +27,7 @@ class VacancyRepositoryImpl(
 
                 RetrofitNetworkClient.SUCCESS_CODE -> {
                     Log.e(VacancyRepository::class.simpleName, response.toString())
-                    val data = mapper.map(response as VacancySearchResponse)
+                    val data = mapper.map(response as VacanciesSearchResponse)
                     Resource.Success(data)
                 }
 

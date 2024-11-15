@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.data.dto
 import com.google.gson.annotations.SerializedName
 import ru.practicum.android.diploma.data.dto.vacancy.ItemDto
 
-data class VacancySearchResponse(
+data class VacanciesSearchResponse(
     @SerializedName("alternate_url")
     val alternateUrl: String,
     @SerializedName("arguments")

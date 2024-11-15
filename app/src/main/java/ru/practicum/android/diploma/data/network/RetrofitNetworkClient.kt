@@ -20,7 +20,7 @@ class RetrofitNetworkClient(
         } else {
             withContext(Dispatchers.IO) {
                 try {
-                    headHunterApiService.searchVacancy(
+                    headHunterApiService.searchVacancies(
                         text = dto.expression,
                         page = dto.page,
                         perPage = dto.perPage

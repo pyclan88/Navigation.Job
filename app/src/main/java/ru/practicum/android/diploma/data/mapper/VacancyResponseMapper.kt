@@ -1,12 +1,12 @@
 package ru.practicum.android.diploma.data.mapper
 
-import ru.practicum.android.diploma.data.dto.VacancySearchResponse
+import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.vacancy.ItemDto
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 class VacancyResponseMapper {
 
-    fun map(response: VacancySearchResponse): List<Vacancy> {
+    fun map(response: VacanciesSearchResponse): List<Vacancy> {
         return response.items.map { vacancy -> createVacancy(vacancy) }
     }
 
