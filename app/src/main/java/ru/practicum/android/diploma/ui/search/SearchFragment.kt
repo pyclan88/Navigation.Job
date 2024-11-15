@@ -124,7 +124,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(binding.ivEditTextButton.windowToken, 0)
                 binding.etSearch.setText(EMPTY_STRING)
-                viewModel.changeStateToEmpty()
+                viewModel.clearSearch()
                 clearFocus()
             }
         }

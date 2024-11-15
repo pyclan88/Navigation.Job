@@ -26,10 +26,7 @@ class SearchViewModel(
         useLastParam = true
     ) { changedText -> search(changedText) }
 
-    fun changeStateToEmpty() {
-        val inputState = Input.Empty
-        _state.postValue(VacancyState(inputState, VacanciesList.Empty))
-    }
+    fun clearSearch() = _state.postValue(VacancyState(Input.Empty, VacanciesList.Empty))
 
     fun search(expression: String) = viewModelScope.launch {
         val inputState = Input.Text(expression)
@@ -57,9 +54,8 @@ class SearchViewModel(
     }
 
     fun searchDebounce(expression: String) {
-        if (expression != "") {
-            searchDebounceAction(expression)
-        }
+        if (expression.isBlank()) return
+        searchDebounceAction(expression)
     }
 
     companion object {
