@@ -102,5 +102,4 @@
         <item name="android:textSize">@dimen/text_mark_22sp</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
-
 </resources>

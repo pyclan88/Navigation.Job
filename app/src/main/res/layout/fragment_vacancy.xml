@@ -64,7 +64,6 @@
                 android:id="@+id/group_vacancy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 app:constraint_referenced_ids="tv_vacancy_name,tv_vacancy_salary,siv_vacancy_logo_frame,siv_vacancy_logo,tv_vacancy_employer_name,tv_vacancy_employer_city,tv_vacancy_title_experience,tv_vacancy_experience,tv_vacancy_schedule,tv_vacancy_title_description,tv_vacancy_title_responsibilities,tv_vacancy_responsibilities,tv_vacancy_title_requirements,tv_vacancy_requirements,tv_vacancy_title_conditions,tv_vacancy_conditions,tv_vacancy_title_skills,tv_vacancy_skills" />
 
             <TextView
@@ -258,41 +257,56 @@
                 app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_vacancy_title_skills"
                 tools:text="Знание классических алгоритмов и структуры данных&#xA;Программирование для Android больше одного года&#xA;Знание WebRTC" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/group_placeholder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:constraint_referenced_ids="iv_placeholder, tv_placeholder" />
-
-            <ImageView
-                android:id="@+id/iv_placeholder"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                app:top="@id/tv_placeholder"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline_16dp"
-                app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
-                app:layout_constraintTop_toBottomOf="@id/tb_header"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:src="@drawable/smile" />
-
-            <TextView
-                android:id="@+id/tv_placeholder"
-                style="@style/PlaceholderTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mark_16dp"
-                android:gravity="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/end_guideline_16dp"
-                app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
-                app:layout_constraintTop_toBottomOf="@id/iv_placeholder"
-                tools:text="Улыбок тебе дед макар" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="iv_placeholder, tv_placeholder" />
+
+        <ImageView
+            android:id="@+id/iv_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:src="@drawable/smile" />
+
+        <TextView
+            android:id="@+id/tv_placeholder"
+            style="@style/PlaceholderTextStyle"
+            android:layout_width="@dimen/mark_268dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/mark_16dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_placeholder"
+            tools:text="Улыбок тебе дед макар" />
+
+        <ProgressBar
+            android:id="@+id/pb_vacancy"
+            android:layout_width="@dimen/mark_48dp"
+            android:layout_height="@dimen/mark_48dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:id="@+id/overlay"
