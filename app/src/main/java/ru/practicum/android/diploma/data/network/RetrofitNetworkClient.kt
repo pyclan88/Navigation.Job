@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.network
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -35,11 +36,15 @@ class RetrofitNetworkClient(
 
     private suspend fun searchVacancies(
         input: VacancySearchRequest
-    ): VacanciesSearchResponse = headHunterApiService.searchVacancies(
-        text = input.expression,
-        page = input.page,
-        perPage = input.perPage
-    ).apply { resultCode = SUCCESS_CODE }
+    ): VacanciesSearchResponse {
+        println("text:${input.expression},page:${input.page},perPage:${input.perPage}")
+        return headHunterApiService.searchVacancies(
+            text = input.expression,
+            page = input.page,
+            perPage = input.perPage
+        ).apply { resultCode = SUCCESS_CODE }
+
+    }
 
     private suspend fun getVacancyDetails(
         input: VacancyDetailsRequest

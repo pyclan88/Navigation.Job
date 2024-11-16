@@ -5,27 +5,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
 import ru.practicum.android.diploma.domain.usecase.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
+import kotlin.math.exp
 
 class SearchViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase
 ) : ViewModel() {
 
-    private val vacanciesList = mutableListOf<Vacancy>()
     private var lastExpression = ""
+    private var currentPage = 1
+    private var maxPage = 0
 
     private var isNextPageLoading = false
 
-    private val _state = MutableLiveData<VacancyState>()
-    val state: LiveData<VacancyState> get() = _state
+    private val _state = MutableStateFlow(
+        VacancyState(
+            input = Input.Empty,
+            vacanciesList = VacanciesList.Empty
+        )
+    )
+    val state: StateFlow<VacancyState> get() = _state
 
     init {
         _state.value = VacancyState(
@@ -40,51 +48,49 @@ class SearchViewModel(
         useLastParam = true
     ) { changedText -> search(changedText) }
 
-    fun clearSearch() = _state.postValue(VacancyState(Input.Empty, VacanciesList.Empty))
+    fun clearSearch() {
+        _state.value = VacancyState(Input.Empty, VacanciesList.Empty)
+    }
 
     private fun search(expression: String) {
         lastExpression = expression
         _state.value = VacancyState(Input.Text(expression), VacanciesList.Loading)
-        requestToServer(state.value!!)
+        requestToServer(expression)
     }
 
-    private fun requestToServer(state: VacancyState) = viewModelScope.launch {
+    private fun requestToServer(expression: String) = viewModelScope.launch {
         isNextPageLoading = true
-        val result: Pair<VacancySearchResult?, String?> =
-            getVacanciesUseCase.execute(expression = state.input.toString(), page = state.currentPage)
-        val resultData = result.first
-        val vacanciesList: VacanciesList =
-            when (val loadedVacanciesList = resultData?.items) {
+        val result = getVacanciesUseCase.execute(expression = expression, page = currentPage)
+        val resultData = result.first?.items
+        // .orEmpty()
+        Log.e("TESTdata", "result:${result.first?.toString()}")
+        val vacancyState: VacancyState =
+            when (resultData) {
                 null -> {
                     if (result.second == RetrofitNetworkClient.FAILED_INTERNET_CONNECTION_CODE.toString()) {
-                        VacanciesList.NoInternet
+                        state.value.copy(vacanciesList = VacanciesList.NoInternet)
+
                     } else {
-                        VacanciesList.Error
+                        state.value.copy(vacanciesList = VacanciesList.Error)
                     }
                 }
 
                 emptyList<Vacancy>() -> {
-                    if (vacanciesList.isEmpty()) VacanciesList.Empty else VacanciesList.Data(vacanciesList)
-                    VacanciesList.Error
+                    state.value.copy(vacanciesList = VacanciesList.Empty)
                 }
 
                 else -> {
-                    VacanciesList.Data(loadedVacanciesList).also {
-                        isNextPageLoading = false
-                        _state.postValue(
-                            VacancyState(
-                                state.input,
-                                state.vacanciesList,
-                                state.currentPage++,
-                                resultData.pages
-                            )
-                        )
-                        vacanciesList.addAll(loadedVacanciesList)
-                    }
+                    isNextPageLoading = false
+                    currentPage += 1
+                    result.first?.let { maxPage = it.pages }
+                    state.value.copy(vacanciesList = VacanciesList.Data(resultData))
+
                 }
             }
-        val inputState = Input.Text(state.input.toString())
-        _state.postValue(VacancyState(inputState, vacanciesList))
+
+        _state.value = vacancyState
+
+
     }
 
     fun searchDebounce(expression: String) {
@@ -93,7 +99,7 @@ class SearchViewModel(
     }
 
     fun onLastItemReached() {
-        if (!isNextPageLoading && state.value?.currentPage!! < state.value?.maxPage!!) search(lastExpression)
+        if (!isNextPageLoading && currentPage < maxPage) search(lastExpression)
     }
 
     companion object {
