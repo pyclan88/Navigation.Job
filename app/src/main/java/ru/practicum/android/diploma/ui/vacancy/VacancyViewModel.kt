@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
 import ru.practicum.android.diploma.domain.models.VacancyDetails
-import ru.practicum.android.diploma.domain.state.VacancyDetailsState.VacancyDetailsList
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
+import ru.practicum.android.diploma.domain.state.VacancyDetailsState.VacancyDetailsList
 import ru.practicum.android.diploma.domain.usecase.GetVacancyDetailsUseCase
 
 class VacancyViewModel(
@@ -36,6 +36,7 @@ class VacancyViewModel(
                             VacancyDetailsList.Error
                         }
                     }
+
                     else -> VacancyDetailsList.Data(result.first!!)
                 }
             _state.postValue(VacancyDetailsState(vacancyDetailsState))
