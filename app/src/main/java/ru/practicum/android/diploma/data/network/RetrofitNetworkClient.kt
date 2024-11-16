@@ -27,7 +27,8 @@ class RetrofitNetworkClient(
                     else -> Response().apply { resultCode = BAD_REQUEST_CODE }
                 }
             } catch (e: HttpException) {
-                Response().apply { resultCode = SERVER_ERROR_CODE }
+                val code = if (e.code() == NOT_FOUND_CODE) NOT_FOUND_CODE else SERVER_ERROR_CODE
+                Response().apply { resultCode = code }
             }
         }
     }
@@ -50,6 +51,7 @@ class RetrofitNetworkClient(
         const val FAILED_INTERNET_CONNECTION_CODE = -1
         const val SUCCESS_CODE = 200
         const val BAD_REQUEST_CODE = 400
+        const val NOT_FOUND_CODE = 404
         const val SERVER_ERROR_CODE = 500
     }
 }
