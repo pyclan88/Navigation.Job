@@ -7,17 +7,13 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
 import ru.practicum.android.diploma.util.BindingFragment
 
 class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
-    private lateinit var id: String
-    private val viewModel: VacancyViewModel by viewModel() {
-        parametersOf(id)
-    }
+    private val viewModel: VacancyViewModel by viewModel()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -26,7 +22,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        id = requireArguments().getString(VACANCY_DETAILS) ?: ""
+        viewModel.getDetails(requireArguments().getString(VACANCY_DETAILS) ?: "")
         binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
     }

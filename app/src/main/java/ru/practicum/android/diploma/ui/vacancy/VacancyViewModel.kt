@@ -12,19 +12,14 @@ import ru.practicum.android.diploma.domain.usecase.GetVacancyDetailsUseCase
 
 class VacancyViewModel(
     private val getDetailsUseCase: GetVacancyDetailsUseCase,
-    private val id: String
 ) : ViewModel() {
 
     private val _state = MutableLiveData<VacancyDetailsState>()
     val state: LiveData<VacancyDetailsState> get() = _state
 
-    init {
-        _state.value = VacancyDetailsState(VacancyDetailsList.Loading)
-        if (id.isBlank()) VacancyDetailsList.Empty else getDetails()
-    }
-
-    private fun getDetails() {
+    fun getDetails(id: String) {
         viewModelScope.launch {
+            VacancyDetailsState(VacancyDetailsList.Loading)
             val result = getDetailsUseCase.execute(id)
             val vacancyDetailsState: VacancyDetailsList =
                 when (result.first) {
