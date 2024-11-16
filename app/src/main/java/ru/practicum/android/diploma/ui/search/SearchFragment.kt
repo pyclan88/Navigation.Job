@@ -134,8 +134,4 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun configureRecycler() {
         binding.rvVacancies.adapter = vacanciesAdapter
     }
-
-    companion object {
-        const val EMPTY_STRING = ""
-    }
 }
