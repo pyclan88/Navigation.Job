@@ -42,7 +42,7 @@ val dataModule = module {
     }
 
     factory {
-        VacancyDetailsMapper()
+        VacancyDetailsMapper(get())
     }
 
     single<NetworkClient> {
