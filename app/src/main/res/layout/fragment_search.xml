@@ -42,6 +42,7 @@
         android:drawableEnd="@drawable/ic_search"
         android:hint="@string/search_hint"
         android:padding="@dimen/mark_16dp"
+        android:inputType="text"
         android:textColor="@color/black"
         android:textColorHint="?attr/dark_grey_to_white"
         android:textCursorDrawable="@drawable/custom_cursor"

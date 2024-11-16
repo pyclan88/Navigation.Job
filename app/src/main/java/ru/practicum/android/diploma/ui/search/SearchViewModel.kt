@@ -1,13 +1,11 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
-import ru.practicum.android.diploma.di.viewModelModule
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
