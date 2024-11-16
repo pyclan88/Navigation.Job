@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -118,7 +121,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             rvVacancies.visible()
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
-//            vacancyAdapter.setVacancies(vacancies)
             vacancyAdapter.updateVacancies(vacancies)
             groupPlaceholder.invisible()
             // Пока что скрою tvCountVacancies, потом нужно будет передать количество найденных вакансий
@@ -135,19 +137,19 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun listenRecycler() {
-        binding.rvVacancies.addOnScrollListener(object: OnScrollListener() {
+        binding.rvVacancies.addOnScrollListener(object : OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (dy > 0) {
                     val pos = (binding.rvVacancies.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = vacancyAdapter.itemCount
-                    if (pos >= itemsCount-1) {
+                    if (pos >= itemsCount - 1) {
+                        binding.pbSearch.visible()
                         viewModel.onLastItemReached()
                     }
                 }
             }
         })
     }
-
 }

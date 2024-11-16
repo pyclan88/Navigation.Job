@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.di.viewModelModule
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
@@ -32,14 +33,18 @@ class SearchViewModel(
         delayMillis = SEARCH_DEBOUNCE_DELAY,
         coroutineScope = viewModelScope,
         useLastParam = true
-    ) { changedText -> search(changedText) }
+    ) { changedText ->
+        search(changedText)
+    }
 
     private fun search(expression: String) = viewModelScope.launch {
-        isNextPageLoading = true
         lastExpression = expression
-        val inputState = Input.Text(expression)
-        _state.postValue(VacancyState(inputState, VacanciesList.Loading))
+        _state.postValue(VacancyState(Input.Text(expression), VacanciesList.Loading))
+        requestToServer(expression)
+    }
 
+    private fun requestToServer(expression: String) = viewModelScope.launch {
+        isNextPageLoading = true
         val result = getVacanciesUseCase.execute(expression, page = currentPage)
         val resultData = result.first
         val vacanciesState: VacanciesList =
@@ -57,19 +62,20 @@ class SearchViewModel(
                 }
 
                 else -> {
-                        VacanciesList.Data(loadedVacanciesList).also {
-                            isNextPageLoading = false
-                            currentPage++
-                            maxPage = resultData.pages
-                            vacanciesList.addAll(loadedVacanciesList)
-                        }
+                    VacanciesList.Data(loadedVacanciesList).also {
+                        isNextPageLoading = false
+                        currentPage++
+                        maxPage = resultData.pages
+                        vacanciesList.addAll(loadedVacanciesList)
+                    }
                 }
             }
+        val inputState = Input.Text(expression)
         _state.postValue(VacancyState(inputState, vacanciesState))
     }
 
     fun onLastItemReached() {
-        if (!isNextPageLoading && currentPage < maxPage) search(lastExpression)
+        if (!isNextPageLoading && currentPage < maxPage) requestToServer(lastExpression)
     }
 
     fun searchDebounce(expression: String) = searchDebounceAction(expression)
