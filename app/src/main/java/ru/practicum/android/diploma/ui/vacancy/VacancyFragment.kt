@@ -6,22 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.google.gson.reflect.TypeToken
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
 import ru.practicum.android.diploma.util.BindingFragment
-import ru.practicum.android.diploma.util.JsonParser
 
 class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
-    private var vacancy: VacancyDetails? = null
-    private val jsonParser: JsonParser by inject()
+    private lateinit var id: String
     private val viewModel: VacancyViewModel by viewModel() {
-        parametersOf(vacancy)
+        parametersOf(id)
     }
 
     override fun createBinding(
@@ -31,15 +26,9 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initVacancy()
+        id = requireArguments().getString(VACANCY_DETAILS) ?: ""
         binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
-    }
-
-    private fun initVacancy() {
-        val vacancyJson = requireArguments().getString(VACANCY_DETAILS) ?: ""
-        vacancy = jsonParser.getObject(vacancyJson, object : TypeToken<VacancyDetails>() {})
     }
 
     private fun render(state: VacancyDetailsState) {
@@ -53,7 +42,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     companion object {
         private const val VACANCY_DETAILS = "vacancy_details"
-        fun createArgs(vacancy: String): Bundle =
-            bundleOf(VACANCY_DETAILS to vacancy)
+        fun createArgs(id: String): Bundle =
+            bundleOf(VACANCY_DETAILS to id)
     }
 }

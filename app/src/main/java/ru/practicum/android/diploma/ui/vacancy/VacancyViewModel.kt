@@ -6,14 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
-import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.VacancyDetailsList
 import ru.practicum.android.diploma.domain.usecase.GetVacancyDetailsUseCase
 
 class VacancyViewModel(
     private val getDetailsUseCase: GetVacancyDetailsUseCase,
-    private val vacancy: VacancyDetails?
+    private val id: String
 ) : ViewModel() {
 
     private val _state = MutableLiveData<VacancyDetailsState>()
@@ -21,12 +20,12 @@ class VacancyViewModel(
 
     init {
         _state.value = VacancyDetailsState(VacancyDetailsList.Loading)
-        if (vacancy == null) VacancyDetailsList.Empty else getDetails()
+        if (id.isBlank()) VacancyDetailsList.Empty else getDetails()
     }
 
     private fun getDetails() {
         viewModelScope.launch {
-            val result = getDetailsUseCase.execute(vacancy!!.id)
+            val result = getDetailsUseCase.execute(id)
             val vacancyDetailsState: VacancyDetailsList =
                 when (result.first) {
                     null -> {
