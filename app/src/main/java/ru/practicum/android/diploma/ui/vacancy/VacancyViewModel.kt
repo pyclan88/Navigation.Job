@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.state.VacancyDetailsState.VacancyDetailsList
+import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.domain.state.VacancyDetailsState.VacancyDetailsList
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
 import ru.practicum.android.diploma.domain.usecase.GetVacancyDetailsUseCase
 
 class VacancyViewModel(
     private val getDetailsUseCase: GetVacancyDetailsUseCase,
-    private val id: String
+    private val vacancy: VacancyDetails?
 ) : ViewModel() {
 
     private val _state = MutableLiveData<VacancyDetailsState>()
@@ -20,23 +21,21 @@ class VacancyViewModel(
 
     init {
         _state.value = VacancyDetailsState(VacancyDetailsList.Loading)
-        getDetails()
+        if (vacancy == null) VacancyDetailsList.Empty else getDetails()
     }
 
     private fun getDetails() {
         viewModelScope.launch {
-            val result = getDetailsUseCase.execute(id)
-
+            val result = getDetailsUseCase.execute(vacancy!!.id)
             val vacancyDetailsState: VacancyDetailsList =
                 when (result.first) {
                     null -> {
-                        VacancyDetailsList.Error
+                        if (result.second == NOT_FOUND_CODE.toString()) {
+                            VacancyDetailsList.Empty
+                        } else {
+                            VacancyDetailsList.Error
+                        }
                     }
-//  Я хз что там сервер передает если вакансия не найдена или удалена поэтому пока что так
-//                    result.first.isEmpty() -> {
-//                        VacancyDetailsList.Empty
-//                    }
-
                     else -> VacancyDetailsList.Data(result.first!!)
                 }
             _state.postValue(VacancyDetailsState(vacancyDetailsState))
