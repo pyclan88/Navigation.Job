@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
@@ -17,8 +19,6 @@ class SearchViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase
 ) : ViewModel() {
 
-    private var currentPage = 1
-    private var maxPage = 2
     private val vacanciesList = mutableListOf<Vacancy>()
     private var lastExpression = ""
 
@@ -26,6 +26,13 @@ class SearchViewModel(
 
     private val _state = MutableLiveData<VacancyState>()
     val state: LiveData<VacancyState> get() = _state
+
+    init {
+        _state.value = VacancyState(
+            input = Input.Empty,
+            vacanciesList = VacanciesList.Empty,
+        )
+    }
 
     private val searchDebounceAction = debounce<String>(
         delayMillis = SEARCH_DEBOUNCE_DELAY,
@@ -35,17 +42,18 @@ class SearchViewModel(
 
     fun clearSearch() = _state.postValue(VacancyState(Input.Empty, VacanciesList.Empty))
 
-    private fun search(expression: String) = viewModelScope.launch {
+    private fun search(expression: String) {
         lastExpression = expression
-        _state.postValue(VacancyState(Input.Text(expression), VacanciesList.Loading))
-        requestToServer(expression)
+        _state.value = VacancyState(Input.Text(expression), VacanciesList.Loading)
+        requestToServer(state.value!!)
     }
 
-    private fun requestToServer(expression: String) = viewModelScope.launch {
+    private fun requestToServer(state: VacancyState) = viewModelScope.launch {
         isNextPageLoading = true
-        val result = getVacanciesUseCase.execute(expression, page = currentPage)
+        val result: Pair<VacancySearchResult?, String?> =
+            getVacanciesUseCase.execute(expression = state.input.toString(), page = state.currentPage)
         val resultData = result.first
-        val vacanciesState: VacanciesList =
+        val vacanciesList: VacanciesList =
             when (val loadedVacanciesList = resultData?.items) {
                 null -> {
                     if (result.second == RetrofitNetworkClient.FAILED_INTERNET_CONNECTION_CODE.toString()) {
@@ -63,14 +71,20 @@ class SearchViewModel(
                 else -> {
                     VacanciesList.Data(loadedVacanciesList).also {
                         isNextPageLoading = false
-                        currentPage++
-                        maxPage = resultData.pages
+                        _state.postValue(
+                            VacancyState(
+                                state.input,
+                                state.vacanciesList,
+                                state.currentPage++,
+                                resultData.pages
+                            )
+                        )
                         vacanciesList.addAll(loadedVacanciesList)
                     }
                 }
             }
-        val inputState = Input.Text(expression)
-        _state.postValue(VacancyState(inputState, vacanciesState))
+        val inputState = Input.Text(state.input.toString())
+        _state.postValue(VacancyState(inputState, vacanciesList))
     }
 
     fun searchDebounce(expression: String) {
@@ -79,7 +93,7 @@ class SearchViewModel(
     }
 
     fun onLastItemReached() {
-        if (!isNextPageLoading && currentPage < maxPage) requestToServer(lastExpression)
+        if (!isNextPageLoading && state.value?.currentPage!! < state.value?.maxPage!!) search(lastExpression)
     }
 
     companion object {

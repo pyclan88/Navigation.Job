@@ -38,7 +38,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
         configureRecycler()
         configureSearchInput()
-        listenRecycler()
 
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
     }
@@ -136,23 +135,24 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun configureRecycler() {
-        binding.rvVacancies.adapter = vacancyAdapter
-    }
+        binding.rvVacancies.apply {
+            adapter = vacancyAdapter
+            binding.rvVacancies.addOnScrollListener(object : OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
 
-    private fun listenRecycler() {
-        binding.rvVacancies.addOnScrollListener(object : OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                if (dy > 0) {
-                    val pos = (binding.rvVacancies.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                    val itemsCount = vacancyAdapter.itemCount
-                    if (pos >= itemsCount - 1) {
-                        binding.pbSearch.visible()
-                        viewModel.onLastItemReached()
+                    if (dy > 0) {
+                        val pos =
+                            (binding.rvVacancies.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                        val itemsCount = vacancyAdapter.itemCount
+                        if (pos >= itemsCount - 1) {
+                            binding.pbSearch.visible()
+                            viewModel.onLastItemReached()
+                        }
                     }
                 }
-            }
-        })
+            })
+
+        }
     }
 }
