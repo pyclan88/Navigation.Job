@@ -35,9 +35,6 @@ class SearchViewModel(
 
     fun clearSearch() = _state.postValue(VacancyState(Input.Empty, VacanciesList.Empty))
 
-    fun search(expression: String) = viewModelScope.launch {
-        val inputState = Input.Text(expression)
-        _state.postValue(VacancyState(inputState, VacanciesList.Loading))
     private fun search(expression: String) = viewModelScope.launch {
         lastExpression = expression
         _state.postValue(VacancyState(Input.Text(expression), VacanciesList.Loading))
@@ -80,11 +77,10 @@ class SearchViewModel(
         if (expression.isBlank()) return
         searchDebounceAction(expression)
     }
+
     fun onLastItemReached() {
         if (!isNextPageLoading && currentPage < maxPage) requestToServer(lastExpression)
     }
-
-    fun searchDebounce(expression: String) = searchDebounceAction(expression)
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2_000L
