@@ -31,10 +31,13 @@ class SearchViewModel(
         delayMillis = SEARCH_DEBOUNCE_DELAY,
         coroutineScope = viewModelScope,
         useLastParam = true
-    ) { changedText ->
-        search(changedText)
-    }
+    ) { changedText -> search(changedText) }
 
+    fun clearSearch() = _state.postValue(VacancyState(Input.Empty, VacanciesList.Empty))
+
+    fun search(expression: String) = viewModelScope.launch {
+        val inputState = Input.Text(expression)
+        _state.postValue(VacancyState(inputState, VacanciesList.Loading))
     private fun search(expression: String) = viewModelScope.launch {
         lastExpression = expression
         _state.postValue(VacancyState(Input.Text(expression), VacanciesList.Loading))
@@ -57,6 +60,7 @@ class SearchViewModel(
 
                 emptyList<Vacancy>() -> {
                     if (vacanciesList.isEmpty()) VacanciesList.Empty else VacanciesList.Data(vacanciesList)
+                    VacanciesList.Error
                 }
 
                 else -> {
@@ -72,6 +76,10 @@ class SearchViewModel(
         _state.postValue(VacancyState(inputState, vacanciesState))
     }
 
+    fun searchDebounce(expression: String) {
+        if (expression.isBlank()) return
+        searchDebounceAction(expression)
+    }
     fun onLastItemReached() {
         if (!isNextPageLoading && currentPage < maxPage) requestToServer(lastExpression)
     }

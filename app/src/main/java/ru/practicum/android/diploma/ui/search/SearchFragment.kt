@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -53,19 +55,11 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun showEmpty() {
         with(binding) {
-            rvVacancies.invisible()
             pbSearch.invisible()
-            ivLookingForPlaceholder.invisible()
-            groupPlaceholder.visible()
-            tvCountVacancies.visible()
-            tvCountVacancies.text = resources.getText(R.string.not_vacancies)
-            imageAndTextHelper.setImageAndText(
-                requireContext(),
-                ivPlaceholder,
-                tvPlaceholder,
-                R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
-                resources.getString(R.string.no_vacancy_list)
-            )
+            rvVacancies.invisible()
+            ivLookingForPlaceholder.visible()
+            groupPlaceholder.invisible()
+            tvCountVacancies.invisible()
         }
     }
 
@@ -102,13 +96,14 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
             groupPlaceholder.visible()
-            tvCountVacancies.invisible()
+            tvCountVacancies.visible()
+            tvCountVacancies.text = resources.getText(R.string.not_vacancies)
             imageAndTextHelper.setImageAndText(
                 requireContext(),
                 ivPlaceholder,
                 tvPlaceholder,
-                R.drawable.placeholder_no_region_list_carpet,
-                resources.getString(R.string.no_region_list)
+                R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
+                resources.getString(R.string.no_vacancy_list)
             )
         }
     }
@@ -126,6 +121,17 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun configureSearchInput() = binding.etSearch.doOnTextChanged { text, _, _, _ ->
+        with(binding.ivEditTextButton) {
+            setImageResource(if (text.isNullOrEmpty()) R.drawable.ic_search else R.drawable.ic_close)
+            setOnClickListener {
+                val inputMethodManager =
+                    requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(binding.ivEditTextButton.windowToken, 0)
+                binding.etSearch.text.clear()
+                viewModel.clearSearch()
+                clearFocus()
+            }
+        }
         text?.let { viewModel.searchDebounce(it.toString()) }
     }
 
