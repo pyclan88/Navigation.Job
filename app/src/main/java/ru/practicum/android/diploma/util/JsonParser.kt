@@ -13,7 +13,7 @@ class JsonParser {
         return gson.toJson(obj)
     }
 
-    fun <T> getObject(jsonString: String?, typeToken: TypeToken<T>): T? {
+    fun <T> getObject(jsonString: String, typeToken: TypeToken<T>): T? {
         return try {
             gson.fromJson(jsonString, typeToken.type)
         } catch (e: JsonIOException) {

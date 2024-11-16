@@ -38,7 +38,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     }
 
     private fun initVacancy() {
-        val vacancyJson = requireArguments().getString(VACANCY_DETAILS)
+        val vacancyJson = requireArguments().getString(VACANCY_DETAILS) ?: ""
         vacancy = jsonParser.getObject(vacancyJson, object : TypeToken<VacancyDetails>() {})
     }
 
