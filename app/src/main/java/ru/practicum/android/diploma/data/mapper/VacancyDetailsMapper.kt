@@ -4,7 +4,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.JsonParser
 
-class VacancyDetailsMapper() {
+class VacancyDetailsMapper {
     private val jsonParser = JsonParser()
     fun map(dto: VacancyDetailsDto) = VacancyDetails(
         id = dto.id,
