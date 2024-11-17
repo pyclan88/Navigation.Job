@@ -62,13 +62,12 @@ class SearchViewModel(
         isNextPageLoading = true
         val result = getVacanciesUseCase.execute(expression = expression, page = currentPage)
         val resultData = result.first?.items
-        // .orEmpty()
         Log.e("TESTdata", "result:${result.first?.toString()}")
         val vacancyState: VacancyState =
             when (resultData) {
                 null -> {
                     if (result.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
-                        VacanciesList.NoInternet
+                        state.value.copy(vacanciesList = VacanciesList.NoInternet)
                     } else {
                         state.value.copy(vacanciesList = VacanciesList.Error)
                     }
