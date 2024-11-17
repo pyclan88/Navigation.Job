@@ -36,8 +36,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.getDetails(requireArguments().getString(VACANCY_DETAILS) ?: "")
-        viewModel.getDetails("111032403" ?: "")
+        viewModel.getDetails(requireArguments().getString(VACANCY_DETAILS) ?: "")
         binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
     }
@@ -123,7 +122,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             }
             Glide.with(requireContext())
                 .load(vacancy.imageUrl)
-                .placeholder(R.drawable.smile)
+                .placeholder(R.drawable.placeholder_logo)
                 .centerCrop()
                 .into(binding.sivVacancyLogo)
         }
@@ -131,12 +130,11 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun salaryFormat(salaryTo: String, salaryFrom: String): String {
         val salary =
-            (if (salaryTo == "Не указано" && salaryFrom == "Не указано") "зарплата не указана" else "") +
-                (if (salaryTo != "Не указано" && salaryFrom == "Не указано") "от $salaryTo" else "") +
-                (if (salaryTo != "Не указано" && salaryFrom != "Не указано") "от $salaryTo до $salaryFrom" else "")
-                return salary
+            (if (salaryTo == resources.getString(R.string.not_specified) && salaryFrom == resources.getString(R.string.not_specified)) resources.getString(R.string.salary_is_not_specified) else "") +
+                (if (salaryTo != resources.getString(R.string.not_specified) && salaryFrom == resources.getString(R.string.not_specified)) "от $salaryTo" else "") +
+                (if (salaryTo != resources.getString(R.string.not_specified) && salaryFrom != resources.getString(R.string.not_specified)) "от $salaryTo до $salaryFrom" else "")
+        return salary
     }
-
 
     companion object {
         private const val VACANCY_DETAILS = "vacancy_details"

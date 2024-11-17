@@ -24,6 +24,8 @@
     <string name="key_skills">Ключевые навыки</string>
     <string name="menu_filter">Фильтр</string>
     <string name="not_vacancies">Таких вакансий нет</string>
-    <string name="vacancy_salary_format">%1$s %2$s %3$s %4$s</string>
+    <string name="not_specified">Не указано</string>
+    <string name="salary_is_not_specified">зарплата не указана</string>
+
 
 </resources>
