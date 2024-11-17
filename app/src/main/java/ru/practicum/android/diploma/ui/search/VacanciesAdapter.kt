@@ -6,20 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacanciesAdapter(private val listener: VacancyClickListener) : RecyclerView.Adapter<VacanciesHolder>() {
+class VacanciesAdapter(private val clickListener: VacancyClickListener) : RecyclerView.Adapter<VacanciesHolder>() {
 
     private var vacancies: List<Vacancy> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacanciesHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
-        return VacanciesHolder(VacancyItemBinding.inflate(layoutInspector, parent, false))
+        return VacanciesHolder(VacancyItemBinding.inflate(layoutInspector, parent, false), clickListener)
     }
 
     override fun onBindViewHolder(holder: VacanciesHolder, position: Int) {
         val vacancy = vacancies[position]
         holder.bind(vacancy)
-
-        holder.itemView.setOnClickListener { listener.onVacancyClick(vacancy.id) }
     }
 
     override fun getItemCount(): Int = vacancies.size
@@ -30,7 +28,7 @@ class VacanciesAdapter(private val listener: VacancyClickListener) : RecyclerVie
         notifyItemRangeInserted(startPosition, newVacancies.size)
     }
 
-    interface VacancyClickListener {
+    fun interface VacancyClickListener {
         fun onVacancyClick(vacancyId: String)
     }
 }

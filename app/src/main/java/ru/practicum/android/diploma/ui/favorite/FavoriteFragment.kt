@@ -21,9 +21,9 @@ import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
-class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>(), VacanciesAdapter.VacancyClickListener {
+class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
 
-    private val vacanciesAdapter = VacanciesAdapter(this)
+    private lateinit var vacanciesAdapter: VacanciesAdapter
     private val viewModel: FavoriteViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
 
@@ -47,14 +47,11 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>(), VacanciesAd
                 VacancyFragment.createArgs(id = vacancyId)
             )
         }
+        vacanciesAdapter = VacanciesAdapter { vacancyId -> onTrackClickDebounce(vacancyId) }
 
         viewModel.getVacancyList()
         binding.rvVacancies.adapter = vacanciesAdapter
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
-    }
-
-    override fun onVacancyClick(vacancyId: String) {
-        onTrackClickDebounce(vacancyId)
     }
 
     private fun render(state: FavoriteVacanciesState) {

@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,9 +29,9 @@ import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
-class SearchFragment : BindingFragment<FragmentSearchBinding>(), VacanciesAdapter.VacancyClickListener {
+class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
-    private var vacancyAdapter = VacanciesAdapter(this)
+    private lateinit var vacancyAdapter: VacanciesAdapter
     private val viewModel: SearchViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
 
@@ -44,29 +45,27 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>(), VacanciesAdapte
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        configureRecycler()
-        configureSearchInput()
-
         onTrackClickDebounce = debounce(
             CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
             false
         ) { vacancyId ->
+            Log.d("TEST", vacancyId)
             findNavController().navigate(
                 R.id.action_searchFragment_to_vacancyFragment,
                 VacancyFragment.createArgs(id = vacancyId)
             )
         }
+        vacancyAdapter = VacanciesAdapter { vacancyId -> onTrackClickDebounce(vacancyId) }
+
+        configureRecycler()
+        configureSearchInput()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state ->
                 render(state)
             }
         }
-    }
-
-    override fun onVacancyClick(vacancyId: String) {
-        onTrackClickDebounce(vacancyId)
     }
 
     private fun render(state: VacancyState) {
