@@ -35,7 +35,7 @@
         android:id="@+id/group_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:constraint_referenced_ids="iv_placeholder, tv_placeholder" />
 
     <ImageView
@@ -62,5 +62,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_placeholder"
         tools:text="Улыбок тебе дед макар" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_vacancies"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/mark_8dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_header"
+        tools:itemCount="3"
+        tools:listitem="@layout/vacancy_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
