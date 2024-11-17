@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
@@ -67,9 +67,8 @@ class SearchViewModel(
         val vacancyState: VacancyState =
             when (resultData) {
                 null -> {
-                    if (result.second == RetrofitNetworkClient.FAILED_INTERNET_CONNECTION_CODE.toString()) {
-                        state.value.copy(vacanciesList = VacanciesList.NoInternet)
-
+                    if (result.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
+                        VacanciesList.NoInternet
                     } else {
                         state.value.copy(vacanciesList = VacanciesList.Error)
                     }
