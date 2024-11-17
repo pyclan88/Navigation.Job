@@ -87,10 +87,7 @@ class SearchViewModel(
 
                 }
             }
-
         _state.value = vacancyState
-
-
     }
 
     fun searchDebounce(expression: String) {
@@ -99,7 +96,7 @@ class SearchViewModel(
     }
 
     fun onLastItemReached() {
-        if (!isNextPageLoading && currentPage < maxPage) search(lastExpression)
+        if (!isNextPageLoading && currentPage < maxPage) requestToServer(lastExpression)
     }
 
     companion object {
