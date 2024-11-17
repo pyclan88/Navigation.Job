@@ -41,6 +41,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
         configureRecycler()
         configureSearchInput()
+        println("search:onViewCreated")
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state ->
