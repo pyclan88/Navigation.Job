@@ -2,17 +2,12 @@ package ru.practicum.android.diploma.ui.vacancy
 
 import android.os.Bundle
 import android.text.Html
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -115,9 +110,9 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun salaryFormat(salaryTo: String, salaryFrom: String): String {
         val salary =
-            (if (salaryTo == "" && salaryFrom == "") resources.getString(R.string.salary_is_not_specified) else "") +
-                (if (salaryTo != "" && salaryFrom == "") "от $salaryTo" else "") +
-                (if (salaryTo != "" && salaryFrom != "") "от $salaryTo до $salaryFrom" else "")
+            if (salaryTo == "" && salaryFrom == "") resources.getString(R.string.salary_is_not_specified) else "" +
+                if (salaryTo != "" && salaryFrom == "") "от $salaryTo" else "" +
+                if (salaryTo != "" && salaryFrom != "") "от $salaryTo до $salaryFrom" else ""
         return salary
     }
 
