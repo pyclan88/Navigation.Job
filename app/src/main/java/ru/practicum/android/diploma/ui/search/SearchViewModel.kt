@@ -46,13 +46,18 @@ class SearchViewModel(
         delayMillis = SEARCH_DEBOUNCE_DELAY,
         coroutineScope = viewModelScope,
         useLastParam = true
-    ) { changedText -> search(changedText) }
+    ) { changedText ->
+        if (changedText != lastExpression) {
+            search(changedText)
+        }
+    }
 
     fun clearSearch() {
         _state.value = VacancyState(Input.Empty, VacanciesList.Empty)
     }
 
     private fun search(expression: String) {
+        // println("search:${expression}")
         lastExpression = expression
         _state.value = VacancyState(Input.Text(expression), VacanciesList.Loading)
         requestToServer(expression)
