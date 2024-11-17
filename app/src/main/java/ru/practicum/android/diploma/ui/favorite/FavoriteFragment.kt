@@ -23,21 +23,12 @@ import ru.practicum.android.diploma.util.visible
 
 class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
 
-    private lateinit var vacanciesAdapter: VacanciesAdapter
+    private var vacanciesAdapter: VacanciesAdapter? = null
     private val viewModel: FavoriteViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
 
-    private lateinit var onTrackClickDebounce: (String) -> Unit
-
-    override fun createBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ) = FragmentFavoriteBinding.inflate(inflater, container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        onTrackClickDebounce = debounce(
+    private val onTrackClickDebounce: (String) -> Unit by lazy {
+        debounce(
             CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
             false
@@ -47,6 +38,16 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
                 VacancyFragment.createArgs(id = vacancyId)
             )
         }
+    }
+
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentFavoriteBinding.inflate(inflater, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         vacanciesAdapter = VacanciesAdapter { vacancyId -> onTrackClickDebounce(vacancyId) }
 
         viewModel.getVacancyList()
@@ -66,7 +67,7 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         with(binding) {
             groupPlaceholder.invisible()
             rvVacancies.visible()
-            vacanciesAdapter.updateVacancies(vacancies)
+            vacanciesAdapter?.updateVacancies(vacancies)
         }
     }
 
