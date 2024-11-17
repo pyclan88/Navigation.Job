@@ -67,7 +67,7 @@ class SearchViewModel(
             when (resultData) {
                 null -> {
                     if (result.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
-                        VacanciesList.NoInternet
+                        state.value.copy(vacanciesList = VacanciesList.NoInternet)
                     } else {
                         state.value.copy(vacanciesList = VacanciesList.Error)
                     }
