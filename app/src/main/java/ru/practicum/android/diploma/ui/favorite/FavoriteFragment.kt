@@ -16,9 +16,9 @@ import ru.practicum.android.diploma.util.ImageAndTextHelper
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
-class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
+class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>(), VacanciesAdapter.VacancyClickListener {
 
-    private val vacanciesAdapter = VacanciesAdapter()
+    private val vacanciesAdapter = VacanciesAdapter(this)
     private val viewModel: FavoriteViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
 
@@ -35,6 +35,10 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
     }
 
+    override fun onVacancyClick(vacancyId: String) {
+        // обработать нажатие на вакансию
+    }
+
     private fun render(state: FavoriteVacanciesState) {
         when (state) {
             is FavoriteVacanciesState.Data -> showContent(state.vacancies)
@@ -47,7 +51,7 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         with(binding) {
             groupPlaceholder.invisible()
             rvVacancies.visible()
-            vacanciesAdapter.setVacancies(vacancies)
+            vacanciesAdapter.updateVacancies(vacancies)
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacanciesAdapter : RecyclerView.Adapter<VacanciesHolder>() {
+class VacanciesAdapter(private val listener: VacancyClickListener) : RecyclerView.Adapter<VacanciesHolder>() {
 
     private var vacancies: List<Vacancy> = emptyList()
 
@@ -16,7 +16,10 @@ class VacanciesAdapter : RecyclerView.Adapter<VacanciesHolder>() {
     }
 
     override fun onBindViewHolder(holder: VacanciesHolder, position: Int) {
-        holder.bind(vacancies[position])
+        val vacancy = vacancies[position]
+        holder.bind(vacancy)
+
+        holder.itemView.setOnClickListener { listener.onVacancyClick(vacancy.id) }
     }
 
     override fun getItemCount(): Int = vacancies.size
@@ -28,6 +31,6 @@ class VacanciesAdapter : RecyclerView.Adapter<VacanciesHolder>() {
     }
 
     interface VacancyClickListener {
-        fun onVacancyClick(vacancy: Vacancy)
+        fun onVacancyClick(vacancyId: String)
     }
 }

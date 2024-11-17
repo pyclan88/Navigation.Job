@@ -8,10 +8,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,16 +20,20 @@ import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Data
+import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.ImageAndTextHelper
+import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
-class SearchFragment : BindingFragment<FragmentSearchBinding>() {
+class SearchFragment : BindingFragment<FragmentSearchBinding>(), VacanciesAdapter.VacancyClickListener {
 
-    private val vacancyAdapter = VacanciesAdapter()
+    private var vacancyAdapter = VacanciesAdapter(this)
     private val viewModel: SearchViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
+
+    private lateinit var onTrackClickDebounce: (String) -> Unit
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -42,11 +46,26 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         configureRecycler()
         configureSearchInput()
 
+        onTrackClickDebounce = debounce(
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { vacancyId ->
+            findNavController().navigate(
+                R.id.action_searchFragment_to_vacancyFragment,
+                VacancyFragment.createArgs(id = vacancyId)
+            )
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state ->
                 render(state)
             }
         }
+    }
+
+    override fun onVacancyClick(vacancyId: String) {
+        onTrackClickDebounce(vacancyId)
     }
 
     private fun render(state: VacancyState) {
@@ -56,7 +75,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             is VacancyState.VacanciesList.Loading -> showLoading()
             is VacancyState.VacanciesList.Error -> showError()
             is Data -> showContent(state.vacanciesList.vacancies)
-            else -> {}
         }
     }
 
@@ -164,5 +182,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             })
 
         }
+    }
+
+    companion object {
+        const val CLICK_DEBOUNCE_DELAY = 1_000L
     }
 }
