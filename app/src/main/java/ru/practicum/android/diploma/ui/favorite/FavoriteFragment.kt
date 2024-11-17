@@ -47,7 +47,7 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         with(binding) {
             groupPlaceholder.invisible()
             rvVacancies.visible()
-            vacanciesAdapter.setVacancies(vacancies)
+            vacanciesAdapter.updateVacancies(vacancies)
         }
     }
 
