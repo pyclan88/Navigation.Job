@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.domain.state.FavoriteState
+import ru.practicum.android.diploma.domain.state.VacancyListState
 import ru.practicum.android.diploma.ui.search.VacanciesAdapter
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.ImageAndTextHelper
@@ -35,11 +35,11 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
     }
 
-    private fun render(state: FavoriteState) {
-        when (state.vacancyList) {
-            is FavoriteState.VacancyList.Data -> showContent(state.vacancyList.vacancies)
-            is FavoriteState.VacancyList.Empty -> showEmpty()
-            is FavoriteState.VacancyList.Error -> showError()
+    private fun render(state: VacancyListState) {
+        when (state) {
+            is VacancyListState.Data -> showContent(state.vacancies)
+            is VacancyListState.Empty -> showEmpty()
+            is VacancyListState.Error -> showError()
         }
     }
 
