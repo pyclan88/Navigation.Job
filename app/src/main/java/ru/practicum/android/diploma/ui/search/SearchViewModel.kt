@@ -1,9 +1,12 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -12,50 +15,91 @@ import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
 import ru.practicum.android.diploma.domain.usecase.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
+import kotlin.math.exp
 
 class SearchViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<VacancyState>()
-    val state: LiveData<VacancyState> get() = _state
+    private var lastExpression = ""
+    private var currentPage = 1
+    private var maxPage = 0
+
+    private var isNextPageLoading = false
+
+    private val _state = MutableStateFlow(
+        VacancyState(
+            input = Input.Empty,
+            vacanciesList = VacanciesList.Empty
+        )
+    )
+    val state: StateFlow<VacancyState> get() = _state
+
+    init {
+        _state.value = VacancyState(
+            input = Input.Empty,
+            vacanciesList = VacanciesList.Empty,
+        )
+    }
 
     private val searchDebounceAction = debounce<String>(
         delayMillis = SEARCH_DEBOUNCE_DELAY,
         coroutineScope = viewModelScope,
         useLastParam = true
-    ) { changedText -> search(changedText) }
+    ) { changedText ->
+        if (changedText != lastExpression) {
+            search(changedText)
+        }
+    }
 
-    fun clearSearch() = _state.postValue(VacancyState(Input.Empty, VacanciesList.Empty))
+    fun clearSearch() {
+        _state.value = VacancyState(Input.Empty, VacanciesList.Empty)
+    }
 
-    fun search(expression: String) = viewModelScope.launch {
-        val inputState = Input.Text(expression)
-        _state.postValue(VacancyState(inputState, VacanciesList.Loading))
+    private fun search(expression: String) {
+        // println("search:${expression}")
+        lastExpression = expression
+        _state.value = VacancyState(Input.Text(expression), VacanciesList.Loading)
+        requestToServer(expression)
+    }
 
-        val result = getVacanciesUseCase.execute(expression, page = 1)
-
-        val vacanciesState: VacanciesList =
-            when (result.first) {
+    private fun requestToServer(expression: String) = viewModelScope.launch {
+        isNextPageLoading = true
+        val result = getVacanciesUseCase.execute(expression = expression, page = currentPage)
+        val resultData = result.first?.items
+        Log.e("TESTdata", "result:${result.first?.toString()}")
+        val vacancyState: VacancyState =
+            when (resultData) {
                 null -> {
                     if (result.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
-                        VacanciesList.NoInternet
+                        state.value.copy(vacanciesList = VacanciesList.NoInternet)
                     } else {
-                        VacanciesList.Error
+                        state.value.copy(vacanciesList = VacanciesList.Error)
                     }
                 }
 
                 emptyList<Vacancy>() -> {
-                    VacanciesList.Error
+                    state.value.copy(vacanciesList = VacanciesList.Empty)
                 }
 
-                else -> VacanciesList.Data(result.first!!)
+                else -> {
+                    isNextPageLoading = false
+                    currentPage += 1
+                    result.first?.let { maxPage = it.pages }
+                    state.value.copy(vacanciesList = VacanciesList.Data(resultData))
+
+                }
             }
-        _state.postValue(VacancyState(inputState, vacanciesState))
+        _state.value = vacancyState
     }
 
     fun searchDebounce(expression: String) {
         if (expression.isBlank()) return
         searchDebounceAction(expression)
+    }
+
+    fun onLastItemReached() {
+        if (!isNextPageLoading && currentPage < maxPage) requestToServer(lastExpression)
     }
 
     companion object {

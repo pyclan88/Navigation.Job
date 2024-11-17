@@ -3,11 +3,21 @@ package ru.practicum.android.diploma.data.mapper
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.vacancy.self.VacancyDto
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancySearchResult
 
 class VacancyMapper {
 
-    fun map(response: VacanciesSearchResponse): List<Vacancy> =
-        response.items.map { vacancy -> map(vacancy) }
+
+
+    fun map(response: VacanciesSearchResponse): VacancySearchResult {
+        val vacanciesList: List<Vacancy> = response.items.map { vacancy -> map(vacancy) }
+        val pages = response.pages
+        return VacancySearchResult(
+            items = vacanciesList,
+            pages = pages
+        )
+    }
+
 
     private fun map(dto: VacancyDto) = Vacancy(
         id = dto.id,

@@ -16,6 +16,7 @@ import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion
 import ru.practicum.android.diploma.domain.api.VacancyRepository
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.util.Resource
 
 class VacancyRepositoryImpl(
@@ -24,7 +25,7 @@ class VacancyRepositoryImpl(
     private val vacancyDetailsMapper: VacancyDetailsMapper
 ) : VacancyRepository {
 
-    override suspend fun searchVacancies(expression: String, page: Int): Resource<List<Vacancy>> {
+    override suspend fun searchVacancies(expression: String, page: Int): Resource<VacancySearchResult> {
         return withContext(Dispatchers.IO) {
             val response = networkClient.doRequest(VacancySearchRequest(expression, page))
             when (response.resultCode) {
