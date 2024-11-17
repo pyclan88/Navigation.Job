@@ -55,6 +55,11 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        vacanciesAdapter = null
+    }
+
     private fun render(state: FavoriteVacanciesState) {
         when (state) {
             is FavoriteVacanciesState.Data -> showContent(state.vacancies)
