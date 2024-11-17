@@ -8,28 +8,44 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Data
+import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.ImageAndTextHelper
+import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
 class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
-    private val vacancyAdapter = VacanciesAdapter()
+    private var vacanciesAdapter: VacanciesAdapter? = null
     private val viewModel: SearchViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
+
+    private val onTrackClickDebounce: (String) -> Unit by lazy {
+        debounce(
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { vacancyId ->
+            findNavController().navigate(
+                R.id.action_searchFragment_to_vacancyFragment,
+                VacancyFragment.createArgs(id = vacancyId)
+            )
+        }
+    }
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -38,6 +54,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        vacanciesAdapter = VacanciesAdapter { vacancyId -> onTrackClickDebounce(vacancyId) }
 
         configureRecycler()
         configureSearchInput()
@@ -50,6 +68,11 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        vacanciesAdapter = null
+    }
+
     private fun render(state: VacancyState) {
         when (state.vacanciesList) {
             is VacancyState.VacanciesList.Empty -> showEmpty()
@@ -57,7 +80,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             is VacancyState.VacanciesList.Loading -> showLoading()
             is VacancyState.VacanciesList.Error -> showError()
             is Data -> showContent(state.vacanciesList.vacancies)
-            else -> {}
         }
     }
 
@@ -121,7 +143,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             rvVacancies.visible()
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
-            vacancyAdapter.updateVacancies(vacancies)
+            vacanciesAdapter?.updateVacancies(vacancies)
             groupPlaceholder.invisible()
             // Пока что скрою tvCountVacancies, потом нужно будет передать количество найденных вакансий
             tvCountVacancies.invisible()
@@ -145,7 +167,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun configureRecycler() {
         binding.rvVacancies.apply {
-            adapter = vacancyAdapter
+            adapter = vacanciesAdapter
             binding.rvVacancies.addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -153,7 +175,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     if (dy > 0) {
                         val pos =
                             (binding.rvVacancies.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                        val itemsCount = vacancyAdapter.itemCount
+                        val itemsCount = vacanciesAdapter?.itemCount ?: return
                         if (pos >= itemsCount - 1) {
                             binding.pbSearch.visible()
                             // Добавить элемент лоадера

@@ -4,23 +4,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.FavoriteVacanciesState
 import ru.practicum.android.diploma.ui.search.VacanciesAdapter
+import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.ImageAndTextHelper
+import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
 class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
 
-    private val vacanciesAdapter = VacanciesAdapter()
+    private var vacanciesAdapter: VacanciesAdapter? = null
     private val viewModel: FavoriteViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
+
+    private val onTrackClickDebounce: (String) -> Unit by lazy {
+        debounce(
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { vacancyId ->
+            findNavController().navigate(
+                R.id.action_favoriteFragment_to_vacancyFragment,
+                VacancyFragment.createArgs(id = vacancyId)
+            )
+        }
+    }
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -30,9 +48,16 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vacanciesAdapter = VacanciesAdapter { vacancyId -> onTrackClickDebounce(vacancyId) }
+
         viewModel.getVacancyList()
         binding.rvVacancies.adapter = vacanciesAdapter
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        vacanciesAdapter = null
     }
 
     private fun render(state: FavoriteVacanciesState) {
@@ -47,7 +72,7 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         with(binding) {
             groupPlaceholder.invisible()
             rvVacancies.visible()
-            vacanciesAdapter.updateVacancies(vacancies)
+            vacanciesAdapter?.updateVacancies(vacancies)
         }
     }
 
