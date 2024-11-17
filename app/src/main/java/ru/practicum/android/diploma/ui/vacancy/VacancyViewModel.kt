@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
-import ru.practicum.android.diploma.domain.state.VacancyDetailsState.VacancyDetailsList
 import ru.practicum.android.diploma.domain.usecase.GetVacancyDetailsUseCase
 
 class VacancyViewModel(
@@ -19,19 +18,18 @@ class VacancyViewModel(
 
     fun getDetails(id: String) {
         viewModelScope.launch {
-            VacancyDetailsState(VacancyDetailsList.Loading)
+            VacancyDetailsState(VacancyDetailsState.Vacancy.Loading)
             val result = getDetailsUseCase.execute(id)
-            val vacancyDetailsState: VacancyDetailsList =
+            val vacancyDetailsState: VacancyDetailsState.Vacancy =
                 when (result.first) {
                     null -> {
                         if (result.second == NOT_FOUND_CODE.toString()) {
-                            VacancyDetailsList.Empty
+                            VacancyDetailsState.Vacancy.Empty
                         } else {
-                            VacancyDetailsList.Error
+                            VacancyDetailsState.Vacancy.Error
                         }
                     }
-
-                    else -> VacancyDetailsList.Data(result.first!!)
+                    else -> VacancyDetailsState.Vacancy.Data(result.first!!)
                 }
             _state.postValue(VacancyDetailsState(vacancyDetailsState))
         }

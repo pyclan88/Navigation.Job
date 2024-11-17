@@ -29,7 +29,7 @@ data class VacancyDetailsDto(
     @SerializedName("key_skills") val keySkills: List<KeySkillDto>,
     @SerializedName("name") val name: String,
     @SerializedName("professional_roles") val professionalRoles: List<ProfessionalRoleDto>,
-    @SerializedName("salary") val salary: SalaryDto,
+    @SerializedName("salary") val salary: SalaryDto?,
     @SerializedName("schedule") val schedule: ScheduleDto,
     @SerializedName("working_days") val workingDays: List<WorkingItemDto>,
     @SerializedName("working_time_intervals") val workingTimeIntervals: List<WorkingItemDto>,
