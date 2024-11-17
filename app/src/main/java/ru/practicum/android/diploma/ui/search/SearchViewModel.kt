@@ -62,7 +62,6 @@ class SearchViewModel(
         isNextPageLoading = true
         val result = getVacanciesUseCase.execute(expression = expression, page = currentPage)
         val resultData = result.first?.items
-        // .orEmpty()
         Log.e("TESTdata", "result:${result.first?.toString()}")
         val vacancyState: VacancyState =
             when (resultData) {
