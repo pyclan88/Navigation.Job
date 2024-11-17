@@ -4,7 +4,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 
 data class VacancyState(
     val input: Input,
-    val vacanciesList: VacanciesList
+    val vacanciesList: VacanciesList,
 ) {
 
     sealed interface Input {

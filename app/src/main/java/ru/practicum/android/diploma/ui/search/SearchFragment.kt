@@ -7,6 +7,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -21,7 +27,7 @@ import ru.practicum.android.diploma.util.visible
 
 class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
-    private val vacanciesAdapter = VacanciesAdapter()
+    private val vacancyAdapter = VacanciesAdapter()
     private val viewModel: SearchViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
 
@@ -36,7 +42,11 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         configureRecycler()
         configureSearchInput()
 
-        viewModel.state.observe(viewLifecycleOwner) { render(it) }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.state.collect { state ->
+                render(state)
+            }
+        }
     }
 
     private fun render(state: VacancyState) {
@@ -46,6 +56,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             is VacancyState.VacanciesList.Loading -> showLoading()
             is VacancyState.VacanciesList.Error -> showError()
             is Data -> showContent(state.vacanciesList.vacancies)
+            else -> {}
         }
     }
 
@@ -109,7 +120,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             rvVacancies.visible()
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
-            vacanciesAdapter.setVacancies(vacancies)
+            vacancyAdapter.updateVacancies(vacancies)
             groupPlaceholder.invisible()
             // Пока что скрою tvCountVacancies, потом нужно будет передать количество найденных вакансий
             tvCountVacancies.invisible()
@@ -132,6 +143,26 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun configureRecycler() {
-        binding.rvVacancies.adapter = vacanciesAdapter
+        binding.rvVacancies.apply {
+            adapter = vacancyAdapter
+            binding.rvVacancies.addOnScrollListener(object : OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    if (dy > 0) {
+                        val pos =
+                            (binding.rvVacancies.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                        val itemsCount = vacancyAdapter.itemCount
+                        if (pos >= itemsCount - 1) {
+                            binding.pbSearch.visible()
+                            // Добавить элемент лоадера
+                            // Callback добавить
+                            viewModel.onLastItemReached()
+                        }
+                    }
+                }
+            })
+
+        }
     }
 }

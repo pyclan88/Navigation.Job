@@ -21,9 +21,10 @@ class VacanciesAdapter : RecyclerView.Adapter<VacanciesHolder>() {
 
     override fun getItemCount(): Int = vacancies.size
 
-    fun setVacancies(vacancies: List<Vacancy>) {
-        this.vacancies = vacancies
-        notifyDataSetChanged()
+    fun updateVacancies(newVacancies: List<Vacancy>) {
+        val startPosition = vacancies.size
+        vacancies = vacancies + newVacancies
+        notifyItemRangeInserted(startPosition, newVacancies.size)
     }
 
     interface VacancyClickListener {

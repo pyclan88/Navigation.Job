@@ -83,9 +83,9 @@
         android:layout_marginTop="@dimen/mark_8dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pb_search"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_count_vacancies"
         tools:itemCount="3"
         tools:listitem="@layout/vacancy_item" />
@@ -139,12 +139,12 @@
         android:layout_width="@dimen/mark_48dp"
         android:layout_height="@dimen/mark_48dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/mark_48dp"
         android:indeterminateTint="@color/blue"
+        android:layout_marginVertical="@dimen/mark_16dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_search" />
+        app:layout_constraintTop_toBottomOf="@id/rv_vacancies" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
