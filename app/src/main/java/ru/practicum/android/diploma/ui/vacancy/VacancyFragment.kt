@@ -116,7 +116,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             tvVacancySchedule.text = vacancy.schedule
             tvVacancyDescription.setText(Html.fromHtml(vacancy.descriptionResponsibility, Html.FROM_HTML_MODE_COMPACT))
             tvVacancySkills.text = vacancy.descriptionSkills
-            if (vacancy.descriptionSkills == "[]") {
+            if (vacancy.descriptionSkills.isEmpty()) {
                 tvVacancyTitleSkills.invisible()
                 tvVacancySkills.invisible()
             }

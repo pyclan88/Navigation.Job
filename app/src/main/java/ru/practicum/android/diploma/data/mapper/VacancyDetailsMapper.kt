@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.data.mapper
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.JsonParser
+import kotlin.text.Typography.middleDot
 
 class VacancyDetailsMapper {
     private val jsonParser = JsonParser()
@@ -21,9 +22,9 @@ class VacancyDetailsMapper {
         descriptionResponsibility = getValueOrDefault(dto.description, EMPTY_PARAM_VALUE),
         descriptionRequirement = getValueOrDefault(dto.description, EMPTY_PARAM_VALUE),
         descriptionConditions = getValueOrDefault(dto.description, EMPTY_PARAM_VALUE),
-        descriptionSkills = getValueOrDefault(jsonParser.toJsonString(dto.keySkills), EMPTY_PARAM_VALUE),
+        descriptionSkills = getValueOrDefault(dto.keySkills.mapIndexed { index, keySkillDto -> "$middleDot  ${keySkillDto.name}" }
+            .joinToString("\n"), EMPTY_PARAM_VALUE)
     )
-
     private fun <T> getValueOrDefault(
         value: T?,
         defaultValue: String

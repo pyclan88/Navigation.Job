@@ -34,8 +34,16 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private val viewModel: SearchViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
 
-    private val onTrackClickDebounce: (String) -> Unit by lazy {
-        debounce(
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentSearchBinding.inflate(inflater, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+         val onVacancyClickDebounce =
+        debounce<String>(
             CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
             false
@@ -45,17 +53,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 VacancyFragment.createArgs(id = vacancyId)
             )
         }
-    }
 
-    override fun createBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ) = FragmentSearchBinding.inflate(inflater, container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        vacanciesAdapter = VacanciesAdapter { vacancyId -> onTrackClickDebounce(vacancyId) }
+        vacanciesAdapter = VacanciesAdapter { vacancyId -> onVacancyClickDebounce(vacancyId) }
 
         configureRecycler()
         configureSearchInput()
