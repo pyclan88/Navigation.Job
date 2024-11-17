@@ -65,21 +65,6 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         }
     }
 
-    private fun showNoInternet() {
-        with(binding) {
-            clVacancy.invisible()
-            groupPlaceholder.visible()
-            pbVacancy.invisible()
-            imageAndTextHelper.setImageAndText(
-                requireContext(),
-                ivPlaceholder,
-                tvPlaceholder,
-                R.drawable.placeholder_vacancy_search_no_internet_skull,
-                resources.getString(R.string.no_internet)
-            )
-        }
-    }
-
     private fun showLoading() {
         with(binding) {
             clVacancy.invisible()
@@ -130,9 +115,9 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun salaryFormat(salaryTo: String, salaryFrom: String): String {
         val salary =
-            (if (salaryTo == resources.getString(R.string.not_specified) && salaryFrom == resources.getString(R.string.not_specified)) resources.getString(R.string.salary_is_not_specified) else "") +
-                (if (salaryTo != resources.getString(R.string.not_specified) && salaryFrom == resources.getString(R.string.not_specified)) "от $salaryTo" else "") +
-                (if (salaryTo != resources.getString(R.string.not_specified) && salaryFrom != resources.getString(R.string.not_specified)) "от $salaryTo до $salaryFrom" else "")
+            (if (salaryTo == "" && salaryFrom == "") resources.getString(R.string.salary_is_not_specified) else "") +
+                (if (salaryTo != "" && salaryFrom == "") "от $salaryTo" else "") +
+                (if (salaryTo != "" && salaryFrom != "") "от $salaryTo до $salaryFrom" else "")
         return salary
     }
 

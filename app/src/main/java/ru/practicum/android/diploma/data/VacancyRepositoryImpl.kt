@@ -47,7 +47,7 @@ class VacancyRepositoryImpl(
             val response = networkClient.doRequest(VacancyDetailsRequest(id))
             when (response.resultCode) {
                 FAILED_INTERNET_CONNECTION_CODE -> Resource.Error("-1")
-                NOT_FOUND_CODE ->Resource.Error("404")
+                NOT_FOUND_CODE -> Resource.Error("404")
                 SUCCESS_CODE -> {
                     Log.e(VacancyRepository::class.simpleName, response.toString())
                     val data = vacancyDetailsMapper.map(response as VacancyDetailsDto)

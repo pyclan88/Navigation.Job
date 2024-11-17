@@ -12,8 +12,8 @@ class VacancyDetailsMapper {
         imageUrl = dto.employer.logoUrls?.original,
         name = dto.name,
         city = getValueOrDefault(dto.area?.name, EMPTY_PARAM_VALUE),
-        salaryFrom = getValueOrDefault(dto.salary?.from?.toString(), EMPTY_PARAM_VALUE),
-        salaryTo = getValueOrDefault(dto.salary?.to?.toString(), EMPTY_PARAM_VALUE),
+        salaryFrom = dto.salary.from.toString(),
+        salaryTo = dto.salary.to.toString(),
         currency = getValueOrDefault(dto.salary?.currency, EMPTY_PARAM_VALUE),
         employerName = dto.employer.name,
         experience = getValueOrDefault(dto.experience?.name, EMPTY_PARAM_VALUE),
@@ -22,9 +22,9 @@ class VacancyDetailsMapper {
         descriptionResponsibility = getValueOrDefault(dto.description, EMPTY_PARAM_VALUE),
         descriptionRequirement = getValueOrDefault(dto.description, EMPTY_PARAM_VALUE),
         descriptionConditions = getValueOrDefault(dto.description, EMPTY_PARAM_VALUE),
-        descriptionSkills = getValueOrDefault(dto.keySkills.mapIndexed { index, keySkillDto -> "$middleDot  ${keySkillDto.name}" }
-            .joinToString("\n"), EMPTY_PARAM_VALUE)
+        descriptionSkills = getValueOrDefault(dto.keySkills.mapIndexed { index, keySkillDto -> "$middleDot  ${keySkillDto.name}" }.joinToString("\n"), EMPTY_PARAM_VALUE)
     )
+
     private fun <T> getValueOrDefault(
         value: T?,
         defaultValue: String
