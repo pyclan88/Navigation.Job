@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.domain.usecase
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.domain.api.VacancyRepository

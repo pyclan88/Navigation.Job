@@ -110,9 +110,15 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun salaryFormat(salaryTo: String, salaryFrom: String): String {
         val salary =
-            if (salaryTo == "" && salaryFrom == "") resources.getString(R.string.salary_is_not_specified) else "" +
-                if (salaryTo != "" && salaryFrom == "") "от $salaryTo" else "" +
-                if (salaryTo != "" && salaryFrom != "") "от $salaryTo до $salaryFrom" else ""
+            if (salaryTo != "" && salaryFrom == "") {
+                "до $salaryTo"
+            } else if (salaryTo == "" && salaryFrom != "") {
+                "от $salaryFrom"
+            } else if (salaryTo != "" && salaryFrom != "") {
+                "от $salaryFrom до $salaryTo"
+            } else {
+                resources.getString(R.string.salary_is_not_specified)
+            }
         return salary
     }
 

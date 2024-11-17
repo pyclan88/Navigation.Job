@@ -7,4 +7,3 @@ sealed interface FavoriteVacanciesState {
     data object Error : FavoriteVacanciesState
     data class Data(val vacancies: List<Vacancy>) : FavoriteVacanciesState
 }
-

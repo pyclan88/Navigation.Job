@@ -41,18 +41,17 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-         val onVacancyClickDebounce =
-        debounce<String>(
-            CLICK_DEBOUNCE_DELAY,
-            viewLifecycleOwner.lifecycleScope,
-            false
-        ) { vacancyId ->
-            findNavController().navigate(
-                R.id.action_searchFragment_to_vacancyFragment,
-                VacancyFragment.createArgs(id = vacancyId)
-            )
-        }
+        val onVacancyClickDebounce =
+            debounce<String>(
+                CLICK_DEBOUNCE_DELAY,
+                viewLifecycleOwner.lifecycleScope,
+                false
+            ) { vacancyId ->
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_vacancyFragment,
+                    VacancyFragment.createArgs(id = vacancyId)
+                )
+            }
 
         vacanciesAdapter = VacanciesAdapter { vacancyId -> onVacancyClickDebounce(vacancyId) }
 
