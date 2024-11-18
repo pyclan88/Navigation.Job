@@ -27,7 +27,7 @@ class SearchViewModel(
     private val _state = MutableStateFlow(
         VacancyState(
             input = Input.Empty,
-            vacanciesList = VacanciesList.Empty
+            vacanciesList = VacanciesList.Start
         )
     )
     val state: StateFlow<VacancyState> get() = _state
@@ -35,7 +35,7 @@ class SearchViewModel(
     init {
         _state.value = VacancyState(
             input = Input.Empty,
-            vacanciesList = VacanciesList.Empty,
+            vacanciesList = VacanciesList.Start,
         )
     }
 
@@ -50,7 +50,7 @@ class SearchViewModel(
     }
 
     fun clearSearch() {
-        _state.value = VacancyState(Input.Empty, VacanciesList.Empty)
+        _state.value = VacancyState(Input.Empty, VacanciesList.Start)
     }
 
     private fun search(expression: String) {
@@ -77,7 +77,7 @@ class SearchViewModel(
                 }
 
                 emptyList<Vacancy>() -> {
-                    state.value.copy(vacanciesList = VacanciesList.NoResult)
+                    state.value.copy(vacanciesList = VacanciesList.Empty)
                 }
 
                 else -> {

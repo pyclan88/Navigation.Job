@@ -19,9 +19,9 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.state.VacancyState
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Empty
+import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Start
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.NoInternet
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.NoResult
+import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Empty
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Loading
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Error
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Data
@@ -76,9 +76,9 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun render(state: VacancyState) {
         when (state.vacanciesList) {
-            is Empty -> showEmpty()
+            is Start -> showEmpty()
             is NoInternet -> showNoInternet()
-            is NoResult -> showNoResult()
+            is Empty -> showNoResult()
             is Loading -> showLoading()
             is Error -> showError()
             is Data -> showContent(state.vacanciesList)
