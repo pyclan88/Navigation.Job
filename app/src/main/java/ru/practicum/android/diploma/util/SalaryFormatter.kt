@@ -19,9 +19,26 @@ object SalaryFormatter {
         }
 
         return when {
-            salaryTo != 0 && salaryFrom == 0 -> "до $formattedSalaryTo $currencySymbol"
-            salaryTo == 0 && salaryFrom != 0 -> "от $formattedSalaryFrom $currencySymbol"
-            salaryTo != 0 && salaryFrom != 0 -> "от $formattedSalaryFrom $currencySymbol до $formattedSalaryTo $currencySymbol"
+            salaryTo != 0 && salaryFrom == 0 -> resources.getString(
+                R.string.salary_to_format,
+                formattedSalaryTo,
+                currencySymbol
+            )
+
+            salaryTo == 0 && salaryFrom != 0 -> resources.getString(
+                R.string.salary_from_format,
+                formattedSalaryFrom,
+                currencySymbol
+            )
+
+            salaryTo != 0 && salaryFrom != 0 -> resources.getString(
+                R.string.salary_range_format,
+                formattedSalaryFrom,
+                currencySymbol,
+                formattedSalaryTo,
+                currencySymbol
+            )
+
             else -> resources.getString(R.string.salary_is_not_specified)
         }
     }
