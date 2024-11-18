@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.ui.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import okhttp3.internal.notify
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
@@ -12,7 +11,6 @@ class VacanciesAdapter(
 ) : RecyclerView.Adapter<VacanciesHolder>() {
 
     private var vacancies: List<Vacancy> = emptyList()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacanciesHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
