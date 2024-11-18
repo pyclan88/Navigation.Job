@@ -19,7 +19,7 @@ class VacanciesHolder(
         vacancyEmployer.text = vacancy.employerName
         vacancySalary.text = SalaryFormatter.salaryFormat(
             vacancy.salaryFrom,
-            vacancy.salaryFrom,
+            vacancy.salaryTo,
             vacancy.currency,
             itemView.resources
         )
