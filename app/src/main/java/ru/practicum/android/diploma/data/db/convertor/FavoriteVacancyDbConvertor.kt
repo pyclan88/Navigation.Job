@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.data.db.convertor
 
 import ru.practicum.android.diploma.data.db.entity.FavoriteVacancyEntity
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class FavoriteVacancyDbConvertor {
@@ -22,7 +23,7 @@ class FavoriteVacancyDbConvertor {
         timestamp = System.currentTimeMillis()
     )
 
-    fun map(entity: FavoriteVacancyEntity) = VacancyDetails(
+    fun mapToDetails(entity: FavoriteVacancyEntity) = VacancyDetails(
         id = entity.id,
         name = entity.name,
         city = entity.city,
@@ -36,5 +37,19 @@ class FavoriteVacancyDbConvertor {
         schedule = entity.schedule,
         description = entity.description,
         descriptionSkills = entity.descriptionSkills
+    )
+
+    fun map(entity: FavoriteVacancyEntity) = Vacancy(
+        id = entity.id,
+        imageUrl = entity.imageUrl,
+        name = entity.name,
+        city = entity.city,
+        salaryFrom = entity.salaryFrom.toString(),
+        salaryTo = entity.salaryTo.toString(),
+        currency = entity.currency,
+        employerName = entity.employerName,
+        experience = entity.experience,
+        employmentName = entity.employmentName,
+        schedule = entity.schedule
     )
 }
