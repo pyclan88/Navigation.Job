@@ -17,7 +17,7 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
             shareIntent.setType("text/playn")
             shareIntent.putExtra(Intent.EXTRA_TEXT, url)
             context.startActivity(shareIntent)
-        } catch (ex: Exception) {
+        } catch (e: NullPointerException) {
             Toast.makeText(context, context.resources.getString(R.string.no_suitable_application), LENGTH_SHORT).show()
         }
     }
