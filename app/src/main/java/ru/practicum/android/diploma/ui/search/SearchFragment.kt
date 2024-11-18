@@ -18,9 +18,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.VacancyState
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Data
+import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.*
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.ImageAndTextHelper
@@ -72,11 +71,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun render(state: VacancyState) {
         when (state.vacanciesList) {
-            is VacancyState.VacanciesList.Empty -> showEmpty()
-            is VacancyState.VacanciesList.NoInternet -> showNoInternet()
-            is VacancyState.VacanciesList.Loading -> showLoading()
-            is VacancyState.VacanciesList.Error -> showError()
-            is Data -> showContent(state.vacanciesList.vacancies)
+            is Empty -> showEmpty()
+            is NoInternet -> showNoInternet()
+            is NoResult -> showNoResult()
+            is Loading -> showLoading()
+            is Error -> showError()
+            is Data -> showContent(state.vacanciesList)
         }
     }
 
@@ -107,6 +107,24 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
     }
 
+    private fun showNoResult() {
+        with(binding) {
+            rvVacancies.invisible()
+            pbSearch.invisible()
+            ivLookingForPlaceholder.invisible()
+            groupPlaceholder.visible()
+            tvCountVacancies.visible()
+            tvCountVacancies.text = resources.getText(R.string.no_such_vacancies)
+            imageAndTextHelper.setImageAndText(
+                requireContext(),
+                ivPlaceholder,
+                tvPlaceholder,
+                R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
+                resources.getString(R.string.no_vacancy_list)
+            )
+        }
+    }
+
     private fun showLoading() {
         with(binding) {
             pbSearch.visible()
@@ -123,27 +141,28 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
             groupPlaceholder.visible()
-            tvCountVacancies.visible()
-            tvCountVacancies.text = resources.getText(R.string.not_vacancies)
+            tvCountVacancies.invisible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
                 ivPlaceholder,
                 tvPlaceholder,
-                R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
-                resources.getString(R.string.no_vacancy_list)
+                R.drawable.placeholder_vacancy_search_server_error_cry,
+                resources.getString(R.string.server_error)
             )
         }
     }
 
-    private fun showContent(vacancies: List<Vacancy>) {
+    private fun showContent(vacanciesList: Data) {
         with(binding) {
             rvVacancies.visible()
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
-            vacanciesAdapter?.updateVacancies(vacancies)
+            vacanciesAdapter?.updateVacancies(vacanciesList.vacancies)
             groupPlaceholder.invisible()
-            // Пока что скрою tvCountVacancies, потом нужно будет передать количество найденных вакансий
-            tvCountVacancies.invisible()
+            tvCountVacancies.let {
+                it.visible()
+                it.text = resources.getString(R.string.found_n_vacancies, vacanciesList.totalVacancyCount)
+            }
         }
     }
 

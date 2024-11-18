@@ -64,6 +64,7 @@ class SearchViewModel(
         isNextPageLoading = true
         val result = getVacanciesUseCase.execute(expression = expression, page = currentPage)
         val resultData = result.first?.items
+        val totalVacancyCount = result.first?.found ?: 0
         Log.e("TESTdata", "result:${result.first?.toString()}")
         val vacancyState: VacancyState =
             when (resultData) {
@@ -76,14 +77,14 @@ class SearchViewModel(
                 }
 
                 emptyList<Vacancy>() -> {
-                    state.value.copy(vacanciesList = VacanciesList.Empty)
+                    state.value.copy(vacanciesList = VacanciesList.NoResult)
                 }
 
                 else -> {
                     isNextPageLoading = false
                     currentPage += 1
                     result.first?.let { maxPage = it.pages }
-                    state.value.copy(vacanciesList = VacanciesList.Data(resultData))
+                    state.value.copy(vacanciesList = VacanciesList.Data(resultData, totalVacancyCount))
 
                 }
             }
