@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
 import ru.practicum.android.diploma.domain.sharing.SharingInteract
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
@@ -29,7 +30,7 @@ class VacancyViewModel(
 
     private val _state = MutableLiveData<VacancyDetailsState>()
     val state: LiveData<VacancyDetailsState> get() = _state
-    private var vacancyUrl: String = ""
+    private var vacancyUrl: String = EMPTY_PARAM_VALUE
 
     init {
         _state.postValue(VacancyDetailsState(Loading, NotInFavorite))
@@ -41,7 +42,7 @@ class VacancyViewModel(
             null -> if (details.second == NOT_FOUND_CODE.toString()) Empty else Error
             else -> Payload(details.first!!)
         }
-        if (details.first?.url != "") vacancyUrl = details.first!!.url
+        if (details.first?.url != EMPTY_PARAM_VALUE) vacancyUrl = details.first!!.url
         val favorite = getFavoriteVacancyByIdUseCase.execute(id)
         val favoriteState = if (favorite == null) NotInFavorite else InFavorite
 
