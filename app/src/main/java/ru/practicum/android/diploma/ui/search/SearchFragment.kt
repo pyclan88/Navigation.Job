@@ -87,6 +87,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             ivLookingForPlaceholder.visible()
             groupPlaceholder.invisible()
             tvCountVacancies.invisible()
+            vacanciesAdapter?.clear()
         }
     }
 
