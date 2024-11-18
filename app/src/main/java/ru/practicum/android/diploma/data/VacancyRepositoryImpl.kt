@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
+import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.SUCCESS_CODE
 import ru.practicum.android.diploma.domain.api.VacancyRepository
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -46,7 +47,7 @@ class VacancyRepositoryImpl(
             val response = networkClient.doRequest(VacancyDetailsRequest(id))
             when (response.resultCode) {
                 FAILED_INTERNET_CONNECTION_CODE -> Resource.Error("-1")
-
+                NOT_FOUND_CODE -> Resource.Error("404")
                 SUCCESS_CODE -> {
                     Log.e(VacancyRepository::class.simpleName, response.toString())
                     val data = vacancyDetailsMapper.map(response as VacancyDetailsDto)
