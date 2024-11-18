@@ -7,18 +7,18 @@ import androidx.room.Query
 import ru.practicum.android.diploma.data.db.entity.FavoriteVacancyEntity
 
 @Dao
-interface FavoriteVacancyDao {
+interface FavoriteVacanciesDao {
 
     @Insert
     suspend fun add(vacancy: FavoriteVacancyEntity)
 
-    @Delete
-    suspend fun delete(vacancy: FavoriteVacancyEntity)
-
     @Query("SELECT * FROM favorite_vacancies WHERE id = :id")
-    suspend fun getById(id: String): FavoriteVacancyEntity
+    suspend fun getById(id: String): FavoriteVacancyEntity?
 
     @Query("SELECT * FROM favorite_vacancies ORDER BY timestamp DESC")
     suspend fun getAll(): List<FavoriteVacancyEntity>
+
+    @Delete
+    suspend fun delete(vacancy: FavoriteVacancyEntity)
 
 }
