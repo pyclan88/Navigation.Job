@@ -54,8 +54,11 @@ class SearchViewModel(
     }
 
     private fun search(expression: String) {
-        // println("search:${expression}")
         lastExpression = expression
+        _state.value = VacancyState(
+            input = Input.Text(lastExpression),
+            vacanciesList = VacanciesList.Empty,
+        )
         _state.value = VacancyState(Input.Text(expression), VacanciesList.Loading)
         requestToServer(expression)
     }

@@ -30,5 +30,5 @@
     <string name="salary_to_format">до %1$s %2$s</string>
     <string name="salary_range_format">от %1$s %2$s до %3$s %4$s</string>
     <string name="found_n_vacancies">Найдено %d вакансий</string>
-
+    <string name="no_suitable_application">Нет подходящего приложения</string>
 </resources>

@@ -42,6 +42,10 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
         viewModel.getVacancyDetails(vacancyId)
+
+        binding.ivSharing.setOnClickListener {
+            viewModel.shareVacancyURL()
+        }
     }
 
     private fun render(state: VacancyDetailsState) {
