@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.data
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
@@ -14,7 +13,6 @@ import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.SUCCESS_CODE
 import ru.practicum.android.diploma.domain.api.VacancyRepository
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.util.Resource
@@ -32,7 +30,6 @@ class VacancyRepositoryImpl(
                 FAILED_INTERNET_CONNECTION_CODE -> Resource.Error("-1")
 
                 SUCCESS_CODE -> {
-                    Log.e(VacancyRepository::class.simpleName, response.toString())
                     val data = vacancyMapper.map(response as VacanciesSearchResponse)
                     Resource.Success(data)
                 }
@@ -49,7 +46,6 @@ class VacancyRepositoryImpl(
                 FAILED_INTERNET_CONNECTION_CODE -> Resource.Error("-1")
                 NOT_FOUND_CODE -> Resource.Error("404")
                 SUCCESS_CODE -> {
-                    Log.e(VacancyRepository::class.simpleName, response.toString())
                     val data = vacancyDetailsMapper.map(response as VacancyDetailsDto)
                     Resource.Success(data)
                 }

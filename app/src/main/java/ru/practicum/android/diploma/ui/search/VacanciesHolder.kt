@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.search.VacanciesAdapter.VacancyClickListener
+import ru.practicum.android.diploma.util.SalaryFormatter
 
 class VacanciesHolder(
     private val binding: VacancyItemBinding,
@@ -14,10 +15,14 @@ class VacanciesHolder(
 
     fun bind(vacancy: Vacancy) = with(binding) {
         vacancy.imageUrl?.let { setLogo(it) }
-
         vacancyTitle.text = vacancy.name
         vacancyEmployer.text = vacancy.employerName
-        vacancySalary.text = vacancy.salaryFrom
+        vacancySalary.text = SalaryFormatter.salaryFormat(
+            vacancy.salaryFrom,
+            vacancy.salaryFrom,
+            vacancy.currency,
+            itemView.resources
+        )
 
         itemView.setOnClickListener {
             clickListener.onVacancyClick(vacancy.id)
