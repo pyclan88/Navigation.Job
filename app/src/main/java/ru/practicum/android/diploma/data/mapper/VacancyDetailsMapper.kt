@@ -3,39 +3,31 @@ package ru.practicum.android.diploma.data.mapper
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.KeySkillDto
 import ru.practicum.android.diploma.domain.models.VacancyDetails
-import ru.practicum.android.diploma.util.JsonParser
 import kotlin.text.Typography.middleDot
 
 class VacancyDetailsMapper {
-    private val jsonParser = JsonParser()
     fun map(dto: VacancyDetailsDto) = VacancyDetails(
         id = dto.id,
-        imageUrl = dto.employer.logoUrls?.original,
-        name = dto.name,
-        city = getValueOrDefault(dto.area?.name, EMPTY_PARAM_VALUE),
-        salaryFrom = getValueOrDefault(dto.salary?.from?.toString(), EMPTY_PARAM_VALUE),
-        salaryTo = getValueOrDefault(dto.salary?.to?.toString(), EMPTY_PARAM_VALUE),
-        currency = getValueOrDefault(dto.salary?.currency, EMPTY_PARAM_VALUE),
-        employerName = dto.employer.name,
-        experience = getValueOrDefault(dto.experience?.name, EMPTY_PARAM_VALUE),
-        employmentName = getValueOrDefault(dto.employment?.name, EMPTY_PARAM_VALUE),
-        schedule = getValueOrDefault(dto.schedule?.name, EMPTY_PARAM_VALUE),
-        descriptionResponsibility = getValueOrDefault(dto.description, EMPTY_PARAM_VALUE),
-        descriptionRequirement = getValueOrDefault(dto.description, EMPTY_PARAM_VALUE),
-        descriptionConditions = getValueOrDefault(dto.description, EMPTY_PARAM_VALUE),
-        descriptionSkills = getValueOrDefault(skillsFormat(dto.keySkills), EMPTY_PARAM_VALUE)
+        imageUrl = dto.employer?.logoUrls?.original,
+        name = dto.name ?: EMPTY_PARAM_VALUE,
+        city = dto.area.name ?: EMPTY_PARAM_VALUE,
+        salaryFrom = dto.salary?.from ?: EMPTY_INT_PARAM_VALUE,
+        salaryTo = dto.salary?.to ?: EMPTY_INT_PARAM_VALUE,
+        currency = dto.salary?.currency ?: EMPTY_PARAM_VALUE,
+        employerName = dto.employer?.name ?: EMPTY_PARAM_VALUE,
+        experience = dto.experience?.name ?: EMPTY_PARAM_VALUE,
+        employmentName = dto.employment?.name ?: EMPTY_PARAM_VALUE,
+        schedule = dto.schedule.name ?: EMPTY_PARAM_VALUE,
+        description = dto.description ?: EMPTY_PARAM_VALUE,
+        descriptionSkills = skillsFormat(dto.keySkills)
     )
 
-    private fun <T> getValueOrDefault(
-        value: T?,
-        defaultValue: String
-    ): String = value?.toString() ?: defaultValue
-
     private fun skillsFormat(list: List<KeySkillDto>): String {
-        return list.mapIndexed { index, keySkillDto -> "$middleDot  ${keySkillDto.name}" }.joinToString("\n")
+        return list.mapIndexed { _, keySkillDto -> "$middleDot  ${keySkillDto.name}" }.joinToString("\n")
     }
 
     companion object {
         const val EMPTY_PARAM_VALUE = ""
+        const val EMPTY_INT_PARAM_VALUE = 0
     }
 }

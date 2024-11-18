@@ -16,6 +16,7 @@ import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.ImageAndTextHelper
+import ru.practicum.android.diploma.util.SalaryFormatter
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
@@ -23,6 +24,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private val viewModel: VacancyViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
+    private val salaryFormat = SalaryFormatter()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -47,7 +49,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun showEmpty() {
         with(binding) {
-            clVacancy.invisible()
+            groupVacancy.invisible()
             groupPlaceholder.visible()
             pbVacancy.invisible()
             imageAndTextHelper.setImageAndText(
@@ -62,7 +64,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun showLoading() {
         with(binding) {
-            clVacancy.invisible()
+            groupVacancy.invisible()
             groupPlaceholder.invisible()
             pbVacancy.visible()
         }
@@ -70,7 +72,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun showError() {
         with(binding) {
-            clVacancy.invisible()
+            groupVacancy.invisible()
             groupPlaceholder.visible()
             pbVacancy.invisible()
             imageAndTextHelper.setImageAndText(
@@ -85,41 +87,29 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun showContent(vacancy: VacancyDetails) {
         with(binding) {
-            clVacancy.visible()
+            groupVacancy.visible()
             groupPlaceholder.invisible()
             pbVacancy.invisible()
             tvVacancyName.text = vacancy.name
-            tvVacancySalary.text = salaryFormat(vacancy.salaryTo, vacancy.salaryFrom)
+            tvVacancySalary.text =
+                salaryFormat.salaryFormat(vacancy.salaryTo, vacancy.salaryFrom, vacancy.currency, resources)
             tvVacancyEmployerName.text = vacancy.employerName
             tvVacancyEmployerCity.text = vacancy.city
             tvVacancyExperience.text = vacancy.experience
             tvVacancySchedule.text = vacancy.schedule
-            tvVacancyDescription.setText(Html.fromHtml(vacancy.descriptionResponsibility, Html.FROM_HTML_MODE_COMPACT))
+            tvVacancyDescription.setText(Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_COMPACT))
             tvVacancySkills.text = vacancy.descriptionSkills
             if (vacancy.descriptionSkills.isEmpty()) {
                 tvVacancyTitleSkills.invisible()
                 tvVacancySkills.invisible()
             }
+
             Glide.with(requireContext())
                 .load(vacancy.imageUrl)
                 .placeholder(R.drawable.placeholder_logo)
                 .centerCrop()
                 .into(binding.sivVacancyLogo)
         }
-    }
-
-    private fun salaryFormat(salaryTo: String, salaryFrom: String): String {
-        val salary =
-            if (salaryTo != "" && salaryFrom == "") {
-                "до $salaryTo"
-            } else if (salaryTo == "" && salaryFrom != "") {
-                "от $salaryFrom"
-            } else if (salaryTo != "" && salaryFrom != "") {
-                "от $salaryFrom до $salaryTo"
-            } else {
-                resources.getString(R.string.salary_is_not_specified)
-            }
-        return salary
     }
 
     companion object {

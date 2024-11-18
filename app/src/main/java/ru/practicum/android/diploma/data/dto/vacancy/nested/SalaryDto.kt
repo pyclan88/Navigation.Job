@@ -6,9 +6,9 @@ data class SalaryDto(
     @SerializedName("currency")
     val currency: String,
     @SerializedName("from")
-    val from: Int,
+    val from: Int?,
     @SerializedName("gross")
     val gross: Boolean,
     @SerializedName("to")
-    val to: Int
+    val to: Int?
 )

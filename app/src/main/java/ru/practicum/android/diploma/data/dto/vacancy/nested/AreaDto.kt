@@ -6,7 +6,7 @@ data class AreaDto(
     @SerializedName("id")
     val id: String,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("url")
     val url: String
 )

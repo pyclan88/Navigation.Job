@@ -12,7 +12,7 @@ data class EmployerDto(
     @SerializedName("logo_urls")
     val logoUrls: LogoUrlsDto?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("trusted")
     val trusted: Boolean,
     @SerializedName("url")

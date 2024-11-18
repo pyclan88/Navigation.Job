@@ -13,7 +13,7 @@ class VacancyViewModel(
     private val getDetailsUseCase: GetVacancyDetailsUseCase,
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<VacancyDetailsState>(VacancyDetailsState(VacancyDetailsState.Vacancy.Loading))
+    private val _state = MutableLiveData(VacancyDetailsState(VacancyDetailsState.Vacancy.Loading))
     val state: LiveData<VacancyDetailsState> get() = _state
 
     fun getDetails(id: String) {
@@ -21,12 +21,10 @@ class VacancyViewModel(
             val result = getDetailsUseCase.execute(id)
             val vacancyDetailsState: VacancyDetailsState.Vacancy =
                 when (result.first) {
-                    null -> {
-                        if (result.second == NOT_FOUND_CODE.toString()) {
-                            VacancyDetailsState.Vacancy.Empty
-                        } else {
-                            VacancyDetailsState.Vacancy.Error
-                        }
+                    null -> if (result.second == NOT_FOUND_CODE.toString()) {
+                        VacancyDetailsState.Vacancy.Empty
+                    } else {
+                        VacancyDetailsState.Vacancy.Error
                     }
 
                     else -> VacancyDetailsState.Vacancy.Data(result.first!!)

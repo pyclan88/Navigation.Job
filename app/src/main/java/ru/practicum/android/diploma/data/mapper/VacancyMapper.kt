@@ -27,7 +27,7 @@ class VacancyMapper {
         salaryFrom = getValueOrDefault(dto.salary?.from?.toString(), EMPTY_PARAM_VALUE),
         salaryTo = getValueOrDefault(dto.salary?.to?.toString(), EMPTY_PARAM_VALUE),
         currency = getValueOrDefault(dto.salary?.currency, EMPTY_PARAM_VALUE),
-        employerName = dto.employer.name,
+        employerName = dto.employer.name?: EMPTY_PARAM_VALUE,
         experience = getValueOrDefault(dto.experience?.name, EMPTY_PARAM_VALUE),
         employmentName = getValueOrDefault(dto.employment?.name, EMPTY_PARAM_VALUE),
         schedule = getValueOrDefault(dto.schedule?.name, EMPTY_PARAM_VALUE),
