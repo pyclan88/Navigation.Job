@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.app.NavigationJobApp.Companion.applicationContext
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
@@ -24,6 +25,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private val viewModel: VacancyViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
+    private val salaryFormatter = SalaryFormatter(applicationContext())
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -96,11 +98,10 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             tvVacancySchedule.text = vacancy.schedule
             tvVacancyDescription.text = Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_COMPACT)
             tvVacancySkills.text = vacancy.descriptionSkills
-            tvVacancySalary.text = SalaryFormatter.salaryFormat(
+            tvVacancySalary.text = salaryFormatter.salaryFormat(
                 vacancy.salaryTo,
                 vacancy.salaryFrom,
                 vacancy.currency,
-                resources
             )
             if (vacancy.descriptionSkills.isEmpty()) {
                 tvVacancyTitleSkills.invisible()
