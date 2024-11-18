@@ -17,7 +17,8 @@ val viewModelModule = module {
             getVacancyDetailsUseCase = get(),
             getFavoriteVacancyByIdUseCase = get(),
             addVacancyToFavoriteUseCase = get(),
-            deleteVacancyFromFavoriteUseCase = get()
+            deleteVacancyFromFavoriteUseCase = get(),
+            sharingInteract = get()
         )
     }
 
