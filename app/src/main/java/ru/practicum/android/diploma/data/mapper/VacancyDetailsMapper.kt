@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.data.mapper
 
+import ru.practicum.android.diploma.common.AppConstants.EMPTY_INT_PARAM_VALUE
+import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.KeySkillDto
 import ru.practicum.android.diploma.domain.models.VacancyDetails
@@ -25,10 +27,5 @@ class VacancyDetailsMapper {
 
     private fun skillsFormat(list: List<KeySkillDto>): String {
         return list.mapIndexed { _, keySkillDto -> "$middleDot  ${keySkillDto.name}" }.joinToString("\n")
-    }
-
-    companion object {
-        const val EMPTY_PARAM_VALUE = ""
-        const val EMPTY_INT_PARAM_VALUE = 0
     }
 }

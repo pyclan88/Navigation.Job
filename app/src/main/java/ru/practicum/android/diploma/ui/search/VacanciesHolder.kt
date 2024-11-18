@@ -6,18 +6,18 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.search.VacanciesAdapter.VacancyClickListener
+import ru.practicum.android.diploma.util.SalaryFormatter
 
 class VacanciesHolder(
     private val binding: VacancyItemBinding,
     private val clickListener: VacancyClickListener
 ) : RecyclerView.ViewHolder(binding.root) {
-
+    private val salaryFormatter = SalaryFormatter(binding.root.context)
     fun bind(vacancy: Vacancy) = with(binding) {
         vacancy.imageUrl?.let { setLogo(it) }
-
         vacancyTitle.text = vacancy.name
         vacancyEmployer.text = vacancy.employerName
-        vacancySalary.text = vacancy.salaryFrom
+        vacancySalary.text = setSalary(vacancy)
 
         itemView.setOnClickListener {
             clickListener.onVacancyClick(vacancy.id)
@@ -29,4 +29,12 @@ class VacanciesHolder(
         .centerCrop()
         .placeholder(R.drawable.smile)
         .into(binding.vacancyLogo)
+
+    private fun setSalary(vacancy: Vacancy): String {
+        return salaryFormatter.salaryFormat(
+            vacancy.salaryFrom,
+            vacancy.salaryTo,
+            vacancy.currency,
+        )
+    }
 }
