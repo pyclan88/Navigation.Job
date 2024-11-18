@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.app.NavigationJobApp.Companion.applicationContext
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
@@ -24,7 +25,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private val viewModel: VacancyViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
-    private val salaryFormat = SalaryFormatter()
+    private val salaryFormatter = SalaryFormatter(applicationContext())
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -91,14 +92,17 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             groupPlaceholder.invisible()
             pbVacancy.invisible()
             tvVacancyName.text = vacancy.name
-            tvVacancySalary.text =
-                salaryFormat.salaryFormat(vacancy.salaryTo, vacancy.salaryFrom, vacancy.currency, resources)
             tvVacancyEmployerName.text = vacancy.employerName
             tvVacancyEmployerCity.text = vacancy.city
             tvVacancyExperience.text = vacancy.experience
             tvVacancySchedule.text = vacancy.schedule
-            tvVacancyDescription.setText(Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_COMPACT))
+            tvVacancyDescription.text = Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_COMPACT)
             tvVacancySkills.text = vacancy.descriptionSkills
+            tvVacancySalary.text = salaryFormatter.salaryFormat(
+                vacancy.salaryTo,
+                vacancy.salaryFrom,
+                vacancy.currency,
+            )
             if (vacancy.descriptionSkills.isEmpty()) {
                 tvVacancyTitleSkills.invisible()
                 tvVacancySkills.invisible()

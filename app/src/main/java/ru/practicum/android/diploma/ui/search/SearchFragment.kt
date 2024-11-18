@@ -57,7 +57,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
         configureRecycler()
         configureSearchInput()
-        println("search:onViewCreated")
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state ->
@@ -176,8 +175,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                         val itemsCount = vacanciesAdapter?.itemCount ?: return
                         if (pos >= itemsCount - 1) {
                             binding.pbSearch.visible()
-                            // Добавить элемент лоадера
-                            // Callback добавить
                             viewModel.onLastItemReached()
                         }
                     }
