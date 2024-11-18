@@ -3,13 +3,19 @@ package ru.practicum.android.diploma.domain.state
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 data class VacancyDetailsState(
-    val details: Vacancy
+    val data: Data,
+    val favorite: Favorite
 ) {
 
-    sealed interface Vacancy {
-        data object Loading : Vacancy
-        data object Empty : Vacancy
-        data object Error : Vacancy
-        data class Data(val vacancy: VacancyDetails) : Vacancy
+    sealed interface Data {
+        data object Loading : Data
+        data object Empty : Data
+        data object Error : Data
+        data class Payload(val details: VacancyDetails) : Data
+    }
+
+    sealed interface Favorite {
+        data object InFavorite : Favorite
+        data object NotInFavorite : Favorite
     }
 }
