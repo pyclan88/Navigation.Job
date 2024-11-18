@@ -13,7 +13,12 @@ val viewModelModule = module {
     }
 
     viewModel<VacancyViewModel> {
-        VacancyViewModel(get())
+        VacancyViewModel(
+            getVacancyDetailsUseCase = get(),
+            getFavoriteVacancyByIdUseCase = get(),
+            addVacancyToFavoriteUseCase = get(),
+            deleteVacancyFromFavoriteUseCase = get()
+        )
     }
 
     viewModel {

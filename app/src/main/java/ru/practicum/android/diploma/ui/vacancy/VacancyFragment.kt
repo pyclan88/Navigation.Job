@@ -34,86 +34,95 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getDetails(requireArguments().getString(VACANCY_DETAILS) ?: "")
-        binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
+
+        val vacancyId = requireArguments().getString(VACANCY_DETAILS) ?: ""
+
+        configureBackButton()
+        configureAddToFavoriteButton(vacancyId)
+
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
+        viewModel.getVacancyDetails(vacancyId)
     }
 
     private fun render(state: VacancyDetailsState) {
-        when (state.details) {
-            is VacancyDetailsState.Vacancy.Loading -> showLoading()
-            is VacancyDetailsState.Vacancy.Empty -> showEmpty()
-            is VacancyDetailsState.Vacancy.Data -> showContent(state.details.vacancy)
-            is VacancyDetailsState.Vacancy.Error -> showError()
+        when (state.data) {
+            is VacancyDetailsState.Data.Loading -> showLoading()
+            is VacancyDetailsState.Data.Empty -> showEmpty()
+            is VacancyDetailsState.Data.Payload -> showContent(state.data.details)
+            is VacancyDetailsState.Data.Error -> showError()
         }
+
+        val resId = when (state.favorite) {
+            is VacancyDetailsState.Favorite.InFavorite -> R.drawable.ic_favorite_added
+            is VacancyDetailsState.Favorite.NotInFavorite -> R.drawable.ic_favorite_add
+        }
+        binding.ivFavorites.setImageResource(resId)
     }
 
-    private fun showEmpty() {
-        with(binding) {
-            groupVacancy.invisible()
-            groupPlaceholder.visible()
-            pbVacancy.invisible()
-            imageAndTextHelper.setImageAndText(
-                requireContext(),
-                ivPlaceholder,
-                tvPlaceholder,
-                R.drawable.vacancy_not_found_or_deleted_andy,
-                resources.getString(R.string.no_vacancy)
-            )
-        }
+    private fun configureBackButton() =
+        binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
+
+    private fun configureAddToFavoriteButton(vacancyId: String) =
+        binding.ivFavorites.setOnClickListener { viewModel.onFavoriteClicked(vacancyId) }
+
+    private fun showEmpty() = with(binding) {
+        groupVacancy.invisible()
+        groupPlaceholder.visible()
+        pbVacancy.invisible()
+        imageAndTextHelper.setImageAndText(
+            requireContext(),
+            ivPlaceholder,
+            tvPlaceholder,
+            R.drawable.vacancy_not_found_or_deleted_andy,
+            resources.getString(R.string.no_vacancy)
+        )
     }
 
-    private fun showLoading() {
-        with(binding) {
-            groupVacancy.invisible()
-            groupPlaceholder.invisible()
-            pbVacancy.visible()
-        }
+    private fun showLoading() = with(binding) {
+        groupVacancy.invisible()
+        groupPlaceholder.invisible()
+        pbVacancy.visible()
     }
 
-    private fun showError() {
-        with(binding) {
-            groupVacancy.invisible()
-            groupPlaceholder.visible()
-            pbVacancy.invisible()
-            imageAndTextHelper.setImageAndText(
-                requireContext(),
-                ivPlaceholder,
-                tvPlaceholder,
-                R.drawable.placeholder_vacancy_server_error_cat,
-                resources.getString(R.string.server_error)
-            )
-        }
+    private fun showError() = with(binding) {
+        groupVacancy.invisible()
+        groupPlaceholder.visible()
+        pbVacancy.invisible()
+        imageAndTextHelper.setImageAndText(
+            requireContext(),
+            ivPlaceholder,
+            tvPlaceholder,
+            R.drawable.placeholder_vacancy_server_error_cat,
+            resources.getString(R.string.server_error)
+        )
     }
 
-    private fun showContent(vacancy: VacancyDetails) {
-        with(binding) {
-            groupVacancy.visible()
-            groupPlaceholder.invisible()
-            pbVacancy.invisible()
-            tvVacancyName.text = vacancy.name
-            tvVacancyEmployerName.text = vacancy.employerName
-            tvVacancyEmployerCity.text = vacancy.city
-            tvVacancyExperience.text = vacancy.experience
-            tvVacancySchedule.text = vacancy.schedule
-            tvVacancyDescription.text = Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_COMPACT)
-            tvVacancySkills.text = vacancy.descriptionSkills
-            tvVacancySalary.text = salaryFormatter.salaryFormat(
-                vacancy.salaryTo,
-                vacancy.salaryFrom,
-                vacancy.currency,
-            )
-            if (vacancy.descriptionSkills.isEmpty()) {
-                tvVacancyTitleSkills.invisible()
-                tvVacancySkills.invisible()
-            }
-
-            Glide.with(requireContext())
-                .load(vacancy.imageUrl)
-                .placeholder(R.drawable.placeholder_logo)
-                .centerCrop()
-                .into(binding.sivVacancyLogo)
+    private fun showContent(vacancy: VacancyDetails) = with(binding) {
+        groupVacancy.visible()
+        groupPlaceholder.invisible()
+        pbVacancy.invisible()
+        tvVacancyName.text = vacancy.name
+        tvVacancyEmployerName.text = vacancy.employerName
+        tvVacancyEmployerCity.text = vacancy.city
+        tvVacancyExperience.text = vacancy.experience
+        tvVacancySchedule.text = vacancy.schedule
+        tvVacancyDescription.text = Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_COMPACT)
+        tvVacancySkills.text = vacancy.descriptionSkills
+        tvVacancySalary.text = salaryFormatter.salaryFormat(
+            vacancy.salaryTo,
+            vacancy.salaryFrom,
+            vacancy.currency,
+        )
+        if (vacancy.descriptionSkills.isEmpty()) {
+            tvVacancyTitleSkills.invisible()
+            tvVacancySkills.invisible()
         }
+
+        Glide.with(requireContext())
+            .load(vacancy.imageUrl)
+            .placeholder(R.drawable.placeholder_logo)
+            .centerCrop()
+            .into(binding.sivVacancyLogo)
     }
 
     companion object {
