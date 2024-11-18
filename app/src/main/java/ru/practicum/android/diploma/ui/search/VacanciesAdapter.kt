@@ -6,13 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacanciesAdapter(private val clickListener: VacancyClickListener) : RecyclerView.Adapter<VacanciesHolder>() {
+class VacanciesAdapter(
+    private val clickListener: VacancyClickListener
+) : RecyclerView.Adapter<VacanciesHolder>() {
 
     private var vacancies: List<Vacancy> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacanciesHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
-        return VacanciesHolder(VacancyItemBinding.inflate(layoutInspector, parent, false), clickListener)
+        return VacanciesHolder(
+            binding = VacancyItemBinding.inflate(layoutInspector, parent, false),
+            clickListener = clickListener
+        )
     }
 
     override fun onBindViewHolder(holder: VacanciesHolder, position: Int) {

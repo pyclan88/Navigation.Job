@@ -50,7 +50,7 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
 
         vacanciesAdapter = VacanciesAdapter { vacancyId -> onTrackClickDebounce(vacancyId) }
 
-        viewModel.getVacancyList()
+        viewModel.getFavoriteVacancies()
         binding.rvVacancies.adapter = vacanciesAdapter
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
     }
