@@ -7,16 +7,10 @@ import ru.practicum.android.diploma.domain.models.VacancySearchResult
 
 class VacancyMapper {
 
-
-    fun map(response: VacanciesSearchResponse): VacancySearchResult {
-        val vacanciesList: List<Vacancy> = response.items.map { vacancy -> map(vacancy) }
-        val pages = response.pages
-        return VacancySearchResult(
-            items = vacanciesList,
-            pages = pages
-        )
-    }
-
+    fun map(response: VacanciesSearchResponse) = VacancySearchResult(
+        items = response.items.map { vacancy -> map(vacancy) },
+        pages = response.pages
+    )
 
     private fun map(dto: VacancyDto) = Vacancy(
         id = dto.id,
@@ -29,11 +23,7 @@ class VacancyMapper {
         employerName = dto.employer.name ?: EMPTY_PARAM_VALUE,
         experience = getValueOrDefault(dto.experience?.name, EMPTY_PARAM_VALUE),
         employmentName = getValueOrDefault(dto.employment?.name, EMPTY_PARAM_VALUE),
-        schedule = getValueOrDefault(dto.schedule?.name, EMPTY_PARAM_VALUE),
-        descriptionResponsibility = getValueOrDefault(dto.snippet?.responsibility, EMPTY_PARAM_VALUE),
-        descriptionRequirement = getValueOrDefault(dto.snippet?.requirement, EMPTY_PARAM_VALUE),
-        descriptionConditions = "???", // Может быть заполнено позже
-        descriptionSkills = "???" // Может быть заполнено позже
+        schedule = getValueOrDefault(dto.schedule?.name, EMPTY_PARAM_VALUE)
     )
 
     private fun <T> getValueOrDefault(

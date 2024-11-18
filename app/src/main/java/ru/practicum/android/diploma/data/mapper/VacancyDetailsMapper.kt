@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.domain.models.VacancyDetails
 import kotlin.text.Typography.middleDot
 
 class VacancyDetailsMapper {
+
     fun map(dto: VacancyDetailsDto) = VacancyDetails(
         id = dto.id,
         imageUrl = dto.employer?.logoUrls?.original,

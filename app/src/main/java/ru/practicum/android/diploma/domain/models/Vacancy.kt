@@ -11,9 +11,5 @@ data class Vacancy(
     val employerName: String,
     val experience: String,
     val employmentName: String,
-    val schedule: String,
-    val descriptionResponsibility: String,
-    val descriptionRequirement: String,
-    val descriptionConditions: String,
-    val descriptionSkills: String
+    val schedule: String
 )
