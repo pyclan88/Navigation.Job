@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_8dp"
         android:background="@drawable/bg_search_edittext"
+        android:elevation="@dimen/mark_1dp"
         android:hint="@string/search_hint"
         android:padding="@dimen/mark_20dp"
         android:textColor="@color/black"
@@ -52,6 +53,7 @@
         android:id="@+id/iv_edit_text_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="@dimen/mark_1dp"
         android:paddingHorizontal="@dimen/mark_20dp"
         android:paddingVertical="@dimen/mark_18dp"
         android:src="@drawable/ic_search"
@@ -81,6 +83,7 @@
         android:id="@+id/rv_vacancies"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/mark_8dp"
         android:clipToPadding="false"
         android:paddingTop="@dimen/mark_46dp"
         android:visibility="visible"
@@ -88,7 +91,7 @@
         app:layout_constraintBottom_toTopOf="@id/pb_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_search"
+        app:layout_constraintTop_toTopOf="@id/et_search"
         tools:itemCount="3"
         tools:listitem="@layout/vacancy_item" />
 
