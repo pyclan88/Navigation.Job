@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class AddressDto(
     @SerializedName("building")
-    val building: String,
+    val building: String?,
     @SerializedName("city")
-    val city: String,
+    val city: String?,
     @SerializedName("description")
     val description: Any,
     @SerializedName("id")
@@ -22,5 +22,5 @@ data class AddressDto(
     @SerializedName("raw")
     val raw: String,
     @SerializedName("street")
-    val street: String
+    val street: String?
 )

@@ -12,6 +12,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.NavigationJobApp.Companion.applicationContext
+import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
@@ -107,7 +108,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         pbVacancy.invisible()
         tvVacancyName.text = vacancy.name
         tvVacancyEmployerName.text = vacancy.employerName
-        tvVacancyEmployerCity.text = vacancy.city
+        tvVacancyEmployerCity.text = if (vacancy.address != EMPTY_PARAM_VALUE) vacancy.address else vacancy.area
         tvVacancyExperience.text = vacancy.experience
         tvVacancySchedule.text = vacancy.schedule
         tvVacancyDescription.text = Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_COMPACT)

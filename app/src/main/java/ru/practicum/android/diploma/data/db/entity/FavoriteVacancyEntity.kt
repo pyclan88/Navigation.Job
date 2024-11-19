@@ -8,7 +8,8 @@ data class FavoriteVacancyEntity(
     @PrimaryKey
     val id: String,
     val name: String,
-    val city: String,
+    val area: String,
+    val address: String,
     val imageUrl: String?,
     val salaryFrom: Int,
     val salaryTo: Int,

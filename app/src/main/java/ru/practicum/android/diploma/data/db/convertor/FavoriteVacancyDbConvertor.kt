@@ -9,7 +9,8 @@ class FavoriteVacancyDbConvertor {
     fun map(model: VacancyDetails) = FavoriteVacancyEntity(
         id = model.id,
         name = model.name,
-        city = model.city,
+        area = model.area,
+        address = model.address,
         imageUrl = model.imageUrl,
         salaryFrom = model.salaryFrom,
         salaryTo = model.salaryTo,
@@ -27,7 +28,8 @@ class FavoriteVacancyDbConvertor {
     fun mapToDetails(entity: FavoriteVacancyEntity) = VacancyDetails(
         id = entity.id,
         name = entity.name,
-        city = entity.city,
+        area = entity.area,
+        address = entity.address,
         imageUrl = entity.imageUrl,
         salaryFrom = entity.salaryFrom,
         salaryTo = entity.salaryTo,
@@ -46,7 +48,7 @@ class FavoriteVacancyDbConvertor {
         id = entity.id,
         imageUrl = entity.imageUrl,
         name = entity.name,
-        city = entity.city,
+        city = entity.area,
         salaryFrom = entity.salaryFrom,
         salaryTo = entity.salaryTo,
         currency = entity.currency,
