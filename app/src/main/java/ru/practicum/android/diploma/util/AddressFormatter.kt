@@ -4,7 +4,7 @@ import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.data.dto.vacancy.nested.AddressDto
 
 class AddressFormatter {
-     fun addressFormatter(address: AddressDto?): String {
+    fun addressFormat(address: AddressDto?): String {
         return address?.let {
             when {
                 it.city.isNullOrEmpty() -> EMPTY_PARAM_VALUE

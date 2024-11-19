@@ -3,13 +3,13 @@ package ru.practicum.android.diploma.data.mapper
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_INT_PARAM_VALUE
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
-import ru.practicum.android.diploma.data.dto.vacancy.nested.KeySkillDto
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.AddressFormatter
-import kotlin.text.Typography.middleDot
+import ru.practicum.android.diploma.util.SkillsFormatter
 
 class VacancyDetailsMapper {
     private val addressFormatter = AddressFormatter()
+    private val skillsFormatter = SkillsFormatter()
 
     fun map(dto: VacancyDetailsDto) = VacancyDetails(
         id = dto.id,
@@ -24,13 +24,8 @@ class VacancyDetailsMapper {
         employmentName = dto.employment?.name ?: EMPTY_PARAM_VALUE,
         schedule = dto.schedule.name ?: EMPTY_PARAM_VALUE,
         description = dto.description ?: EMPTY_PARAM_VALUE,
-        descriptionSkills = skillsFormatter(dto.keySkills),
+        descriptionSkills = skillsFormatter.skillsFormat(dto.keySkills),
         url = dto.alternateUrl ?: EMPTY_PARAM_VALUE,
-        address = addressFormatter.addressFormatter(dto.address)
+        address = addressFormatter.addressFormat(dto.address)
     )
-
-    private fun skillsFormatter(list: List<KeySkillDto>): String {
-        return list.mapIndexed { _, keySkillDto -> "$middleDot  ${keySkillDto.name}" }.joinToString("\n")
-    }
 }
-
