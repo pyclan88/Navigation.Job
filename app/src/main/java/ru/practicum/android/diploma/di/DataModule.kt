@@ -28,7 +28,8 @@ val dataModule = module {
             context = androidContext(),
             klass = AppDatabase::class.java,
             name = "database.db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
+
     }
 
     single<OkHttpClient> {

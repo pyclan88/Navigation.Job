@@ -38,7 +38,6 @@ class VacanciesAdapter(
         notifyDataSetChanged()
         val startPosition = vacancies.size
         notifyItemRangeInserted(startPosition, 0)
-        // notifyItemChanged(startPosition)
     }
 
     fun interface VacancyClickListener {
