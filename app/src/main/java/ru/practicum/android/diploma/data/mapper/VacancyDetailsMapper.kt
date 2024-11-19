@@ -3,12 +3,13 @@ package ru.practicum.android.diploma.data.mapper
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_INT_PARAM_VALUE
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
-import ru.practicum.android.diploma.data.dto.vacancy.nested.AddressDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.KeySkillDto
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.util.AddressFormatter
 import kotlin.text.Typography.middleDot
 
 class VacancyDetailsMapper {
+    private val addressFormatter = AddressFormatter()
 
     fun map(dto: VacancyDetailsDto) = VacancyDetails(
         id = dto.id,
@@ -25,22 +26,11 @@ class VacancyDetailsMapper {
         description = dto.description ?: EMPTY_PARAM_VALUE,
         descriptionSkills = skillsFormatter(dto.keySkills),
         url = dto.alternateUrl ?: EMPTY_PARAM_VALUE,
-        address = addressFormatter(dto.address)
+        address = addressFormatter.addressFormatter(dto.address)
     )
 
     private fun skillsFormatter(list: List<KeySkillDto>): String {
         return list.mapIndexed { _, keySkillDto -> "$middleDot  ${keySkillDto.name}" }.joinToString("\n")
-    }
-
-    private fun addressFormatter(address: AddressDto?): String {
-        return address?.let {
-            when {
-                it.city.isNullOrEmpty() -> EMPTY_PARAM_VALUE
-                it.street.isNullOrEmpty() -> "${it.city}, ${it.building}"
-                it.building.isNullOrEmpty() -> "${it.city}, ${it.street}"
-                else -> "${it.city}, ${it.street}, ${it.building}"
-            }
-        } ?: EMPTY_PARAM_VALUE
     }
 }
 
