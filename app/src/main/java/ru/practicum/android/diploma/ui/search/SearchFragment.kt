@@ -76,7 +76,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun render(state: VacancyState) {
         when (state.vacanciesList) {
-            is Start -> showEmpty()
+            is Start -> showStart()
             is NoInternet -> showNoInternet()
             is Empty -> showNoResult()
             is Loading -> showLoading()
@@ -85,7 +85,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
     }
 
-    private fun showEmpty() {
+    private fun showStart() {
         with(binding) {
             pbSearch.invisible()
             rvVacancies.invisible()
