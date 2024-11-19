@@ -12,9 +12,15 @@ class SalaryFormatter(private val context: Context) {
         val formattedSalaryFrom = formatter.format(salaryFrom).replace(",", " ")
         val currencySymbol = when (currency) {
             "RUR" -> "₽"
+            "BYR" -> "Br"
             "USD" -> "$"
             "EUR" -> "€"
-            "GBP" -> "£"
+            "KZT" -> "₸"
+            "UAH" -> "₴"
+            "AZN" -> "₼"
+            "UZS" -> "Soʻm"
+            "GEL" -> "₾"
+            "KGT" -> "с•с"
             else -> currency
         }
 

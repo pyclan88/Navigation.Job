@@ -27,7 +27,7 @@ class VacanciesHolder(
     private fun setLogo(url: String) = Glide.with(itemView)
         .load(url)
         .fitCenter()
-        .placeholder(R.drawable.smile)
+        .placeholder(R.drawable.placeholder_logo)
         .into(binding.vacancyLogo)
 
     private fun setSalary(vacancy: Vacancy): String {
