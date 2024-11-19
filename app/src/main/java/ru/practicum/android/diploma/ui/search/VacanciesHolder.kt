@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.ui.search.VacanciesAdapter.VacancyClickListener
-import ru.practicum.android.diploma.util.SalaryFormatter
+import ru.practicum.android.diploma.data.formatter.SalaryFormatter
 
 class VacanciesHolder(
     private val binding: VacancyItemBinding,
@@ -31,10 +31,12 @@ class VacanciesHolder(
         .into(binding.vacancyLogo)
 
     private fun setSalary(vacancy: Vacancy): String {
-        return salaryFormatter.salaryFormat(
-            vacancy.salaryFrom,
-            vacancy.salaryTo,
-            vacancy.currency,
-        )
+        return with(vacancy) {
+            salaryFormatter.salaryFormat(
+                salaryTo = salaryTo,
+                salaryFrom = salaryFrom,
+                currency = currency
+            )
+        }
     }
 }

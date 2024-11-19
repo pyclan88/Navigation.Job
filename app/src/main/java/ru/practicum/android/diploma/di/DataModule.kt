@@ -25,10 +25,12 @@ val dataModule = module {
 
     single {
         Room.databaseBuilder(
-            context = androidContext(),
-            klass = AppDatabase::class.java,
-            name = "database.db"
-        ).build()
+                context = androidContext(),
+                klass = AppDatabase::class.java,
+                name = "database.db"
+            ).fallbackToDestructiveMigration()
+            .build()
+
     }
 
     single<OkHttpClient> {

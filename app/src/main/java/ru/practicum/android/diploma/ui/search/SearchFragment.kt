@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
@@ -29,14 +30,18 @@ import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.ImageAndTextHelper
 import ru.practicum.android.diploma.util.debounce
+import ru.practicum.android.diploma.util.getConnected
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
 class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
-    private var vacanciesAdapter: VacanciesAdapter? = null
     private val viewModel: SearchViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
+    private var onVacancyClickDebounce: ((String) -> Unit)? = null
+    private var vacanciesAdapter: VacanciesAdapter = VacanciesAdapter { vacancyId ->
+        onVacancyClickDebounce?.let { it(vacancyId) }
+    }
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -45,7 +50,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val onVacancyClickDebounce =
+
+        onVacancyClickDebounce =
             debounce<String>(
                 CLICK_DEBOUNCE_DELAY,
                 viewLifecycleOwner.lifecycleScope,
@@ -57,8 +63,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 )
             }
 
-        vacanciesAdapter = VacanciesAdapter { vacancyId -> onVacancyClickDebounce(vacancyId) }
-
         configureRecycler()
         configureSearchInput()
 
@@ -67,11 +71,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 render(state)
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        vacanciesAdapter = null
     }
 
     private fun render(state: VacancyState) {
@@ -92,15 +91,15 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             ivLookingForPlaceholder.visible()
             groupPlaceholder.invisible()
             tvCountVacancies.invisible()
-            vacanciesAdapter?.clear()
+            vacanciesAdapter.clear()
         }
     }
 
     private fun showNoInternet() {
         with(binding) {
             rvVacancies.invisible()
-            pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
+            pbSearch.invisible()
             groupPlaceholder.visible()
             tvCountVacancies.invisible()
             imageAndTextHelper.setImageAndText(
@@ -110,6 +109,11 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 R.drawable.placeholder_vacancy_search_no_internet_skull,
                 resources.getString(R.string.no_internet)
             )
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.toast_check_your_internet_connection),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -155,6 +159,11 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 R.drawable.placeholder_vacancy_search_server_error_cry,
                 resources.getString(R.string.server_error)
             )
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.toast_error_has_occurred),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -163,7 +172,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             rvVacancies.visible()
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
-            vacanciesAdapter?.updateVacancies(vacanciesList.vacancies)
+            vacanciesAdapter.updateVacancies(vacanciesList.vacancies)
             groupPlaceholder.invisible()
             tvCountVacancies.let {
                 it.visible()
@@ -197,9 +206,13 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     if (dy > 0) {
                         val pos =
                             (binding.rvVacancies.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                        val itemsCount = vacanciesAdapter?.itemCount ?: return
+                        val itemsCount = vacanciesAdapter.itemCount
                         if (pos >= itemsCount - 1) {
-                            binding.pbSearch.visible()
+                            if (getConnected()) {
+                                binding.pbSearch.visible()
+                            } else {
+                                binding.pbSearch.invisible()
+                            }
                             viewModel.onLastItemReached()
                         }
                     }

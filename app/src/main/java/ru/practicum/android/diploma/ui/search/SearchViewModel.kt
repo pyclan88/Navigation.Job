@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,13 +31,6 @@ class SearchViewModel(
     )
     val state: StateFlow<VacancyState> get() = _state
 
-    init {
-        _state.value = VacancyState(
-            input = Input.Empty,
-            vacanciesList = VacanciesList.Start,
-        )
-    }
-
     private val searchDebounceAction = debounce<String>(
         delayMillis = SEARCH_DEBOUNCE_DELAY,
         coroutineScope = viewModelScope,
@@ -68,7 +60,6 @@ class SearchViewModel(
         val result = getVacanciesUseCase.execute(expression = expression, page = currentPage)
         val resultData = result.first?.items
         val totalVacancyCount = result.first?.found ?: 0
-        Log.e("TESTdata", "result:${result.first?.toString()}")
         val vacancyState: VacancyState =
             when (resultData) {
                 null -> {

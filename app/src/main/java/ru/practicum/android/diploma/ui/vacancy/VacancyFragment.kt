@@ -18,7 +18,7 @@ import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.ImageAndTextHelper
-import ru.practicum.android.diploma.util.SalaryFormatter
+import ru.practicum.android.diploma.data.formatter.SalaryFormatter
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
 
@@ -113,11 +113,14 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         tvVacancySchedule.text = vacancy.schedule
         tvVacancyDescription.text = Html.fromHtml(vacancy.description, Html.FROM_HTML_MODE_COMPACT)
         tvVacancySkills.text = vacancy.descriptionSkills
-        tvVacancySalary.text = salaryFormatter.salaryFormat(
-            vacancy.salaryTo,
-            vacancy.salaryFrom,
-            vacancy.currency,
-        )
+        with(vacancy) {
+            tvVacancySalary.text = salaryFormatter.salaryFormat(
+                salaryTo = salaryTo,
+                salaryFrom = salaryFrom,
+                currency = currency
+            )
+        }
+
         if (vacancy.descriptionSkills.isEmpty()) {
             tvVacancyTitleSkills.invisible()
             tvVacancySkills.invisible()
