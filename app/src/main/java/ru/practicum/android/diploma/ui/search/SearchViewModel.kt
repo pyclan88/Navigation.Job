@@ -27,7 +27,7 @@ class SearchViewModel(
     private val _state = MutableStateFlow(
         VacancyState(
             input = Input.Empty,
-            vacanciesList = VacanciesList.Empty
+            vacanciesList = VacanciesList.Start
         )
     )
     val state: StateFlow<VacancyState> get() = _state
@@ -35,7 +35,7 @@ class SearchViewModel(
     init {
         _state.value = VacancyState(
             input = Input.Empty,
-            vacanciesList = VacanciesList.Empty,
+            vacanciesList = VacanciesList.Start,
         )
     }
 
@@ -50,7 +50,7 @@ class SearchViewModel(
     }
 
     fun clearSearch() {
-        _state.value = VacancyState(Input.Empty, VacanciesList.Empty)
+        _state.value = VacancyState(Input.Empty, VacanciesList.Start)
     }
 
     private fun search(expression: String) {
@@ -67,6 +67,7 @@ class SearchViewModel(
         isNextPageLoading = true
         val result = getVacanciesUseCase.execute(expression = expression, page = currentPage)
         val resultData = result.first?.items
+        val totalVacancyCount = result.first?.found ?: 0
         Log.e("TESTdata", "result:${result.first?.toString()}")
         val vacancyState: VacancyState =
             when (resultData) {
@@ -86,7 +87,7 @@ class SearchViewModel(
                     isNextPageLoading = false
                     currentPage += 1
                     result.first?.let { maxPage = it.pages }
-                    state.value.copy(vacanciesList = VacanciesList.Data(resultData))
+                    state.value.copy(vacanciesList = VacanciesList.Data(resultData, totalVacancyCount))
 
                 }
             }

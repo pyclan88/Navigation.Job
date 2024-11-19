@@ -13,10 +13,11 @@ data class VacancyState(
     }
 
     sealed interface VacanciesList {
-        data object Empty : VacanciesList
+        data object Start : VacanciesList
         data object NoInternet : VacanciesList
+        data object Empty : VacanciesList
         data object Loading : VacanciesList
         data object Error : VacanciesList
-        data class Data(val vacancies: List<Vacancy>) : VacanciesList
+        data class Data(val vacancies: List<Vacancy>, val totalVacancyCount: Int) : VacanciesList
     }
 }

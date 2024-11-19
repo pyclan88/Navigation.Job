@@ -10,7 +10,8 @@ class VacancyMapper {
 
     fun map(response: VacanciesSearchResponse) = VacancySearchResult(
         items = response.items.map { vacancy -> map(vacancy) },
-        pages = response.pages
+        pages = response.pages,
+        found = response.found,
     )
 
     private fun map(dto: VacancyDto) = Vacancy(
