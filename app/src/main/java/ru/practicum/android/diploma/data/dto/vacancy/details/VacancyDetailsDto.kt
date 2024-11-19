@@ -15,7 +15,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.nested.ScheduleDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.WorkingItemDto
 
 data class VacancyDetailsDto(
-    @SerializedName("address") val address: AddressDto,
+    @SerializedName("address") val address: AddressDto?,
     @SerializedName("alternate_url") val alternateUrl: String?,
     @SerializedName("area") val area: AreaDto,
     @SerializedName("contacts") val contacts: Any,

@@ -26,7 +26,7 @@ class VacanciesHolder(
 
     private fun setLogo(url: String) = Glide.with(itemView)
         .load(url)
-        .centerCrop()
+        .fitCenter()
         .placeholder(R.drawable.smile)
         .into(binding.vacancyLogo)
 
