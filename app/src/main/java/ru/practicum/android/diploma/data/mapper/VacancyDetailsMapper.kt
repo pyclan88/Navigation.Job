@@ -14,18 +14,23 @@ class VacancyDetailsMapper {
     fun map(dto: VacancyDetailsDto) = VacancyDetails(
         id = dto.id,
         imageUrl = dto.employer?.logoUrls?.original,
-        name = dto.name ?: EMPTY_PARAM_VALUE,
-        area = dto.area.name ?: EMPTY_PARAM_VALUE,
+        name = getValueOrDefault(dto.name),
+        area = getValueOrDefault(dto.area.name),
         salaryFrom = dto.salary?.from ?: EMPTY_INT_PARAM_VALUE,
         salaryTo = dto.salary?.to ?: EMPTY_INT_PARAM_VALUE,
-        currency = dto.salary?.currency ?: EMPTY_PARAM_VALUE,
-        employerName = dto.employer?.name ?: EMPTY_PARAM_VALUE,
-        experience = dto.experience?.name ?: EMPTY_PARAM_VALUE,
-        employmentName = dto.employment?.name ?: EMPTY_PARAM_VALUE,
-        schedule = dto.schedule.name ?: EMPTY_PARAM_VALUE,
-        description = dto.description ?: EMPTY_PARAM_VALUE,
+        currency = getValueOrDefault(dto.salary?.currency),
+        employerName = getValueOrDefault(dto.employer?.name),
+        experience = getValueOrDefault(dto.experience?.name),
+        employmentName = getValueOrDefault(dto.employment?.name),
+        schedule = getValueOrDefault(dto.schedule.name),
+        description = getValueOrDefault(dto.description),
         descriptionSkills = skillsFormatter.skillsFormat(dto.keySkills),
-        url = dto.alternateUrl ?: EMPTY_PARAM_VALUE,
+        url = getValueOrDefault(dto.alternateUrl),
         address = addressFormatter.addressFormat(dto.address)
     )
+
+    private fun <T> getValueOrDefault(
+        value: T?
+    ): String = value?.toString() ?: EMPTY_PARAM_VALUE
+
 }

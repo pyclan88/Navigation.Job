@@ -21,19 +21,9 @@ import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.common.Source
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.state.VacancyState
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Start
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.NoInternet
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Empty
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Loading
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Error
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Data
+import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.*
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
-import ru.practicum.android.diploma.util.BindingFragment
-import ru.practicum.android.diploma.util.ImageAndTextHelper
-import ru.practicum.android.diploma.util.debounce
-import ru.practicum.android.diploma.util.getConnected
-import ru.practicum.android.diploma.util.invisible
-import ru.practicum.android.diploma.util.visible
+import ru.practicum.android.diploma.util.*
 
 class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
