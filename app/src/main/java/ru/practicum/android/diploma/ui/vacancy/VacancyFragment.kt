@@ -37,12 +37,13 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         val vacancyId = requireArguments().getString(VACANCY_DETAILS) ?: ""
+        val vacancySource = requireArguments().getString(SOURCE_KEY) ?: ""
 
         configureBackButton()
         configureAddToFavoriteButton(vacancyId)
 
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
-        viewModel.getVacancyDetails(vacancyId)
+        viewModel.getVacancyDetails(vacancyId, vacancySource)
 
         binding.ivSharing.setOnClickListener {
             viewModel.shareVacancyURL()
@@ -135,7 +136,11 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     companion object {
         private const val VACANCY_DETAILS = "vacancy_details"
-        fun createArgs(id: String): Bundle =
-            bundleOf(VACANCY_DETAILS to id)
+        private const val SOURCE_KEY = "source_key"
+        fun createArgs(id: String, source: String): Bundle =
+            bundleOf(
+                VACANCY_DETAILS to id,
+                SOURCE_KEY to source
+            )
     }
 }
