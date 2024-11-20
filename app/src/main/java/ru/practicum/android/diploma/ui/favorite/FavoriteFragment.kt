@@ -47,7 +47,7 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
             ) { vacancyId ->
                 findNavController().navigate(
                     R.id.action_favoriteFragment_to_vacancyFragment,
-                    VacancyFragment.createArgs(id = vacancyId)
+                    VacancyFragment.createArgs(id = vacancyId, source = Source.FAVORITE.name)
                 )
             }
 
