@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.search
 
-
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
