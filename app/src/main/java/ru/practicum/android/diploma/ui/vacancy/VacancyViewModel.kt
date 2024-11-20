@@ -40,19 +40,15 @@ class VacancyViewModel(
     }
 
     fun getVacancyDetails(id: String, source: String) = viewModelScope.launch {
-        var favoriteStatus: Favorite = NotInFavorite
+        val favoriteVacancy = getFavoriteVacancyByIdUseCase.execute(id)
+        val favoriteStatus: Favorite = if (favoriteVacancy == null) NotInFavorite else InFavorite
         val vacancyState: VacancyDetailsState.Data = when (source) {
             Source.SEARCH.name -> {
                 val (vacancy, errorCode) = getVacancyDetailsUseCase.execute(id)
                 handleSearchSource(vacancy, errorCode)
             }
 
-            Source.FAVORITE.name -> {
-                favoriteStatus = InFavorite
-                val favoriteVacancy = getFavoriteVacancyByIdUseCase.execute(id)
-                handleFavoriteSource(favoriteVacancy)
-            }
-
+            Source.FAVORITE.name -> handleFavoriteSource(favoriteVacancy)
             else -> Error
         }
         _state.postValue(VacancyDetailsState(vacancyState, favoriteStatus))
