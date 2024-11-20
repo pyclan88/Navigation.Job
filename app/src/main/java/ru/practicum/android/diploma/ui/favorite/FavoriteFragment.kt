@@ -23,21 +23,11 @@ import ru.practicum.android.diploma.util.visible
 
 class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
 
-    private var vacanciesAdapter: VacanciesAdapter? = null
     private val viewModel: FavoriteViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
-
-    private val onTrackClickDebounce: (String) -> Unit by lazy {
-        debounce(
-            CLICK_DEBOUNCE_DELAY,
-            viewLifecycleOwner.lifecycleScope,
-            false
-        ) { vacancyId ->
-            findNavController().navigate(
-                R.id.action_favoriteFragment_to_vacancyFragment,
-                VacancyFragment.createArgs(id = vacancyId)
-            )
-        }
+    private var onVacancyClickDebounce: ((String) -> Unit)? = null
+    private var vacanciesAdapter: VacanciesAdapter = VacanciesAdapter { vacancyId ->
+        onVacancyClickDebounce?.let { it(vacancyId) }
     }
 
     override fun createBinding(
@@ -48,16 +38,21 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vacanciesAdapter = VacanciesAdapter { vacancyId -> onTrackClickDebounce(vacancyId) }
+        onVacancyClickDebounce =
+            debounce<String>(
+                CLICK_DEBOUNCE_DELAY,
+                viewLifecycleOwner.lifecycleScope,
+                false
+            ) { vacancyId ->
+                findNavController().navigate(
+                    R.id.action_favoriteFragment_to_vacancyFragment,
+                    VacancyFragment.createArgs(id = vacancyId)
+                )
+            }
 
         viewModel.getFavoriteVacancies()
         binding.rvVacancies.adapter = vacanciesAdapter
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        vacanciesAdapter = null
     }
 
     private fun render(state: FavoriteVacanciesState) {
@@ -72,8 +67,8 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         with(binding) {
             groupPlaceholder.invisible()
             rvVacancies.visible()
-            vacanciesAdapter?.clear()
-            vacanciesAdapter?.updateVacancies(vacancies)
+            vacanciesAdapter.clear()
+            vacanciesAdapter.updateVacancies(vacancies)
         }
     }
 
