@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.data.mapper
 
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_INT_PARAM_VALUE
+import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.vacancy.self.VacancyDto
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -32,7 +33,4 @@ class VacancyMapper {
         value: T?,
     ): String = value?.toString() ?: EMPTY_PARAM_VALUE
 
-    companion object {
-        const val EMPTY_PARAM_VALUE = "Не указано"
-    }
 }

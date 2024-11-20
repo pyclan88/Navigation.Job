@@ -3,9 +3,9 @@ package ru.practicum.android.diploma.data.mapper
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_INT_PARAM_VALUE
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
-import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.data.formatter.AddressFormatter
 import ru.practicum.android.diploma.data.formatter.SkillsFormatter
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class VacancyDetailsMapper {
     private val addressFormatter = AddressFormatter()

@@ -1,18 +1,18 @@
 package ru.practicum.android.diploma.ui.search
 
+
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,9 +21,13 @@ import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.common.Source
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.state.VacancyState
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.*
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
-import ru.practicum.android.diploma.util.*
+import ru.practicum.android.diploma.util.BindingFragment
+import ru.practicum.android.diploma.util.ImageAndTextHelper
+import ru.practicum.android.diploma.util.debounce
+import ru.practicum.android.diploma.util.getConnected
+import ru.practicum.android.diploma.util.invisible
+import ru.practicum.android.diploma.util.visible
 
 class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
@@ -66,12 +70,13 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun render(state: VacancyState) {
         when (state.vacanciesList) {
-            is Start -> showStart()
-            is NoInternet -> showNoInternet()
-            is Empty -> showNoResult()
-            is Loading -> showLoading()
+            is VacancyState.VacanciesList.Start -> showStart()
+            is VacancyState.VacanciesList.NoInternet -> showNoInternet()
+            is VacancyState.VacanciesList.Empty -> showNoResult()
+            is VacancyState.VacanciesList.Loading -> showLoading()
             is Error -> showError()
-            is Data -> showContent(state.vacanciesList)
+            is VacancyState.VacanciesList.Data -> showContent(state.vacanciesList)
+            else -> {}
         }
     }
 
@@ -158,7 +163,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         }
     }
 
-    private fun showContent(vacanciesList: Data) {
+    private fun showContent(vacanciesList: VacancyState.VacanciesList.Data) {
         with(binding) {
             rvVacancies.visible()
             pbSearch.invisible()
@@ -190,7 +195,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun configureRecycler() {
         binding.rvVacancies.apply {
             adapter = vacanciesAdapter
-            binding.rvVacancies.addOnScrollListener(object : OnScrollListener() {
+            binding.rvVacancies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 

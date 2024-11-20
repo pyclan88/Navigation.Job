@@ -29,6 +29,7 @@ class VacanciesAdapter(
 
     fun updateVacancies(newVacancies: List<Vacancy>) {
         val startPosition = vacancies.size
+        if (newVacancies == vacancies) return
         vacancies = vacancies + newVacancies
         notifyItemRangeInserted(startPosition, newVacancies.size)
     }

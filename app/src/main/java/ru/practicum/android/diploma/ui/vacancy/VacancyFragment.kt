@@ -13,11 +13,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.NavigationJobApp.Companion.applicationContext
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
+import ru.practicum.android.diploma.data.formatter.SalaryFormatter
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
-import ru.practicum.android.diploma.util.*
-import ru.practicum.android.diploma.data.formatter.SalaryFormatter
+import ru.practicum.android.diploma.util.BindingFragment
+import ru.practicum.android.diploma.util.ImageAndTextHelper
+import ru.practicum.android.diploma.util.invisible
+import ru.practicum.android.diploma.util.visible
 
 class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 

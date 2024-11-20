@@ -2,7 +2,9 @@ package ru.practicum.android.diploma.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.data.dto.*
+import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
+import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
+import ru.practicum.android.diploma.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
 import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
