@@ -6,13 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
+import ru.practicum.android.diploma.common.Source
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.sharing.SharingInteract
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.Empty
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.Error
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.Loading
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.Payload
+import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Favorite
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Favorite.InFavorite
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Favorite.NotInFavorite
 import ru.practicum.android.diploma.domain.usecase.GetVacancyDetailsUseCase
@@ -36,16 +39,39 @@ class VacancyViewModel(
         _state.postValue(VacancyDetailsState(Loading, NotInFavorite))
     }
 
-    fun getVacancyDetails(id: String) = viewModelScope.launch {
-        val localDbVacancy = getFavoriteVacancyByIdUseCase.execute(id)
-        val searchVacancyResult = getVacancyDetailsUseCase.execute(id)
-        val resolvedVacancyResult = localDbVacancy ?: searchVacancyResult.first
-        val vacancyState = when (resolvedVacancyResult) {
-            null -> if (searchVacancyResult.second == NOT_FOUND_CODE.toString()) Empty else Error
-            else -> Payload(resolvedVacancyResult)
+    fun getVacancyDetails(id: String, source: String) = viewModelScope.launch {
+        var favoriteStatus: Favorite = NotInFavorite
+        val vacancyState: VacancyDetailsState.Data = when (source) {
+            Source.SEARCH.name -> {
+                val (vacancy, errorCode) = getVacancyDetailsUseCase.execute(id)
+                handleSearchSource(vacancy, errorCode)
+            }
+
+            Source.FAVORITE.name -> {
+                favoriteStatus = InFavorite
+                val favoriteVacancy = getFavoriteVacancyByIdUseCase.execute(id)
+                handleFavoriteSource(favoriteVacancy)
+            }
+
+            else -> Error
         }
-        val favoriteStatus = if (localDbVacancy == null) NotInFavorite else InFavorite
         _state.postValue(VacancyDetailsState(vacancyState, favoriteStatus))
+    }
+
+    private fun handleSearchSource(vacancy: VacancyDetails?, errorCode: String?): VacancyDetailsState.Data {
+        return if (vacancy != null) {
+            if (errorCode == NOT_FOUND_CODE.toString()) Empty else Payload(vacancy)
+        } else {
+            Error
+        }
+    }
+
+    private fun handleFavoriteSource(favoriteVacancy: VacancyDetails?): VacancyDetailsState.Data {
+        return if (favoriteVacancy != null) {
+            Payload(favoriteVacancy)
+        } else {
+            Error
+        }
     }
 
     @Suppress("LabeledExpression")

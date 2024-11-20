@@ -17,6 +17,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
+import ru.practicum.android.diploma.common.Source
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Start
@@ -53,7 +54,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             ) { vacancyId ->
                 findNavController().navigate(
                     R.id.action_searchFragment_to_vacancyFragment,
-                    VacancyFragment.createArgs(id = vacancyId)
+                    VacancyFragment.createArgs(id = vacancyId, source = Source.SEARCH.name)
                 )
             }
 
