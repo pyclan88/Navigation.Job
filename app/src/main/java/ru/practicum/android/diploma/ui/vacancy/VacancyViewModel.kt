@@ -37,16 +37,15 @@ class VacancyViewModel(
     }
 
     fun getVacancyDetails(id: String) = viewModelScope.launch {
-        val details = getVacancyDetailsUseCase.execute(id)
-        val detailsState = when (details.first) {
-            null -> if (details.second == NOT_FOUND_CODE.toString()) Empty else Error
-            else -> Payload(details.first!!)
+        val localDbVacancy = getFavoriteVacancyByIdUseCase.execute(id)
+        val searchVacancyResult = getVacancyDetailsUseCase.execute(id)
+        val resolvedVacancyResult = localDbVacancy ?: searchVacancyResult.first
+        val vacancyState = when (resolvedVacancyResult) {
+            null -> if (searchVacancyResult.second == NOT_FOUND_CODE.toString()) Empty else Error
+            else -> Payload(resolvedVacancyResult)
         }
-        if (details.first?.url != EMPTY_PARAM_VALUE) vacancyUrl = details.first!!.url
-        val favorite = getFavoriteVacancyByIdUseCase.execute(id)
-        val favoriteState = if (favorite == null) NotInFavorite else InFavorite
-
-        _state.postValue(VacancyDetailsState(detailsState, favoriteState))
+        val favoriteStatus = if (localDbVacancy == null) NotInFavorite else InFavorite
+        _state.postValue(VacancyDetailsState(vacancyState, favoriteStatus))
     }
 
     @Suppress("LabeledExpression")
