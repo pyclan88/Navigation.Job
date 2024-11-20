@@ -10,6 +10,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
+import ru.practicum.android.diploma.common.Source
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.FavoriteVacanciesState

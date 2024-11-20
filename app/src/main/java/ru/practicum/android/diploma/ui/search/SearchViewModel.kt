@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.VacancyState
@@ -92,9 +93,5 @@ class SearchViewModel(
 
     fun onLastItemReached() {
         if (!isNextPageLoading && currentPage < maxPage) requestToServer(lastExpression)
-    }
-
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2_000L
     }
 }
