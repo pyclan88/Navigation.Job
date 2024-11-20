@@ -129,7 +129,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         Glide.with(requireContext())
             .load(vacancy.imageUrl)
             .placeholder(R.drawable.placeholder_logo)
-            .centerCrop()
+            .fitCenter()
             .into(binding.sivVacancyLogo)
     }
 
