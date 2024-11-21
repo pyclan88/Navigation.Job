@@ -76,7 +76,7 @@ class VacancyViewModel(
 
     fun share() {
         val vacancy = _state.value?.data as? Payload ?: return
-        sharingInteract.shareUrl(vacancy.details.url)
+        sharingInteract.shareUrl(vacancy.details.url, vacancy.details.name)
     }
 
     private suspend fun handleSearchSource(vacancyId: String): Data {

@@ -7,8 +7,8 @@ class SharingInteractImpl(
     private val externalNavigator: ExternalNavigator
 ) : SharingInteract {
 
-    override fun shareUrl(url: String) {
-        externalNavigator.shareUrl(url)
+    override fun shareUrl(url: String, title: String) {
+        externalNavigator.shareUrl(url, title)
     }
 
     override fun sendEmail(email: String) {
