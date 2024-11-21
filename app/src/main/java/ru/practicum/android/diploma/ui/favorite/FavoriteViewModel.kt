@@ -13,7 +13,8 @@ class FavoriteViewModel(
 ) : ViewModel() {
 
     private val _state = MutableLiveData<FavoriteVacanciesState>()
-    val state: LiveData<FavoriteVacanciesState> get() = _state
+    val state: LiveData<FavoriteVacanciesState>
+        get() = _state
 
     fun getFavoriteVacancies() = viewModelScope.launch {
         val vacancies = getAllFavoriteVacanciesUseCase.execute()

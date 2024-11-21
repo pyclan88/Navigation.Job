@@ -24,13 +24,11 @@ class SearchViewModel(
 
     private var isNextPageLoading = false
 
-    private val _state = MutableStateFlow(
-        VacancyState(
-            input = Input.Empty,
-            vacanciesList = VacanciesList.Start
-        )
+    private val _state: MutableStateFlow<VacancyState> = MutableStateFlow(
+        VacancyState(Input.Empty, VacanciesList.Start)
     )
-    val state: StateFlow<VacancyState> get() = _state
+    val state: StateFlow<VacancyState>
+        get() = _state
 
     private val searchDebounceAction = debounce<String>(
         delayMillis = SEARCH_DEBOUNCE_DELAY,

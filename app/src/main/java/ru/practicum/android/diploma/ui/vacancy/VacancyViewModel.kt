@@ -35,7 +35,8 @@ class VacancyViewModel(
 ) : ViewModel() {
 
     private val _state = MutableLiveData<VacancyDetailsState>()
-    val state: LiveData<VacancyDetailsState> get() = _state
+    val state: LiveData<VacancyDetailsState>
+        get() = _state
 
     init {
         _state.postValue(VacancyDetailsState(Loading, NotInFavorite))

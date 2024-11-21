@@ -41,14 +41,11 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         val vacancySource = requireArguments().getSerializable(SOURCE_KEY) as Source
 
         configureBackButton()
+        configureShareButton()
         configureAddToFavoriteButton(vacancyId)
 
         viewModel.state.observe(viewLifecycleOwner) { render(it) }
         viewModel.getVacancyDetails(vacancyId, vacancySource)
-
-        binding.ivSharing.setOnClickListener {
-            viewModel.share()
-        }
     }
 
     private fun render(state: VacancyDetailsState) {
@@ -72,6 +69,9 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun configureAddToFavoriteButton(vacancyId: String) =
         binding.ivFavorites.setOnClickListener { viewModel.onFavoriteClicked(vacancyId) }
+
+    private fun configureShareButton() =
+        binding.ivSharing.setOnClickListener { viewModel.share() }
 
     private fun showEmpty() = with(binding) {
         groupVacancy.invisible()
