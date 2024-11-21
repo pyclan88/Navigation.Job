@@ -14,7 +14,7 @@ class SalaryFormatter(
         val formattedSalaryTo = formatter.format(salaryTo).replace(",", " ")
         val formattedSalaryFrom = formatter.format(salaryFrom).replace(",", " ")
         val currencySymbol = when (currency) {
-            "RUR" -> "₽"
+            "RUR", "RUB" -> "₽"
             "BYR" -> "Br"
             "USD" -> "$"
             "EUR" -> "€"
