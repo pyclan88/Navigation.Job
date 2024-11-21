@@ -28,9 +28,12 @@
     <string name="salary_is_not_specified">зарплата не указана</string>
     <string name="salary_from_format">от %1$s %2$s</string>
     <string name="salary_to_format">до %1$s %2$s</string>
-    <string name="salary_range_format">от %1$s %2$s до %3$s %4$s</string>
-    <string name="found_n_vacancies">Найдено %d вакансий</string>
+    <string name="salary_range_format">от %1$s до %2$s %3$s</string>
     <string name="no_suitable_application">Нет подходящего приложения</string>
     <string name="toast_check_your_internet_connection">Проверьте подключение к интернету</string>
     <string name="toast_error_has_occurred">Произошла ошибка</string>
+    <string name="found_word">Найдено</string>
+    <string name="vacancy_nominative">вакансия</string>
+    <string name="vacancies_genitive">вакансий</string>
+    <string name="vacancy_dative">вакансии</string>
 </resources>

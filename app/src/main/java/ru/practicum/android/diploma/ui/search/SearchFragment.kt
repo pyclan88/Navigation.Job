@@ -22,6 +22,7 @@ import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
+import ru.practicum.android.diploma.util.EndingConvertor
 import ru.practicum.android.diploma.util.ImageAndTextHelper
 import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.getConnected
@@ -104,11 +105,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 R.drawable.placeholder_vacancy_search_no_internet_skull,
                 resources.getString(R.string.no_internet)
             )
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.toast_check_your_internet_connection),
-                Toast.LENGTH_LONG
-            ).show()
         }
     }
 
@@ -171,7 +167,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             groupPlaceholder.invisible()
             tvCountVacancies.let {
                 it.visible()
-                it.text = resources.getString(R.string.found_n_vacancies, vacanciesList.totalVacancyCount)
+                it.text = convertToFoundVacancies(vacanciesList.totalVacancyCount)
             }
         }
     }
@@ -215,5 +211,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             })
 
         }
+    }
+
+    private fun convertToFoundVacancies(amount: Int): String {
+        val vacanciesWord = resources.getString(EndingConvertor.vacancies(amount))
+        return "${resources.getString(R.string.found_word)} $amount $vacanciesWord"
     }
 }

@@ -40,7 +40,6 @@ class SalaryFormatter(private val context: Context) {
             salaryTo != 0 && salaryFrom != 0 -> context.getString(
                 R.string.salary_range_format,
                 formattedSalaryFrom,
-                currencySymbol,
                 formattedSalaryTo,
                 currencySymbol
             )
