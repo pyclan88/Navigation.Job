@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -47,7 +46,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         onVacancyClickDebounce =
-            debounce<String>(
+            debounce(
                 CLICK_DEBOUNCE_DELAY,
                 viewLifecycleOwner.lifecycleScope,
                 false
@@ -92,19 +91,23 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun showNoInternet() {
-        with(binding) {
-            rvVacancies.invisible()
-            ivLookingForPlaceholder.invisible()
-            pbSearch.invisible()
-            groupPlaceholder.visible()
-            tvCountVacancies.invisible()
-            imageAndTextHelper.setImageAndText(
-                requireContext(),
-                ivPlaceholder,
-                tvPlaceholder,
-                R.drawable.placeholder_vacancy_search_no_internet_skull,
-                resources.getString(R.string.no_internet)
-            )
+        if (vacanciesAdapter.itemCount == 0) {
+            showToast(R.string.toast_check_your_internet_connection)
+        } else {
+            with(binding) {
+                rvVacancies.invisible()
+                ivLookingForPlaceholder.invisible()
+                pbSearch.invisible()
+                groupPlaceholder.visible()
+                tvCountVacancies.invisible()
+                imageAndTextHelper.setImageAndText(
+                    requireContext(),
+                    ivPlaceholder,
+                    tvPlaceholder,
+                    R.drawable.placeholder_vacancy_search_no_internet_skull,
+                    resources.getString(R.string.no_internet)
+                )
+            }
         }
     }
 
@@ -150,11 +153,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 R.drawable.placeholder_vacancy_search_server_error_cry,
                 resources.getString(R.string.server_error)
             )
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.toast_error_has_occurred),
-                Toast.LENGTH_LONG
-            ).show()
+            showToast(R.string.toast_error_has_occurred)
         }
     }
 
