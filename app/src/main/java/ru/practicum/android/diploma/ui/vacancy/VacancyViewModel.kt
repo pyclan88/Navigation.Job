@@ -87,7 +87,9 @@ class VacancyViewModel(
                 NOT_FOUND_CODE.toString() -> Empty
                 else -> Error
             }
-        } else Payload(vacancy)
+        } else {
+            Payload(vacancy)
+        }
     }
 
     private fun handleFavoriteSource(
