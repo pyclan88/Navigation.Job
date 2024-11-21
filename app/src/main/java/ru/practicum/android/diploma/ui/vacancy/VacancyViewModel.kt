@@ -7,6 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.common.Source
+import ru.practicum.android.diploma.common.Source.FAVORITE
+import ru.practicum.android.diploma.common.Source.SEARCH
+import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.sharing.SharingInteract
@@ -14,8 +17,8 @@ import ru.practicum.android.diploma.domain.state.VacancyDetailsState
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.Empty
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.Error
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.Loading
+import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.NoInternet
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.Payload
-import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Favorite
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Favorite.InFavorite
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Favorite.NotInFavorite
 import ru.practicum.android.diploma.domain.usecase.GetVacancyDetailsUseCase
@@ -39,27 +42,27 @@ class VacancyViewModel(
         _state.postValue(VacancyDetailsState(Loading, NotInFavorite))
     }
 
-    fun getVacancyDetails(id: String, source: String) = viewModelScope.launch {
+    fun getVacancyDetails(id: String, source: Source) = viewModelScope.launch {
         val favoriteVacancy = getFavoriteVacancyByIdUseCase.execute(id)
-        val favoriteStatus: Favorite = if (favoriteVacancy == null) NotInFavorite else InFavorite
-        val vacancyState: VacancyDetailsState.Data = when (source) {
-            Source.SEARCH.name -> {
-                val (vacancy, errorCode) = getVacancyDetailsUseCase.execute(id)
-                handleSearchSource(vacancy, errorCode)
-            }
+        val favoriteState = if (favoriteVacancy == null) NotInFavorite else InFavorite
 
-            Source.FAVORITE.name -> handleFavoriteSource(favoriteVacancy)
-            else -> Error
+        val vacancyState = when (source) {
+            SEARCH -> handleSearchSource(id)
+            FAVORITE -> handleFavoriteSource(favoriteVacancy)
         }
-        _state.postValue(VacancyDetailsState(vacancyState, favoriteStatus))
+
+        _state.postValue(VacancyDetailsState(vacancyState, favoriteState))
     }
 
-    private fun handleSearchSource(vacancy: VacancyDetails?, errorCode: String?): VacancyDetailsState.Data {
-        return if (vacancy != null) {
-            if (errorCode == NOT_FOUND_CODE.toString()) Empty else Payload(vacancy)
-        } else {
-            Error
-        }
+    private suspend fun handleSearchSource(vacancyId: String): VacancyDetailsState.Data {
+        val (vacancy, errorCode) = getVacancyDetailsUseCase.execute(vacancyId)
+        return if (vacancy == null) {
+            when (errorCode) {
+                FAILED_INTERNET_CONNECTION_CODE.toString() -> NoInternet
+                NOT_FOUND_CODE.toString() -> Empty
+                else -> Error
+            }
+        } else Payload(vacancy)
     }
 
     private fun handleFavoriteSource(favoriteVacancy: VacancyDetails?): VacancyDetailsState.Data {
@@ -90,7 +93,5 @@ class VacancyViewModel(
         }
     }
 
-    fun shareVacancyURL() {
-        sharingInteract.shareUrl(vacancyUrl)
-    }
+    fun shareVacancyUrl() = sharingInteract.shareUrl(vacancyUrl)
 }

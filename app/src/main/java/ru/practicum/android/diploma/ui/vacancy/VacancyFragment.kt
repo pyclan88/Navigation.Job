@@ -13,6 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.NavigationJobApp.Companion.applicationContext
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
+import ru.practicum.android.diploma.common.Source
 import ru.practicum.android.diploma.data.formatter.SalaryFormatter
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
@@ -37,7 +38,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         val vacancyId = requireArguments().getString(VACANCY_DETAILS) ?: ""
-        val vacancySource = requireArguments().getString(SOURCE_KEY) ?: ""
+        val vacancySource = requireArguments().getSerializable(SOURCE_KEY) as Source
 
         configureBackButton()
         configureAddToFavoriteButton(vacancyId)
@@ -46,7 +47,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         viewModel.getVacancyDetails(vacancyId, vacancySource)
 
         binding.ivSharing.setOnClickListener {
-            viewModel.shareVacancyURL()
+            viewModel.shareVacancyUrl()
         }
     }
 
@@ -56,6 +57,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
             is VacancyDetailsState.Data.Empty -> showEmpty()
             is VacancyDetailsState.Data.Payload -> showContent(state.data.details)
             is VacancyDetailsState.Data.Error -> showError()
+            is VacancyDetailsState.Data.NoInternet -> showNoInternet()
         }
 
         val resId = when (state.favorite) {
@@ -103,6 +105,10 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         )
     }
 
+    private fun showNoInternet() {
+        TODO("Допилить обработку экрана, когда экрана нет")
+    }
+
     private fun showContent(vacancy: VacancyDetails) = with(binding) {
         groupVacancy.visible()
         groupPlaceholder.invisible()
@@ -137,10 +143,9 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     companion object {
         private const val VACANCY_DETAILS = "vacancy_details"
         private const val SOURCE_KEY = "source_key"
-        fun createArgs(id: String, source: String): Bundle =
-            bundleOf(
-                VACANCY_DETAILS to id,
-                SOURCE_KEY to source
-            )
+        fun createArgs(id: String, source: Source) = bundleOf(
+            VACANCY_DETAILS to id,
+            SOURCE_KEY to source
+        )
     }
 }
