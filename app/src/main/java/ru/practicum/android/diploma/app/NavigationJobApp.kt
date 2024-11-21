@@ -22,10 +22,13 @@ class NavigationJobApp : Application() {
             androidContext(this@NavigationJobApp)
             modules(dataModule, interactorModule, repositoryModule, viewModelModule, utilModule)
         }
+
     }
 
     companion object {
         private var instance: NavigationJobApp? = null
+        const val HEAD_HUNTER_TOKEN = "APPLKBT2B63I20SQJH2RCL03Q00G1V5KKKJ9NE2M8J5OIOJGNDDQF5KLEV0VG519"
+
         fun applicationContext(): Context {
             return instance!!.applicationContext
         }

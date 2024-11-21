@@ -13,11 +13,13 @@ fun getConnected(): Boolean {
         ) as ConnectivityManager
     val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
     return if (capabilities != null) {
-        when {
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-            else -> false
+        with(capabilities) {
+            when {
+                hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
         }
     } else {
         false

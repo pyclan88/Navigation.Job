@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.koin.android)
     // network
     implementation(libs.retrofit)
+    implementation(libs.logging.interceptor)
     // serialization
     implementation(libs.converter.gson)
     // navigation
