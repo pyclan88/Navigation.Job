@@ -8,8 +8,6 @@ import ru.practicum.android.diploma.data.formatter.SkillsFormatter
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class VacancyDetailsMapper {
-    private val addressFormatter = AddressFormatter()
-    private val skillsFormatter = SkillsFormatter()
 
     fun map(dto: VacancyDetailsDto) = VacancyDetails(
         id = dto.id,
@@ -24,9 +22,9 @@ class VacancyDetailsMapper {
         employmentName = getValueOrDefault(dto.employment?.name),
         schedule = getValueOrDefault(dto.schedule.name),
         description = getValueOrDefault(dto.description),
-        descriptionSkills = skillsFormatter.skillsFormat(dto.keySkills),
+        descriptionSkills = SkillsFormatter.format(dto.keySkills),
         url = getValueOrDefault(dto.alternateUrl),
-        address = addressFormatter.addressFormat(dto.address)
+        address = AddressFormatter.format(dto.address)
     )
 
     private fun <T> getValueOrDefault(
