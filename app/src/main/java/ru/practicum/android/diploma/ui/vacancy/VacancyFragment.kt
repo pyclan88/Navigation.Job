@@ -105,8 +105,17 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         )
     }
 
-    private fun showNoInternet() {
-        TODO("Допилить обработку экрана, когда экрана нет")
+    private fun showNoInternet() = with(binding) {
+        groupVacancy.invisible()
+        groupPlaceholder.visible()
+        pbVacancy.invisible()
+        imageAndTextHelper.setImageAndText(
+            requireContext(),
+            ivPlaceholder,
+            tvPlaceholder,
+            R.drawable.placeholder_vacancy_search_no_internet_skull,
+            resources.getString(R.string.no_internet)
+        )
     }
 
     private fun showContent(vacancy: VacancyDetails) = with(binding) {
