@@ -47,7 +47,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
         viewModel.getVacancyDetails(vacancyId, vacancySource)
 
         binding.ivSharing.setOnClickListener {
-            viewModel.shareVacancyUrl()
+            viewModel.share()
         }
     }
 

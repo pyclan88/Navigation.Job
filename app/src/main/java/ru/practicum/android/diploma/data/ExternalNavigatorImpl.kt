@@ -5,12 +5,14 @@ import android.content.Intent
 import android.net.Uri
 import ru.practicum.android.diploma.domain.sharing.ExternalNavigator
 
-class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
+class ExternalNavigatorImpl(
+    private val context: Context
+) : ExternalNavigator {
 
     override fun shareUrl(url: String) {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        shareIntent.setType("text/playn")
+        shareIntent.setType("text/plain")
         shareIntent.putExtra(Intent.EXTRA_TEXT, url)
         context.startActivity(shareIntent)
     }
