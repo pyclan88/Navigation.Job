@@ -64,7 +64,7 @@ dependencies {
     implementation(libs.koin.android)
     // network
     implementation(libs.retrofit)
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation(libs.logging.interceptor)
     // serialization
     implementation(libs.converter.gson)
     // navigation
@@ -79,9 +79,4 @@ dependencies {
     // glide
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
-    // tests
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:<1.9.0>")
-    testImplementation("io.mockk:mockk:1.13.12")
-    testImplementation("junit:junit:<4.13.2>")
-
 }
