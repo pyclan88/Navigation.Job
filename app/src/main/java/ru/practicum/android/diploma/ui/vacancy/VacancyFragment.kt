@@ -37,7 +37,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val vacancyId = requireArguments().getString(VACANCY_DETAILS) ?: ""
+        val vacancyId = requireArguments().getString(VACANCY_DETAILS).orEmpty()
         val vacancySource = requireArguments().getSerializable(SOURCE_KEY) as Source
 
         configureBackButton()
