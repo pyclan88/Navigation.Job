@@ -92,8 +92,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun showNoInternet() {
         if (vacanciesAdapter.itemCount == 0) {
-            showToast(R.string.toast_check_your_internet_connection)
-        } else {
             with(binding) {
                 rvVacancies.invisible()
                 ivLookingForPlaceholder.invisible()
@@ -108,6 +106,8 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                     resources.getString(R.string.no_internet)
                 )
             }
+        } else {
+            showToast(R.string.toast_check_your_internet_connection)
         }
     }
 
