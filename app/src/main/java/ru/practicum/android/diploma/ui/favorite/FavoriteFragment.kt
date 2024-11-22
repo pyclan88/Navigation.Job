@@ -10,7 +10,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
-import ru.practicum.android.diploma.common.Source
+import ru.practicum.android.diploma.common.Source.FAVORITE
 import ru.practicum.android.diploma.databinding.FragmentFavoriteBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.FavoriteVacanciesState
@@ -40,14 +40,14 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         onVacancyClickDebounce =
-            debounce<String>(
+            debounce(
                 CLICK_DEBOUNCE_DELAY,
                 viewLifecycleOwner.lifecycleScope,
                 false
             ) { vacancyId ->
                 findNavController().navigate(
                     R.id.action_favoriteFragment_to_vacancyFragment,
-                    VacancyFragment.createArgs(id = vacancyId, source = Source.FAVORITE.name)
+                    VacancyFragment.createArgs(id = vacancyId, source = FAVORITE)
                 )
             }
 

@@ -15,23 +15,42 @@ import ru.practicum.android.diploma.data.dto.vacancy.nested.ScheduleDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.WorkingItemDto
 
 data class VacancyDetailsDto(
-    @SerializedName("address") val address: AddressDto?,
-    @SerializedName("alternate_url") val alternateUrl: String?,
-    @SerializedName("area") val area: AreaDto,
-    @SerializedName("contacts") val contacts: Any,
-    @SerializedName("created_at") val createdAt: String,
-    @SerializedName("department") val department: DepartmentDto,
-    @SerializedName("description") val description: String?,
-    @SerializedName("employer") val employer: EmployerDto?,
-    @SerializedName("employment") val employment: EmploymentDto?,
-    @SerializedName("experience") val experience: ExperienceDto?,
-    @SerializedName("id") val id: String,
-    @SerializedName("key_skills") val keySkills: List<KeySkillDto>,
-    @SerializedName("name") val name: String?,
-    @SerializedName("professional_roles") val professionalRoles: List<ProfessionalRoleDto>,
-    @SerializedName("salary") val salary: SalaryDto?,
-    @SerializedName("schedule") val schedule: ScheduleDto,
-    @SerializedName("working_days") val workingDays: List<WorkingItemDto>,
-    @SerializedName("working_time_intervals") val workingTimeIntervals: List<WorkingItemDto>,
-    @SerializedName("working_time_modes") val workingTimeModes: List<WorkingItemDto>,
+    @SerializedName("address")
+    val address: AddressDto?,
+    @SerializedName("alternate_url")
+    val alternateUrl: String?,
+    @SerializedName("area")
+    val area: AreaDto,
+    @SerializedName("contacts")
+    val contacts: Any,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("department")
+    val department: DepartmentDto,
+    @SerializedName("description")
+    val description: String?,
+    @SerializedName("employer")
+    val employer: EmployerDto?,
+    @SerializedName("employment")
+    val employment: EmploymentDto?,
+    @SerializedName("experience")
+    val experience: ExperienceDto?,
+    @SerializedName("id")
+    val id: String,
+    @SerializedName("key_skills")
+    val keySkills: List<KeySkillDto>,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("professional_roles")
+    val professionalRoles: List<ProfessionalRoleDto>,
+    @SerializedName("salary")
+    val salary: SalaryDto?,
+    @SerializedName("schedule")
+    val schedule: ScheduleDto,
+    @SerializedName("working_days")
+    val workingDays: List<WorkingItemDto>,
+    @SerializedName("working_time_intervals")
+    val workingTimeIntervals: List<WorkingItemDto>,
+    @SerializedName("working_time_modes")
+    val workingTimeModes: List<WorkingItemDto>,
 ) : Response()

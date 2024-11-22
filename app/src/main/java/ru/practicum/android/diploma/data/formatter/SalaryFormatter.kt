@@ -4,14 +4,17 @@ import android.content.Context
 import ru.practicum.android.diploma.R
 import java.text.DecimalFormat
 
-class SalaryFormatter(private val context: Context) {
+class SalaryFormatter(
+    private val context: Context
+) {
+
     private val formatter = DecimalFormat("#,###")
 
     fun salaryFormat(salaryTo: Int, salaryFrom: Int, currency: String): String {
         val formattedSalaryTo = formatter.format(salaryTo).replace(",", " ")
         val formattedSalaryFrom = formatter.format(salaryFrom).replace(",", " ")
         val currencySymbol = when (currency) {
-            "RUR" -> "₽"
+            "RUR", "RUB" -> "₽"
             "BYR" -> "Br"
             "USD" -> "$"
             "EUR" -> "€"
@@ -40,7 +43,6 @@ class SalaryFormatter(private val context: Context) {
             salaryTo != 0 && salaryFrom != 0 -> context.getString(
                 R.string.salary_range_format,
                 formattedSalaryFrom,
-                currencySymbol,
                 formattedSalaryTo,
                 currencySymbol
             )

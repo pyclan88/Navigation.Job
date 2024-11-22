@@ -11,6 +11,7 @@ data class VacancyDetailsState(
         data object Loading : Data
         data object Empty : Data
         data object Error : Data
+        data object NoInternet : Data
         data class Payload(val details: VacancyDetails) : Data
     }
 

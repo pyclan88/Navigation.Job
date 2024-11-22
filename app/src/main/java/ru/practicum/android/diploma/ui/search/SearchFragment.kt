@@ -1,34 +1,27 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity.INPUT_METHOD_SERVICE
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
-import ru.practicum.android.diploma.common.Source
+import ru.practicum.android.diploma.common.Source.SEARCH
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.state.VacancyState
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Start
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.NoInternet
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Empty
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Loading
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Error
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Data
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
+import ru.practicum.android.diploma.util.EndingConvertor
 import ru.practicum.android.diploma.util.ImageAndTextHelper
 import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.getConnected
@@ -53,14 +46,14 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         onVacancyClickDebounce =
-            debounce<String>(
+            debounce(
                 CLICK_DEBOUNCE_DELAY,
                 viewLifecycleOwner.lifecycleScope,
                 false
             ) { vacancyId ->
                 findNavController().navigate(
                     R.id.action_searchFragment_to_vacancyFragment,
-                    VacancyFragment.createArgs(id = vacancyId, source = Source.SEARCH.name)
+                    VacancyFragment.createArgs(id = vacancyId, source = SEARCH)
                 )
             }
 
@@ -76,12 +69,13 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun render(state: VacancyState) {
         when (state.vacanciesList) {
-            is Start -> showStart()
-            is NoInternet -> showNoInternet()
-            is Empty -> showNoResult()
-            is Loading -> showLoading()
+            is VacancyState.VacanciesList.Start -> showStart()
+            is VacancyState.VacanciesList.NoInternet -> showNoInternet()
+            is VacancyState.VacanciesList.Empty -> showNoResult()
+            is VacancyState.VacanciesList.Loading -> showLoading()
             is Error -> showError()
-            is Data -> showContent(state.vacanciesList)
+            is VacancyState.VacanciesList.Data -> showContent(state.vacanciesList)
+            else -> {}
         }
     }
 
@@ -97,24 +91,23 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun showNoInternet() {
-        with(binding) {
-            rvVacancies.invisible()
-            ivLookingForPlaceholder.invisible()
-            pbSearch.invisible()
-            groupPlaceholder.visible()
-            tvCountVacancies.invisible()
-            imageAndTextHelper.setImageAndText(
-                requireContext(),
-                ivPlaceholder,
-                tvPlaceholder,
-                R.drawable.placeholder_vacancy_search_no_internet_skull,
-                resources.getString(R.string.no_internet)
-            )
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.toast_check_your_internet_connection),
-                Toast.LENGTH_LONG
-            ).show()
+        if (vacanciesAdapter.itemCount == 0) {
+            with(binding) {
+                rvVacancies.invisible()
+                ivLookingForPlaceholder.invisible()
+                pbSearch.invisible()
+                groupPlaceholder.visible()
+                tvCountVacancies.invisible()
+                imageAndTextHelper.setImageAndText(
+                    requireContext(),
+                    ivPlaceholder,
+                    tvPlaceholder,
+                    R.drawable.placeholder_vacancy_search_no_internet_skull,
+                    resources.getString(R.string.no_internet)
+                )
+            }
+        } else {
+            showToast(R.string.toast_check_your_internet_connection)
         }
     }
 
@@ -160,15 +153,11 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 R.drawable.placeholder_vacancy_search_server_error_cry,
                 resources.getString(R.string.server_error)
             )
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.toast_error_has_occurred),
-                Toast.LENGTH_LONG
-            ).show()
+            showToast(R.string.toast_error_has_occurred)
         }
     }
 
-    private fun showContent(vacanciesList: Data) {
+    private fun showContent(vacanciesList: VacancyState.VacanciesList.Data) {
         with(binding) {
             rvVacancies.visible()
             pbSearch.invisible()
@@ -177,7 +166,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             groupPlaceholder.invisible()
             tvCountVacancies.let {
                 it.visible()
-                it.text = resources.getString(R.string.found_n_vacancies, vacanciesList.totalVacancyCount)
+                it.text = convertToFoundVacancies(vacanciesList.totalVacancyCount)
             }
         }
     }
@@ -200,7 +189,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun configureRecycler() {
         binding.rvVacancies.apply {
             adapter = vacanciesAdapter
-            binding.rvVacancies.addOnScrollListener(object : OnScrollListener() {
+            binding.rvVacancies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 
@@ -221,5 +210,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             })
 
         }
+    }
+
+    private fun convertToFoundVacancies(amount: Int): String {
+        val vacanciesWord = resources.getString(EndingConvertor.vacancies(amount))
+        return "${resources.getString(R.string.found_word)} $amount $vacanciesWord"
     }
 }

@@ -6,7 +6,7 @@ data class LogoUrlsDto(
     @SerializedName("original")
     val original: String,
     @SerializedName("240")
-    val x240: String,
+    val medium: String,
     @SerializedName("90")
-    val x90: String
+    val small: String
 )
