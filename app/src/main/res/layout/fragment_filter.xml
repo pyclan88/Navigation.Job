@@ -32,4 +32,135 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_place_work_title_disabled"
+        style="@style/FilterSettingsSelectionTitleDisabledTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mark_56dp"
+        android:paddingEnd="@dimen/mark_2dp"
+        android:text="@string/place_work"
+        android:visibility="visible"
+        app:drawableEndCompat="@drawable/ic_arrow_forward"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
+        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
+        app:layout_constraintTop_toBottomOf="@id/tb_header" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_place_work_enabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="tv_place_work_title_enabled,tv_place_work, iv_ic_reset_place_work" />
+
+    <TextView
+        android:id="@+id/tv_place_work_title_enabled"
+        style="@style/FilterSettingsSelectionTitleEnabledTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mark_48dp"
+        android:text="@string/place_work"
+        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
+        app:layout_constraintTop_toBottomOf="@id/tb_header" />
+
+    <TextView
+        android:id="@+id/tv_place_work"
+        style="@style/FilterSettingsSelectionTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_place_work_title_enabled"
+        tools:text="Россия, Москва" />
+
+    <ImageView
+        android:id="@+id/iv_ic_reset_place_work"
+        style="@style/FilterSettingsSelectionTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/mark_2dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintBottom_toBottomOf="@id/tv_place_work"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
+        app:layout_constraintTop_toTopOf="@id/tv_place_work_title_enabled" />
+
+    <TextView
+        android:id="@+id/tv_branch_title_disabled"
+        style="@style/FilterSettingsSelectionTitleDisabledTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
+        android:paddingEnd="@dimen/mark_2dp"
+        android:text="@string/branch"
+        android:visibility="visible"
+        app:drawableEndCompat="@drawable/ic_arrow_forward"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
+        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
+        app:layout_constraintTop_toBottomOf="@id/tb_header" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_branch_enabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="tv_branch_title_enabled,tv_branch, iv_ic_reset_branch" />
+
+    <TextView
+        android:id="@+id/tv_branch_title_enabled"
+        style="@style/FilterSettingsSelectionTitleEnabledTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mark_108dp"
+        android:text="@string/branch"
+        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
+        app:layout_constraintTop_toBottomOf="@id/tb_header" />
+
+    <TextView
+        android:id="@+id/tv_branch"
+        style="@style/FilterSettingsSelectionTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_branch_title_enabled"
+        tools:text="IT" />
+
+    <ImageView
+        android:id="@+id/iv_ic_reset_branch"
+        style="@style/FilterSettingsSelectionTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/mark_2dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintBottom_toBottomOf="@id/tv_branch"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
+        app:layout_constraintTop_toTopOf="@id/tv_branch_title_enabled" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/playlistNameText"
+        style="@style/SalaryInputText"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/mark_52dp"
+        android:layout_marginTop="@dimen/mark_180dp"
+        android:background="@drawable/bg_search_edittext"
+        android:hint="@string/expected_salary"
+        android:orientation="vertical"
+        app:boxStrokeWidth="0dp"
+        app:endIconMode="clear_text"
+        app:boxStrokeWidthFocused="0dp"
+        app:cursorColor="@color/blue"
+        app:expandedHintEnabled="false"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline_16dp"
+        app:layout_constraintStart_toStartOf="@+id/start_guideline_16dp"
+        app:layout_constraintTop_toBottomOf="@id/tb_header">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/playlistNameInputText"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/noColor"
+            android:hint="@string/enter_amount"
+            android:maxLines="1"
+            android:paddingTop="@dimen/mark_24dp"
+            android:textColor="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
