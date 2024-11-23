@@ -28,7 +28,7 @@ class VacancyRepositoryImpl(
     override suspend fun searchVacancies(expression: String, page: Int): Resource<VacancySearchResult> {
         return withContext(Dispatchers.IO) {
             // заменить filterRepository
-            val filterRepository = mutableListOf("40", 10000, "7", true)
+            val filterRepository = mutableListOf("40", "", "", true)
             val response = networkClient.doRequest(
                 VacancySearchRequest(
                     optionMapper.map(
