@@ -10,7 +10,6 @@ class OptionMapper {
         industry: String = "",
         onlyWithSalary: String = "false"
     ): HashMap<String, String> {
-
         val options: HashMap<String, String> = HashMap()
         options["text"] = expression
         options["page"] = page

@@ -32,12 +32,12 @@ class VacancyRepositoryImpl(
             val response = networkClient.doRequest(
                 VacancySearchRequest(
                     optionMapper.map(
-                        expression,
-                        page.toString(),
-                        filterRepository[0].toString(),
-                        filterRepository[1].toString(),
-                        filterRepository[2].toString(),
-                        filterRepository[3].toString(),
+                        expression = expression,
+                        page = page.toString(),
+                        area = filterRepository[0].toString(),
+                        salary = filterRepository[1].toString(),
+                        industry = filterRepository[2].toString(),
+                        onlyWithSalary = filterRepository[3].toString(),
                     )
                 )
             )
