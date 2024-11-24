@@ -31,48 +31,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/inc_empty_country"
-        layout="@layout/item_empty_field"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_country"
+        style="@style/SelectionInputTextLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mark_60dp"
         android:layout_marginTop="@dimen/mark_16dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline_16dp"
+        android:hint="@string/country"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
-        app:layout_constraintTop_toBottomOf="@id/tb_header" />
+        app:layout_constraintEnd_toEndOf="@id/end_guideline_16dp"
+        app:endIconDrawable="@drawable/ic_arrow_forward"
+        app:layout_constraintTop_toBottomOf="@id/tb_header">
 
-    <include
-        android:id="@+id/inc_empty_region"
-        layout="@layout/item_empty_field"
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/SelectionInputText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/mark_24dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_region"
+        style="@style/SelectionInputTextLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/mark_66dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline_16dp"
+        android:layout_height="@dimen/mark_60dp"
+        android:hint="@string/region"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
-        app:layout_constraintTop_toBottomOf="@id/tb_header" />
-
-    <include
-        android:id="@+id/inc_filled_country"
-        layout="@layout/item_filled_field"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/mark_16dp"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/end_guideline_16dp"
-        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
-        app:layout_constraintTop_toBottomOf="@id/tb_header" />
+        app:endIconDrawable="@drawable/ic_arrow_forward"
+        app:layout_constraintTop_toBottomOf="@id/ti_country">
 
-    <include
-        android:id="@+id/inc_filled_region"
-        layout="@layout/item_filled_field"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/mark_66dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline_16dp"
-        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
-        app:layout_constraintTop_toBottomOf="@id/tb_header" />
-
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/SelectionInputText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/mark_24dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

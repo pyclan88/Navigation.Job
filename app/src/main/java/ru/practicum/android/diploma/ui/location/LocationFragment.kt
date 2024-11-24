@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentLocationBinding
 import ru.practicum.android.diploma.domain.state.FieldState
-import ru.practicum.android.diploma.domain.state.FieldState.Field.*
 import ru.practicum.android.diploma.util.BindingFragment
-import ru.practicum.android.diploma.util.invisible
-import ru.practicum.android.diploma.util.visible
 
 class LocationFragment : BindingFragment<FragmentLocationBinding>() {
 
@@ -28,6 +27,7 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configureBackButton()
         setupListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -37,59 +37,49 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
         }
     }
 
+    private fun configureBackButton() =
+        binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
+
     private fun setupListeners() {
-        binding.incEmptyCountry.root.setOnClickListener {
-            Toast.makeText(requireContext(), "Empty Country clicked!", Toast.LENGTH_SHORT).show()
-        }
-        binding.incEmptyRegion.root.setOnClickListener {
-            Toast.makeText(requireContext(), "Empty Region clicked!", Toast.LENGTH_SHORT).show()
+        setupFieldListeners(
+            binding.tiCountry
+        ) { Toast.makeText(requireContext(), "Нужно сделать переход на выбор страны", Toast.LENGTH_SHORT).show() }
+
+        setupFieldListeners(
+            binding.tiRegion
+        ) { Toast.makeText(requireContext(), "Нужно сделать переход на выбор региона", Toast.LENGTH_SHORT).show() }
+    }
+
+    private fun setupFieldListeners(
+        layout: TextInputLayout,
+        onClickEmpty: () -> Unit
+    ) {
+        layout.editText?.setOnClickListener {
+            if (layout.editText?.text.isNullOrEmpty()) onClickEmpty()
         }
 
-        binding.incFilledCountry.ivIcon.setOnClickListener {
-            viewModel.clearField(true)
-        }
-
-        binding.incFilledRegion.ivIcon.setOnClickListener {
-            viewModel.clearField(false)
+        layout.setEndIconOnClickListener {
+            if (layout.editText?.text?.isNotEmpty()!!) renderField(layout, null)
         }
     }
 
     private fun render(state: FieldState) {
-        when (state.upperField) {
-            is Empty -> showEmptyCountry()
-            is Filled -> showFilledCountry(state.upperField.data)
+        renderField(binding.tiCountry, state.upperField)
+        renderField(binding.tiRegion, state.lowerField)
+    }
+
+    private fun renderField(layout: TextInputLayout, content: String?) {
+        layout.editText?.setText(content)
+        when {
+            layout.editText?.text.isNullOrEmpty() -> {
+                layout.setEndIconDrawable(R.drawable.ic_arrow_forward)
+                layout.defaultHintTextColor = requireContext().getColorStateList(R.color.dark_grey)
+            }
+
+            else -> {
+                layout.setEndIconDrawable(R.drawable.ic_close)
+                layout.defaultHintTextColor = requireContext().getColorStateList(R.color.text_color_hint_selection)
+            }
         }
-
-        when (state.lowerField) {
-            is Empty -> showEmptyRegion()
-            is Filled -> showFilledRegion(state.lowerField.data)
-        }
-    }
-
-    private fun showEmptyCountry() {
-        binding.incFilledCountry.root.invisible()
-        binding.incEmptyCountry.root.visible()
-        binding.incEmptyCountry.tvField.text = resources.getString(R.string.country)
-    }
-
-    private fun showFilledCountry(data: String) {
-        binding.incEmptyCountry.root.invisible()
-        binding.incFilledCountry.root.visible()
-        binding.incFilledCountry.tvField.text = resources.getString(R.string.country)
-        binding.incFilledCountry.tvData.text = data
-
-    }
-
-    private fun showEmptyRegion() {
-        binding.incFilledRegion.root.invisible()
-        binding.incEmptyRegion.root.visible()
-        binding.incEmptyRegion.tvField.text = resources.getString(R.string.region)
-    }
-
-    private fun showFilledRegion(data: String) {
-        binding.incEmptyRegion.root.invisible()
-        binding.incFilledRegion.root.visible()
-        binding.incFilledRegion.tvField.text = resources.getString(R.string.country)
-        binding.incFilledRegion.tvData.text = data
     }
 }

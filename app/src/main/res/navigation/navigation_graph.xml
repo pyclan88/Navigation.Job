@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/location_fragment">
+    app:startDestination="@id/search_fragment">
 
     <fragment
         android:id="@+id/search_fragment"
@@ -30,7 +30,11 @@
         android:id="@+id/filters_fragment"
         android:name="ru.practicum.android.diploma.ui.filters.FiltersFragment"
         android:label="fragment_filter"
-        tools:layout="@layout/fragment_filter" />
+        tools:layout="@layout/fragment_filter" >
+        <action
+            android:id="@+id/action_filters_fragment_to_location_fragment"
+            app:destination="@id/location_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/vacancy_fragment"
         android:name="ru.practicum.android.diploma.ui.vacancy.VacancyFragment"
