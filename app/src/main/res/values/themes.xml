@@ -13,5 +13,6 @@
         <item name="black_to_dark_grey">@color/black</item>
         <item name="light_grey_to_dark_grey">@color/light_grey</item>
         <item name="dark_grey_to_white">@color/dark_grey</item>
+        <item name="white_to_dark_grey">@color/white</item>
     </style>
 </resources>

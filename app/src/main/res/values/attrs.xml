@@ -6,4 +6,6 @@
     <attr name="black_to_dark_grey" format="color" />
     <attr name="light_grey_to_dark_grey" format="color" />
     <attr name="dark_grey_to_white" format="color" />
+    <attr name="white_to_dark_grey" format="color" />
+
     </resources>

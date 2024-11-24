@@ -40,5 +40,6 @@
     <string name="branch">Отрасль</string>
     <string name="expected_salary">Ожидаемая зарплата</string>
     <string name="enter_amount">Введите сумму</string>
+    <string name="not_show_without_salary">Не показывать без зарплаты</string>
 
 </resources>

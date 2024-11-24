@@ -23,12 +23,14 @@
     <dimen name="mark_24dp">24dp</dimen>
     <dimen name="mark_30dp">30dp</dimen>
     <dimen name="mark_32dp">32dp</dimen>
+    <dimen name="mark_36dp">36dp</dimen>
     <dimen name="mark_40dp">40dp</dimen>
     <dimen name="mark_44dp">44dp</dimen>
     <dimen name="mark_46dp">46dp</dimen>
     <dimen name="mark_48dp">48dp</dimen>
     <dimen name="mark_52dp">52dp</dimen>
     <dimen name="mark_56dp">56dp</dimen>
+    <dimen name="mark_60dp">60dp</dimen>
     <dimen name="mark_76dp">76dp</dimen>
     <dimen name="mark_80dp">80dp</dimen>
     <dimen name="mark_108dp">108dp</dimen>
