@@ -13,7 +13,8 @@ val repositoryModule = module {
         VacancyRepositoryImpl(
             networkClient = get(),
             vacancyMapper = get(),
-            vacancyDetailsMapper = get()
+            vacancyDetailsMapper = get(),
+            optionMapper = get()
         )
     }
 

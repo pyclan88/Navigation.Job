@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
+import ru.practicum.android.diploma.data.mapper.OptionMapper
 import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
 import ru.practicum.android.diploma.data.network.NetworkClient
@@ -20,12 +21,26 @@ import ru.practicum.android.diploma.util.Resource
 class VacancyRepositoryImpl(
     private val networkClient: NetworkClient,
     private val vacancyMapper: VacancyMapper,
-    private val vacancyDetailsMapper: VacancyDetailsMapper
+    private val vacancyDetailsMapper: VacancyDetailsMapper,
+    private val optionMapper: OptionMapper
 ) : VacancyRepository {
 
     override suspend fun searchVacancies(expression: String, page: Int): Resource<VacancySearchResult> {
         return withContext(Dispatchers.IO) {
-            val response = networkClient.doRequest(VacancySearchRequest(expression, page))
+            // заменить filterRepository
+            val filterRepository = mutableListOf("40", "", "", true)
+            val response = networkClient.doRequest(
+                VacancySearchRequest(
+                    optionMapper.map(
+                        expression = expression,
+                        page = page.toString(),
+                        area = filterRepository[0].toString(),
+                        salary = filterRepository[1].toString(),
+                        industry = filterRepository[2].toString(),
+                        onlyWithSalary = filterRepository[3].toString(),
+                    )
+                )
+            )
             when (response.resultCode) {
                 FAILED_INTERNET_CONNECTION_CODE -> Resource.Error("-1")
 

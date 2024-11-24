@@ -36,13 +36,9 @@ class RetrofitNetworkClient(
     private suspend fun searchVacancies(
         input: VacancySearchRequest
     ): VacanciesSearchResponse {
-        println("text:${input.expression},page:${input.page},perPage:${input.perPage}")
         return headHunterApiService.searchVacancies(
-            text = input.expression,
-            page = input.page,
-            perPage = input.perPage
+            options = input.options
         ).apply { resultCode = SUCCESS_CODE }
-
     }
 
     private suspend fun getVacancyDetails(

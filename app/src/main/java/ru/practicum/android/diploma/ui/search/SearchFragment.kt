@@ -59,6 +59,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
         configureRecycler()
         configureSearchInput()
+        configureFilterButton()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state ->
@@ -211,6 +212,14 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
         }
     }
+
+    private fun configureFilterButton() =
+        binding.tbHeader.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_filter -> findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
+            }
+            true
+        }
 
     private fun convertToFoundVacancies(amount: Int): String {
         val vacanciesWord = resources.getString(EndingConvertor.vacancies(amount))
