@@ -111,7 +111,6 @@
 
     <style name="SelectionInputTextLayout" parent="TextAppearance.AppCompat">
         <item name="android:textColorHint">@color/dark_grey</item>
-        <item name="hintTextColor">@color/blue</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">0dp</item>
         <item name="endIconMode">custom</item>
