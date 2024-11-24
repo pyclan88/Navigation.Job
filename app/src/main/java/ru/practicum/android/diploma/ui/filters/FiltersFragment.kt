@@ -39,7 +39,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private fun configureIndustryButton() = binding.tlBranchLayout.setEndIconOnClickListener {
         when (binding.tlBranchLayout.editText?.text.isNullOrEmpty()) {
-            true -> showContent(binding.tlBranchLayout, "Проверка кода")
+            true -> findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
             else -> showContent(binding.tlBranchLayout, EMPTY_PARAM_VALUE)
         }
     }
