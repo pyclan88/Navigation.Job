@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.util.BindingFragment
 
@@ -31,15 +32,15 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private fun configureWorkButton() = binding.tlPlaceWorkLayout.setEndIconOnClickListener {
         when (binding.tlPlaceWorkLayout.editText?.text.isNullOrEmpty()) {
-            true -> showContent(binding.tlPlaceWorkLayout, "Россия, Москва")      //проверка работы
-            else -> showContent(binding.tlPlaceWorkLayout, "")
+            true -> showContent(binding.tlPlaceWorkLayout, "Проверка кода")
+            else -> showContent(binding.tlPlaceWorkLayout, EMPTY_PARAM_VALUE)
         }
     }
 
     private fun configureIndustryButton() = binding.tlBranchLayout.setEndIconOnClickListener {
         when (binding.tlBranchLayout.editText?.text.isNullOrEmpty()) {
-            true -> showContent(binding.tlBranchLayout, "IT")       //проверка работы
-            else -> showContent(binding.tlBranchLayout, "")
+            true -> showContent(binding.tlBranchLayout, "Проверка кода")
+            else -> showContent(binding.tlBranchLayout, EMPTY_PARAM_VALUE)
         }
     }
 
