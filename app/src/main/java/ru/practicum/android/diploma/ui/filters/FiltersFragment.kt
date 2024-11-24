@@ -1,17 +1,23 @@
 package ru.practicum.android.diploma.ui.filters
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
+import org.koin.android.ext.android.inject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
 import ru.practicum.android.diploma.util.BindingFragment
 
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
+    private val setFiltersUseCase: SetFiltersUseCase by inject()
+    private val getFiltersUseCase: GetFiltersUseCase by inject()
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -24,7 +30,9 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         configureBackButton()
         configureWorkButton()
         configureIndustryButton()
-
+        setFiltersUseCase.execute(mutableListOf("40", "", "", "true"))
+        val result = getFiltersUseCase.execute()
+        println("filters:$result")
     }
 
     private fun configureBackButton() =
