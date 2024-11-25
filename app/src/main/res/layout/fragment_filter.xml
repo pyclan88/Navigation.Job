@@ -130,6 +130,7 @@
         android:layout_height="@dimen/mark_60dp"
         android:layout_marginBottom="@dimen/mark_92dp"
         android:background="@drawable/blue_shape"
+        android:stateListAnimator="@null"
         android:text="@string/apply"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
