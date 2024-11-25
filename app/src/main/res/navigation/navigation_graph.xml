@@ -32,13 +32,11 @@
         android:label="fragment_filter"
         tools:layout="@layout/fragment_filter" >
         <action
-            android:id="@+id/action_filters_fragment_to_industryFragment"
-            app:destination="@id/industryFragment" />
-    </fragment>
-        tools:layout="@layout/fragment_filter" >
-        <action
             android:id="@+id/action_filters_fragment_to_location_fragment"
             app:destination="@id/location_fragment" />
+        <action
+            android:id="@+id/action_filters_fragment_to_industryFragment"
+            app:destination="@id/industryFragment" />
     </fragment>
     <fragment
         android:id="@+id/vacancy_fragment"
@@ -51,13 +49,13 @@
         android:label="fragment_team"
         tools:layout="@layout/fragment_team" />
     <fragment
-        android:id="@+id/industryFragment"
-        android:name="ru.practicum.android.diploma.ui.filters.IndustryFragment"
-        android:label="fragment_industry"
-        tools:layout="@layout/fragment_industry" />
-    <fragment
         android:id="@+id/location_fragment"
         android:name="ru.practicum.android.diploma.ui.location.LocationFragment"
         android:label="fragment_location"
         tools:layout="@layout/fragment_location" />
+    <fragment
+        android:id="@+id/industryFragment"
+        android:name="ru.practicum.android.diploma.ui.filters.IndustryFragment"
+        android:label="fragment_industry"
+        tools:layout="@layout/fragment_industry" />
 </navigation>

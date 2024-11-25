@@ -32,7 +32,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private fun configureWorkButton() = binding.tlPlaceWorkLayout.setEndIconOnClickListener {
         when (binding.tlPlaceWorkLayout.editText?.text.isNullOrEmpty()) {
-            true -> showContent(binding.tlPlaceWorkLayout, "Проверка кода")
+            true -> findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
             else -> showContent(binding.tlPlaceWorkLayout, EMPTY_PARAM_VALUE)
         }
     }
