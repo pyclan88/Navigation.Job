@@ -9,6 +9,8 @@ import ru.practicum.android.diploma.domain.usecase.favorite.AddVacancyToFavorite
 import ru.practicum.android.diploma.domain.usecase.favorite.DeleteVacancyFromFavoriteUseCase
 import ru.practicum.android.diploma.domain.usecase.favorite.GetAllFavoriteVacanciesUseCase
 import ru.practicum.android.diploma.domain.usecase.favorite.GetFavoriteVacancyByIdUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
 
 val interactorModule = module {
 
@@ -38,6 +40,14 @@ val interactorModule = module {
 
     single<SharingInteract> {
         SharingInteractImpl(get())
+    }
+
+    single {
+        SetFiltersUseCase(get())
+    }
+
+    single {
+        GetFiltersUseCase(get())
     }
 
 }
