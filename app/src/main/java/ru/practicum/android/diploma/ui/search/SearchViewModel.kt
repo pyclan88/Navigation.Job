@@ -62,10 +62,13 @@ class SearchViewModel(
         val resultData = result.first?.items
         val totalVacancyCount = result.first?.found ?: 0
         val vacancyState: VacancyState = when {
-            resultData == null && result.second == FAILED_INTERNET_CONNECTION_CODE.toString() ->
-                state.value.copy(vacanciesList = VacanciesList.NoInternet)
-
-            resultData == null -> state.value.copy(vacanciesList = VacanciesList.Error)
+            resultData == null -> {
+                if (result.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
+                    state.value.copy(vacanciesList = VacanciesList.NoInternet)
+                } else {
+                    state.value.copy(vacanciesList = VacanciesList.Error)
+                }
+            }
 
             resultData.isEmpty() -> state.value.copy(vacanciesList = VacanciesList.Empty)
 
@@ -74,7 +77,6 @@ class SearchViewModel(
                 currentPage += 1
                 result.first?.let { maxPage = it.pages }
                 state.value.copy(vacanciesList = VacanciesList.Data(resultData, totalVacancyCount))
-
             }
         }
         _state.value = vacancyState
