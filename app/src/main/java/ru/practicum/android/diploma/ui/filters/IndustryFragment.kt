@@ -16,9 +16,6 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-
         configureBackButton()
 
     }

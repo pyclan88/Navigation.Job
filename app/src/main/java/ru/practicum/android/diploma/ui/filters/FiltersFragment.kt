@@ -59,4 +59,3 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         }
     }
 }
-
