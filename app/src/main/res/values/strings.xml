@@ -43,5 +43,8 @@
     <string name="not_show_without_salary">Не показывать без зарплаты</string>
     <string name="apply">Применить</string>
     <string name="reset">Сбросить</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="job_location_selection_title">Выбор места работы</string>
 
 </resources>
