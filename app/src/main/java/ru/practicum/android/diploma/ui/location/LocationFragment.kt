@@ -43,7 +43,7 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
     private fun setupListeners() {
         setupFieldListeners(
             binding.tiCountry
-        ) { Toast.makeText(requireContext(), "Нужно сделать переход на выбор страны", Toast.LENGTH_SHORT).show() }
+        ) { findNavController().navigate(R.id.action_location_fragment_to_countryFragment) }
 
         setupFieldListeners(
             binding.tiRegion
