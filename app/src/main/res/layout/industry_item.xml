@@ -10,6 +10,7 @@
         android:id="@+id/rb_industry_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minHeight="60dp"
         android:layout_gravity="start"
         android:buttonTint="@color/blue"
         android:layoutDirection="rtl"
