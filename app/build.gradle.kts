@@ -79,6 +79,4 @@ dependencies {
     // glide
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
-
-    implementation("org.jetbrains:annotations:15.0")
 }
