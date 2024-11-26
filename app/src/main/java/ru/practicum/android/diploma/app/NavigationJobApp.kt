@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import ru.practicum.android.diploma.di.UseCaseModule
+import ru.practicum.android.diploma.di.useCaseModule
 import ru.practicum.android.diploma.di.dataModule
 import ru.practicum.android.diploma.di.repositoryModule
 import ru.practicum.android.diploma.di.utilModule
@@ -20,7 +20,7 @@ class NavigationJobApp : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@NavigationJobApp)
-            modules(dataModule, UseCaseModule, repositoryModule, viewModelModule, utilModule)
+            modules(dataModule, useCaseModule, repositoryModule, viewModelModule, utilModule)
         }
 
     }

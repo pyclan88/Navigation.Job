@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.domain.state.IndustryState.Input
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
 
 class IndustryViewModel(
-    private val industriesUseCase: GetIndustriesUseCase
+    private val getIndustriesUseCase: GetIndustriesUseCase
 ) : ViewModel() {
 
     // Добавил Loading, возможно этот state не нужен
@@ -21,11 +21,11 @@ class IndustryViewModel(
         get() = _state
 
     fun getIndustries() = viewModelScope.launch {
-        val industries = industriesUseCase.execute()
+        val industries = getIndustriesUseCase.execute()
         val industryState = when {
-            industries.first?.isEmpty() == true -> state.value.copy(industriesList = IndustriesList.Empty)
-            industries.second?.isNotEmpty() == true -> state.value.copy(industriesList = IndustriesList.Error)
-            else -> state.value.copy(industriesList = IndustriesList.Data(industries = industries.first!!))
+            industries.first?.isEmpty() == true -> state.value.copy(industries = IndustriesList.Empty)
+            industries.second?.isNotEmpty() == true -> state.value.copy(industries = IndustriesList.Error)
+            else -> state.value.copy(industries = IndustriesList.Data(industries = industries.first!!))
         }
         _state.value = industryState
     }

@@ -13,14 +13,13 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
 
     private val viewModel: CountryViewModel by viewModel()
 
-    override fun createBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ) = FragmentCountryBinding.inflate(inflater, container, false)
+    override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentCountryBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getCountries()
         configureBackButton()
     }
 
