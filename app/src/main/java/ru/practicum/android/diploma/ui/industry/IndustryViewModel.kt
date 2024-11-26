@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.state.IndustryState
-import ru.practicum.android.diploma.domain.state.IndustryState.Input
 import ru.practicum.android.diploma.domain.state.IndustryState.IndustriesList
+import ru.practicum.android.diploma.domain.state.IndustryState.Input
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
 
 class IndustryViewModel(
