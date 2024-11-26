@@ -15,7 +15,7 @@ import ru.practicum.android.diploma.util.Resource
 class CountryRepositoryImpl(
     private val networkClient: NetworkClient,
     private val countryMapper: CountryMapper,
-): CountryRepository {
+) : CountryRepository {
     override suspend fun getCountries(): Resource<List<Country>> {
         return withContext(Dispatchers.IO) {
             val response = networkClient.doRequest(CountryRequest())
