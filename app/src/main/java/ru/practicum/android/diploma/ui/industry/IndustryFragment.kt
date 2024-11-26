@@ -57,5 +57,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         }
     }
 
-    private fun showLoading() {}
+    private fun showLoading() {
+        println("Добавить обработку")
+    }
 }
