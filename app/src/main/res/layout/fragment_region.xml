@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/white_to_black">
+    android:background="?attr/white_to_black"
+    tools:context=".ui.region.RegionFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline_16dp"
@@ -30,6 +31,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_search"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/mark_56dp"
+        android:layout_marginTop="@dimen/mark_8dp"
+        android:background="@drawable/bg_search_edittext"
+        android:orientation="vertical"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:cursorColor="@color/blue"
+        app:endIconDrawable="@drawable/ic_close"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/black"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toStartOf="@+id/end_guideline_16dp"
+        app:layout_constraintStart_toStartOf="@+id/start_guideline_16dp"
+        app:layout_constraintTop_toBottomOf="@id/tb_header">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ti_search_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/noColor"
+            android:drawableEnd="@drawable/ic_search"
+            android:hint="@string/enter_industry"
+            android:maxLines="1"
+            android:padding="@dimen/mark_10dp"
+            android:textColor="@color/black"
+            android:textColorHint="?attr/dark_grey_to_white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_regions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/mark_28dp"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/mark_36dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
+        app:layout_constraintTop_toTopOf="@id/ti_search"
+        tools:listitem="@layout/country_item" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_placeholder"

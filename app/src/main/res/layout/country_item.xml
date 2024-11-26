@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_arrow"
-        tools:text="Россия"/>
+        tools:text="Россия/Москва"/>
 
     <ImageView
         android:id="@+id/iv_arrow"

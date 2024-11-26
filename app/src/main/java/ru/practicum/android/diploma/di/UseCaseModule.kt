@@ -4,7 +4,7 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.domain.sharing.SharingInteract
 import ru.practicum.android.diploma.domain.sharing.impl.SharingInteractImpl
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
-import ru.practicum.android.diploma.domain.usecase.GetRegionUseCase
+import ru.practicum.android.diploma.domain.usecase.GetCountryUseCase
 import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacancyDetailsUseCase
 import ru.practicum.android.diploma.domain.usecase.favorite.AddVacancyToFavoriteUseCase
@@ -57,6 +57,6 @@ val useCaseModule = module {
     }
 
     single {
-        GetRegionUseCase(get())
+        GetCountryUseCase(get())
     }
 }
