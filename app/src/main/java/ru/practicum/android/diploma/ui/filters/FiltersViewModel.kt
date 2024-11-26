@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.filters
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
@@ -13,9 +14,7 @@ class FiltersViewModel(
     private val getFiltersUseCase: GetFiltersUseCase
 ) : ViewModel() {
 
-    private lateinit var filterState: Filter
-
-    val getFilters = getFiltersUseCase.execute()
+    private val getFilters = getFiltersUseCase.execute()
 
     private val _state: MutableStateFlow<FiltersState> = MutableStateFlow(
         FiltersState(getFilters)
@@ -23,7 +22,20 @@ class FiltersViewModel(
     val state: StateFlow<FiltersState>
         get() = _state
 
-    fun setFilters(filter: Filter) {
-        setFiltersUseCase.execute(filter)
+    fun resetFiltersState() {
+        _state.value = FiltersState(
+            Filter(
+                EMPTY_PARAM_VALUE,
+                EMPTY_PARAM_VALUE,
+                EMPTY_PARAM_VALUE,
+                false
+            )
+        )
+    }
+
+    fun setFilters(filter: Filter?) {
+        if (filter != null) {
+            setFiltersUseCase.execute(filter)
+        }
     }
 }
