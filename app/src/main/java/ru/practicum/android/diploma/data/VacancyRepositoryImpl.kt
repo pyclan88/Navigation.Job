@@ -5,7 +5,7 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
-import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
+import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.data.mapper.OptionMapper
 import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
@@ -61,7 +61,7 @@ class VacancyRepositoryImpl(
                 FAILED_INTERNET_CONNECTION_CODE -> Resource.Error("-1")
                 NOT_FOUND_CODE -> Resource.Error("404")
                 SUCCESS_CODE -> {
-                    val data = vacancyDetailsMapper.map(response as VacancyDetailsDto)
+                    val data = vacancyDetailsMapper.map(response as VacancyDetailsResponse)
                     Resource.Success(data)
                 }
 

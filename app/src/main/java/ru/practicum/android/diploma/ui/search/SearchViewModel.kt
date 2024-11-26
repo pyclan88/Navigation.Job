@@ -10,11 +10,11 @@ import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
-import ru.practicum.android.diploma.domain.usecase.GetVacanciesUseCase
+import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
-    private val getVacanciesUseCase: GetVacanciesUseCase
+    private val getVacanciesUseCase: GetVacanciesUseCase,
 ) : ViewModel() {
 
     private var lastExpression = ""
