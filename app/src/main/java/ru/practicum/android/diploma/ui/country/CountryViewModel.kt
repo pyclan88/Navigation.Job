@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.domain.state.CountryState
 import ru.practicum.android.diploma.domain.usecase.GetCountryUseCase
 
 class CountryViewModel(
-    private val getRegionUseCase: GetCountryUseCase,
+    private val getCountryUseCase: GetCountryUseCase,
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<CountryState> =
@@ -18,7 +18,7 @@ class CountryViewModel(
         get() = _state
 
     fun getCountries() = viewModelScope.launch {
-        val countries = getRegionUseCase.execute()
+        val countries = getCountryUseCase.execute()
         val industryState = when {
             countries.first?.isEmpty() == true -> CountryState.Empty
             countries.second?.isNotEmpty() == true -> CountryState.Error

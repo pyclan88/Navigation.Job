@@ -38,7 +38,7 @@ val viewModelModule = module {
 
     viewModel {
         CountryViewModel(
-            getRegionUseCase = get()
+            getCountryUseCase = get()
         )
     }
 
