@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.state.CountryState
-import ru.practicum.android.diploma.domain.usecase.GetRegionUseCase
+import ru.practicum.android.diploma.domain.usecase.GetCountryUseCase
 
 class CountryViewModel(
-    private val getRegionUseCase: GetRegionUseCase,
+    private val getRegionUseCase: GetCountryUseCase,
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<CountryState> =

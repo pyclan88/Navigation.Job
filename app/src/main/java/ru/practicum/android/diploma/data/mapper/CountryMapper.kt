@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.data.dto.area.AreaResponse
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
 
-class RegionMapper {
+class CountryMapper {
 
     fun map(dto: AreaResponse): List<Country> {
         return dto.area.map {

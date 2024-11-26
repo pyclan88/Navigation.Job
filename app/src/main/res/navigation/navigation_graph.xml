@@ -56,6 +56,9 @@
         <action
             android:id="@+id/action_location_fragment_to_countryFragment"
             app:destination="@id/countryFragment" />
+        <action
+            android:id="@+id/action_location_fragment_to_regionFragment"
+            app:destination="@id/regionFragment" />
     </fragment>
     <fragment
         android:id="@+id/industryFragment"
@@ -66,4 +69,10 @@
         android:id="@+id/countryFragment"
         android:name="ru.practicum.android.diploma.ui.country.CountryFragment"
         android:label="CountryFragment" />
+    <fragment
+        android:id="@+id/regionFragment"
+        android:name="ru.practicum.android.diploma.ui.region.RegionFragment"
+        android:label="fragment_region"
+        tools:layout="@layout/fragment_region" >
+    </fragment>
 </navigation>

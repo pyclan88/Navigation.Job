@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
@@ -47,7 +46,7 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
 
         setupFieldListeners(
             binding.tiRegion
-        ) { Toast.makeText(requireContext(), "Нужно сделать переход на выбор региона", Toast.LENGTH_SHORT).show() }
+        ) { findNavController().navigate(R.id.action_location_fragment_to_regionFragment) }
     }
 
     private fun setupFieldListeners(
