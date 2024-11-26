@@ -1,14 +1,14 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
-import ru.practicum.android.diploma.data.CountryRepositoryImpl
 import ru.practicum.android.diploma.data.FavoriteVacanciesRepositoryImpl
 import ru.practicum.android.diploma.data.IndustryRepositoryImpl
+import ru.practicum.android.diploma.data.RegionRepositoryImpl
 import ru.practicum.android.diploma.data.VacancyRepositoryImpl
 import ru.practicum.android.diploma.data.db.AppDatabase
-import ru.practicum.android.diploma.domain.api.CountryRepository
 import ru.practicum.android.diploma.domain.api.FavoriteVacanciesRepository
 import ru.practicum.android.diploma.domain.api.IndustryRepository
+import ru.practicum.android.diploma.domain.api.RegionRepository
 import ru.practicum.android.diploma.domain.api.VacancyRepository
 
 val repositoryModule = module {
@@ -36,10 +36,10 @@ val repositoryModule = module {
         )
     }
 
-    single<CountryRepository> {
-        CountryRepositoryImpl(
+    single<RegionRepository> {
+        RegionRepositoryImpl(
             networkClient = get(),
-            countryMapper = get()
+            regionMapper = get()
         )
     }
 }
