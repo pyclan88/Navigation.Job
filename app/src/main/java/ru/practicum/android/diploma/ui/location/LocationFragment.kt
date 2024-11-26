@@ -70,9 +70,9 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
     }
 
     private fun renderField(view: TextInputLayout, text: String?) {
+        view.editText?.setText(text)
         when {
             view.editText?.text.isNullOrEmpty() -> {
-                view.editText?.setText(text)
                 view.setEndIconDrawable(R.drawable.ic_arrow_forward)
                 view.defaultHintTextColor = requireContext().getColorStateList(R.color.dark_grey)
             }
