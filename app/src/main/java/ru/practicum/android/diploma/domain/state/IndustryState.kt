@@ -2,9 +2,21 @@ package ru.practicum.android.diploma.domain.state
 
 import ru.practicum.android.diploma.domain.models.Industry
 
-sealed interface IndustryState {
-    data object Loading : IndustryState
-    data object Empty : IndustryState
-    data object Error : IndustryState
-    data class Data(val industries: List<Industry>) : IndustryState
+data class IndustryState(
+    val input: Input,
+    val industriesList: IndustriesList,
+) {
+
+    sealed interface Input {
+        data object Empty : Input
+        data class Text(val value: String) : Input
+    }
+
+    sealed interface IndustriesList {
+        data object NoInternet : IndustriesList
+        data object Empty : IndustriesList
+        data object Loading : IndustriesList
+        data object Error : IndustriesList
+        data class Data(val industries: List<Industry>) : IndustriesList
+    }
 }
