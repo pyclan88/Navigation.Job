@@ -34,26 +34,30 @@ val viewModelModule = module {
     }
 
     viewModel {
-        LocationViewModel()
+        LocationViewModel(get())
     }
 
     viewModel {
-        FiltersViewModel(get(), get())
+        FiltersViewModel(get(), get(), get())
     }
 
     viewModel {
         CountryViewModel(
-            getCountryUseCase = get()
+            getCountriesUseCase = get(),
+            getFiltersUseCase = get(),
+            setFiltersUseCase = get()
         )
     }
 
     viewModel {
         IndustryViewModel(
-            getIndustriesUseCase = get()
+            getIndustriesUseCase = get(),
+            getFiltersUseCase = get(),
+            setFiltersUseCase = get()
         )
     }
 
     viewModel {
-        RegionViewModel()
+        RegionViewModel(get(), get(), get())
     }
 }

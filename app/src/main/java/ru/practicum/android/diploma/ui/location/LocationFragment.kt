@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentLocationBinding
-import ru.practicum.android.diploma.domain.state.FieldState
+import ru.practicum.android.diploma.domain.state.LocationState
 import ru.practicum.android.diploma.util.BindingFragment
 
 class LocationFragment : BindingFragment<FragmentLocationBinding>() {
@@ -30,10 +30,10 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
         setupListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.collect { state ->
-                render(state)
-            }
+            viewModel.state.collect { state -> render(state) }
         }
+
+        viewModel.getFilters()
     }
 
     private fun configureBackButton() =
@@ -83,8 +83,8 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
         }
     }
 
-    private fun render(state: FieldState) {
-        renderField(view = binding.tiCountry, text = state.upperField)
-        renderField(view = binding.tiRegion, text = state.lowerField)
+    private fun render(state: LocationState) {
+        renderField(view = binding.tiCountry, text = state.country)
+        renderField(view = binding.tiRegion, text = state.region)
     }
 }

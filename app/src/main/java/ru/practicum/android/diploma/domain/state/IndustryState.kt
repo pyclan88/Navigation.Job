@@ -4,7 +4,7 @@ import ru.practicum.android.diploma.domain.models.Industry
 
 data class IndustryState(
     val input: Input,
-    val industries: IndustriesList,
+    val data: Industries,
 ) {
 
     sealed interface Input {
@@ -12,11 +12,11 @@ data class IndustryState(
         data class Text(val value: String) : Input
     }
 
-    sealed interface IndustriesList {
-        data object NoInternet : IndustriesList
-        data object Empty : IndustriesList
-        data object Loading : IndustriesList
-        data object Error : IndustriesList
-        data class Data(val industries: List<Industry>) : IndustriesList
+    sealed interface Industries {
+        data object NoInternet : Industries
+        data object Empty : Industries
+        data object Loading : Industries
+        data object Error : Industries
+        data class Data(val industries: List<Industry>) : Industries
     }
 }

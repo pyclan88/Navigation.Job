@@ -4,7 +4,7 @@ import ru.practicum.android.diploma.domain.models.Region
 
 data class RegionState(
     val input: Input,
-    val regions: Regions
+    val data: Data
 ) {
 
     sealed interface Input {
@@ -12,10 +12,11 @@ data class RegionState(
         data class Text(val value: String) : Input
     }
 
-    sealed interface Regions {
-        data object Empty : Regions
-        data object Loading : Regions
-        data object Error : Regions
-        data class Data(val regions: List<Region>) : Regions
+    sealed interface Data {
+        data object Empty : RegionState.Data
+        data object Loading : RegionState.Data
+        data object Error : RegionState.Data
+        data class Data(val regions: List<Region>) :
+            RegionState.Data
     }
 }

@@ -11,8 +11,9 @@ import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsRespo
 interface HeadHunterApiService {
 
     @GET("/vacancies")
+    @JvmSuppressWildcards
     suspend fun searchVacancies(
-        @QueryMap options: Map<String, String>
+        @QueryMap options: Map<String, Any>
     ): VacanciesSearchResponse
 
     @GET("/vacancies/{vacancyId}")
