@@ -20,7 +20,10 @@ import ru.practicum.android.diploma.util.BindingFragment
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private val viewModel: FiltersViewModel by viewModel()
-    private var filterState: Filter? = null
+    private var placeWork: String? = EMPTY_PARAM_VALUE
+    private var industry: String? = EMPTY_PARAM_VALUE
+    private var salary: String? = EMPTY_PARAM_VALUE
+    private var salaryButton: Boolean = false
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -33,7 +36,12 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state ->
                 showContent(state.filters)
-                filterState = state.filters
+                with(state) {
+                    placeWork = filters.placeWork
+                    industry = filters.industry
+                    salary = filters.salary
+                    salaryButton = filters.withoutSalaryButton
+                }
             }
         }
         configureBackButton()
@@ -56,7 +64,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         binding.etBranch.doOnTextChanged { text, _, _, _ ->
             configureResetButton()
             configureApplyButton()
-            filterState?.copy(placeWork = text.toString())
+            placeWork = text.toString()
         }
     }
 
@@ -70,7 +78,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
             binding.etBranch.doOnTextChanged { text, _, _, _ ->
                 configureResetButton()
                 configureApplyButton()
-                filterState?.copy(industry = text.toString())
+                industry = text.toString()
             }
         }
     }
@@ -79,7 +87,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         binding.tiSalaryInputText.doOnTextChanged { text, _, _, _ ->
             configureResetButton()
             configureApplyButton()
-            filterState?.copy(salary = text.toString())
+            salary = text.toString()
         }
     }
 
@@ -87,18 +95,21 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         binding.cbWithoutSalaryButton.setOnCheckedChangeListener { _, isChecked ->
             configureResetButton()
             configureApplyButton()
-            filterState?.copy(withoutSalaryButton = isChecked)
+            salaryButton = isChecked
         }
     }
 
     private fun configureApplyButton() {
         binding.cbApplyButton.isVisible = !(
-            binding.etPlaceWork.text.toString() == filterState?.placeWork &&
-                binding.etBranch.text.toString() == filterState?.industry &&
-                binding.tiSalaryInputText.text.toString() == filterState?.salary &&
-                binding.cbWithoutSalaryButton.isChecked == filterState?.withoutSalaryButton
+            binding.etPlaceWork.text.toString() == placeWork &&
+                binding.etBranch.text.toString() == industry &&
+                binding.tiSalaryInputText.text.toString() == salary &&
+                binding.cbWithoutSalaryButton.isChecked == salaryButton
             )
-        binding.cbApplyButton.setOnClickListener { viewModel.setFilters(filterState) }
+        binding.cbApplyButton.setOnClickListener {
+            viewModel.setFilters(Filter(placeWork, industry, salary, salaryButton))
+            configureApplyButton()
+        }
     }
 
     private fun configureResetButton() {
