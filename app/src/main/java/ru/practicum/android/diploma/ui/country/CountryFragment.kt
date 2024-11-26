@@ -16,8 +16,7 @@ import ru.practicum.android.diploma.util.BindingFragment
 class CountryFragment : BindingFragment<FragmentCountryBinding>() {
 
     private val viewModel: CountryViewModel by viewModel()
-    private var filterAdapter: FilterAdapter = FilterAdapter()
-
+    private var filterAdapter: FilterAdapter = FilterAdapter { countryId -> selectCountry(countryId) }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentCountryBinding.inflate(inflater, container, false)
@@ -53,6 +52,10 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
                 //
             }
         }
+    }
+
+    private fun selectCountry(id: String) {
+
     }
 
     private fun configureBackButton() =

@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.databinding.IndustryItemBinding
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Industry
 
-class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
+class FilterAdapter(private val clickListener: FilterClickListener) : RecyclerView.Adapter<ViewHolder>() {
 
     private var items: List<ItemFilter> = emptyList()
 
@@ -19,9 +19,12 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
             ItemFilter.TYPE_AREA -> CountryViewHolder(
                 binding = CountryItemBinding.inflate(layoutInflater, parent, false)
             )
+
             ItemFilter.TYPE_INDUSTRY -> IndustryViewHolder(
-                binding = IndustryItemBinding.inflate(layoutInflater, parent, false)
+                binding = IndustryItemBinding.inflate(layoutInflater, parent, false),
+                clickListener = clickListener
             )
+
             else -> throw IllegalArgumentException("Unknown view type: $viewType")
         }
     }
@@ -59,5 +62,9 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
                 else -> throw IllegalArgumentException("Unknown type: ${it::class.java}")
             }
         }
+    }
+
+    fun interface FilterClickListener {
+        fun onFilterClick(filterId: String)
     }
 }
