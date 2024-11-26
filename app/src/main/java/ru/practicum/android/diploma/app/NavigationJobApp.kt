@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.di.useCaseModule
 import ru.practicum.android.diploma.di.dataModule
 import ru.practicum.android.diploma.di.repositoryModule
@@ -27,7 +28,7 @@ class NavigationJobApp : Application() {
 
     companion object {
         private var instance: NavigationJobApp? = null
-        const val HEAD_HUNTER_TOKEN = "APPLKBT2B63I20SQJH2RCL03Q00G1V5KKKJ9NE2M8J5OIOJGNDDQF5KLEV0VG519"
+        const val HEAD_HUNTER_TOKEN = BuildConfig.HH_ACCESS_TOKEN
 
         fun applicationContext(): Context {
             return instance!!.applicationContext
