@@ -9,7 +9,6 @@ import ru.practicum.android.diploma.databinding.IndustryItemBinding
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Industry
 
-
 class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     private var items: List<ItemFilter> = emptyList()
@@ -62,5 +61,3 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
         }
     }
 }
-
-
