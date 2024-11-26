@@ -3,11 +3,13 @@ package ru.practicum.android.diploma.data.network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.practicum.android.diploma.data.dto.industry.IndustryRequest
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
-import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
+import ru.practicum.android.diploma.data.dto.industry.IndustryResponse
+import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.util.getConnected
 
 class RetrofitNetworkClient(
@@ -24,6 +26,7 @@ class RetrofitNetworkClient(
                 when (dto) {
                     is VacancySearchRequest -> searchVacancies(dto)
                     is VacancyDetailsRequest -> getVacancyDetails(dto)
+                    is IndustryRequest -> getIndustries()
                     else -> Response().apply { resultCode = BAD_REQUEST_CODE }
                 }
             } catch (e: HttpException) {
@@ -43,9 +46,15 @@ class RetrofitNetworkClient(
 
     private suspend fun getVacancyDetails(
         input: VacancyDetailsRequest
-    ): VacancyDetailsDto = headHunterApiService.getVacancyDetails(
+    ): VacancyDetailsResponse = headHunterApiService.getVacancyDetails(
         vacancyId = input.id
     ).apply { resultCode = SUCCESS_CODE }
+
+    private suspend fun getIndustries(): IndustryResponse {
+        val result = headHunterApiService.getIndustries()
+        return IndustryResponse(industriesList = result)
+            .apply { resultCode = SUCCESS_CODE }
+    }
 
     companion object {
         const val FAILED_INTERNET_CONNECTION_CODE = -1
