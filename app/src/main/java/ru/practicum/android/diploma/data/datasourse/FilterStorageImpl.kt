@@ -11,13 +11,14 @@ class FilterStorageImpl(
     private val sharedPreferences: SharedPreferences,
     private val gson: Gson
 ) : FilterStorage {
+
     override var filters: FilterDto
         get() {
             val json: String? = sharedPreferences.getString(KEY_FILTERS, null)
             return if (json != null) {
                 gson.fromJson(json, object : TypeToken<FilterDto>() {}.type)
             } else {
-                FilterDto(null, null, null, false)
+                FilterDto.empty
             }
         }
         set(value) {

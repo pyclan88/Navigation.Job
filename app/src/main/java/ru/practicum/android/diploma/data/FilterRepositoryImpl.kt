@@ -9,12 +9,14 @@ class FilterRepositoryImpl(
     private val filterStorage: FilterStorage,
     private val filterMapper: FilterMapper
 ) : FilterRepository {
+
     override fun setFilters(items: Filter) {
         filterStorage.filters = filterMapper.map(items)
     }
 
+    override fun clearFilters() = setFilters(Filter.empty)
+
     override fun getFilters(): Filter {
         return filterMapper.map(filterStorage.filters)
     }
-
 }

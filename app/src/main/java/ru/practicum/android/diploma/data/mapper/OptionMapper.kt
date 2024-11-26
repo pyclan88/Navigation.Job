@@ -1,29 +1,24 @@
 package ru.practicum.android.diploma.data.mapper
 
+import ru.practicum.android.diploma.domain.models.Filter
+
 class OptionMapper {
 
     fun map(
         expression: String,
-        page: String,
-        area: String = "",
-        salary: String = "0",
-        industry: String = "",
-        onlyWithSalary: String = "false"
-    ): HashMap<String, String> {
-        val options: HashMap<String, String> = HashMap()
+        page: Int,
+        filter: Filter
+    ): Map<String, Any> {
+        val options = mutableMapOf<String, Any>()
         options["text"] = expression
         options["page"] = page
         options["per_page"] = COUNT_PER_PAGE
-        options["only_with_salary"] = onlyWithSalary
-        if (area.isNotBlank()) {
-            options["area"] = area
-        }
-        if (salary == "0") {
-            options["salary"] = salary
-        }
-        if (industry.isNotBlank()) {
-            options["industry"] = industry
-        }
+        options["only_with_salary"] = filter.withoutSalaryButton
+
+        filter.area?.let { options["area"] = it.id }
+        filter.salary?.let { options["salary"] = it }
+        filter.industry?.let { options["industry"] = it }
+
         return options
     }
 

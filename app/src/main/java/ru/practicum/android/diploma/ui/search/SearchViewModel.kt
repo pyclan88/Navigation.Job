@@ -10,11 +10,13 @@ import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
+import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase,
+    private val getFiltersUseCase: GetFiltersUseCase
 ) : ViewModel() {
 
     private var lastExpression = ""
@@ -58,7 +60,12 @@ class SearchViewModel(
 
     private fun requestToServer(expression: String) = viewModelScope.launch {
         isNextPageLoading = true
-        val result = getVacanciesUseCase.execute(expression = expression, page = currentPage)
+        val result = getVacanciesUseCase.execute(
+            expression = expression,
+            page = currentPage,
+            filter = getFiltersUseCase.execute()
+        )
+
         val resultData = result.first?.items
         val totalVacancyCount = result.first?.found ?: 0
         val vacancyState: VacancyState = when {

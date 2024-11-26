@@ -6,10 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import ru.practicum.android.diploma.databinding.CountryItemBinding
 import ru.practicum.android.diploma.databinding.IndustryItemBinding
+import ru.practicum.android.diploma.databinding.RegionItemBinding
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.Region
 
 class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
+
+    var saveFilterListener: SaveFilterListener? = null
 
     private var items: List<ItemFilter> = emptyList()
 
@@ -19,9 +23,15 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
             ItemFilter.TYPE_AREA -> CountryViewHolder(
                 binding = CountryItemBinding.inflate(layoutInflater, parent, false)
             )
+
+            ItemFilter.TYPE_REGION -> RegionViewHolder(
+                binding = RegionItemBinding.inflate(layoutInflater, parent, false)
+            )
+
             ItemFilter.TYPE_INDUSTRY -> IndustryViewHolder(
                 binding = IndustryItemBinding.inflate(layoutInflater, parent, false)
             )
+
             else -> throw IllegalArgumentException("Unknown view type: $viewType")
         }
     }
@@ -36,28 +46,36 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
         val item = items[position]
         when (holder) {
             is CountryViewHolder -> holder.bind(item.data as Country)
+            is RegionViewHolder -> holder.bind(item.data as Region)
             is IndustryViewHolder -> holder.bind(item.data as Industry)
             else -> throw IllegalArgumentException("Unknown ViewHolder for position $position")
         }
+
+        holder.itemView.setOnClickListener { saveFilterListener?.onItemClicked(item) }
     }
 
     fun updateCountries(data: List<Country>) {
-        this.items = convertToItemFilter(data, ItemFilter.TYPE_AREA)
-        notifyDataSetChanged()
+        updateItems(convertToItemFilter(data, ItemFilter.TYPE_AREA))
+    }
+
+    fun updateRegions(data: List<Region>) {
+        updateItems(convertToItemFilter(data, ItemFilter.TYPE_REGION))
     }
 
     fun updateIndustries(data: List<Industry>) {
-        this.items = convertToItemFilter(data, ItemFilter.TYPE_INDUSTRY)
+        updateItems(convertToItemFilter(data, ItemFilter.TYPE_INDUSTRY))
+    }
+
+    private fun updateItems(items: List<ItemFilter>) {
+        this.items = items
         notifyDataSetChanged()
     }
 
     private fun convertToItemFilter(data: List<Any>, typeItemFilter: Int): List<ItemFilter> {
-        return data.map {
-            when (it) {
-                is Country -> ItemFilter(data = it, type = typeItemFilter)
-                is Industry -> ItemFilter(data = it, type = typeItemFilter)
-                else -> throw IllegalArgumentException("Unknown type: ${it::class.java}")
-            }
-        }
+        return data.map { ItemFilter(data = it, type = typeItemFilter) }
+    }
+
+    interface SaveFilterListener {
+        fun onItemClicked(item: ItemFilter)
     }
 }
