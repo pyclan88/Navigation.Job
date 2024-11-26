@@ -118,7 +118,9 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
                 binding.etBranch.text.isNullOrEmpty() &&
                 binding.tiSalaryInputText.text.isNullOrEmpty() &&
                 !binding.cbWithoutSalaryButton.isChecked)
-        binding.tvResetButton.setOnClickListener { viewModel.resetFiltersState() }
+        binding.tvResetButton.setOnClickListener {
+            viewModel.resetFiltersState()
+        }
     }
 
     private fun showContent(state: Filter) {
