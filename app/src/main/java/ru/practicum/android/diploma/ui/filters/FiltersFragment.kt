@@ -119,7 +119,14 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
                 binding.tiSalaryInputText.text.isNullOrEmpty() &&
                 !binding.cbWithoutSalaryButton.isChecked)
         binding.tvResetButton.setOnClickListener {
-            viewModel.resetFiltersState()
+            showContent(
+                Filter(
+                    EMPTY_PARAM_VALUE,
+                    EMPTY_PARAM_VALUE,
+                    EMPTY_PARAM_VALUE,
+                    false
+                )
+            )
         }
     }
 

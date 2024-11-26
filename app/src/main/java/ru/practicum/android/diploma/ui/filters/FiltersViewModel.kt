@@ -22,17 +22,6 @@ class FiltersViewModel(
     val state: StateFlow<FiltersState>
         get() = _state
 
-    fun resetFiltersState() {
-        _state.value = FiltersState(
-            Filter(
-                EMPTY_PARAM_VALUE,
-                EMPTY_PARAM_VALUE,
-                EMPTY_PARAM_VALUE,
-                false
-            )
-        )
-    }
-
     fun setFilters(filter: Filter?) {
         if (filter != null) {
             setFiltersUseCase.execute(filter)
