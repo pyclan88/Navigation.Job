@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.ui.filters
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
