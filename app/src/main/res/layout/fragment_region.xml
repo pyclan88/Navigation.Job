@@ -76,7 +76,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
         app:layout_constraintTop_toTopOf="@id/ti_search"
-        tools:listitem="@layout/location_item" />
+        tools:listitem="@layout/country_item" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_placeholder"
