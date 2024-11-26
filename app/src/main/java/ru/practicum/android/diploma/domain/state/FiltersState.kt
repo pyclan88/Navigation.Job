@@ -1,8 +1,7 @@
 package ru.practicum.android.diploma.domain.state
 
-data class FiltersState    (
-    val placeWork: String?,
-    val industry: String?,
-    val salary: String?,
-    val withoutSalaryButton: Boolean
+import ru.practicum.android.diploma.domain.models.Filter
+
+data class FiltersState(
+    val filters: Filter
 )

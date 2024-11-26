@@ -16,6 +16,7 @@ import ru.practicum.android.diploma.data.datasourse.FilterStorage
 import ru.practicum.android.diploma.data.datasourse.FilterStorageImpl
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.convertor.FavoriteVacancyDbConvertor
+import ru.practicum.android.diploma.data.mapper.FilterMapper
 import ru.practicum.android.diploma.data.mapper.OptionMapper
 import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
@@ -94,7 +95,10 @@ val dataModule = module {
     }
 
     single<FilterRepository> {
-        FilterRepositoryImpl(get())
+        FilterRepositoryImpl(get(), get())
     }
 
+    factory {
+        FilterMapper()
+    }
 }
