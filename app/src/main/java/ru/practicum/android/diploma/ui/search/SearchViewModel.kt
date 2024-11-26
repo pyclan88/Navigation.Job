@@ -7,20 +7,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
-import ru.practicum.android.diploma.domain.usecase.GetVacanciesUseCase
+import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
-    private val getVacanciesUseCase: GetVacanciesUseCase
+    private val getVacanciesUseCase: GetVacanciesUseCase,
 ) : ViewModel() {
 
     private var lastExpression = ""
     private var currentPage = 1
     private var maxPage = 0
+
+    val isNotLastPage: Boolean
+        get() = currentPage < maxPage
 
     private var isNextPageLoading = false
 
@@ -59,28 +61,24 @@ class SearchViewModel(
         val result = getVacanciesUseCase.execute(expression = expression, page = currentPage)
         val resultData = result.first?.items
         val totalVacancyCount = result.first?.found ?: 0
-        val vacancyState: VacancyState =
-            when (resultData) {
-                null -> {
-                    if (result.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
-                        state.value.copy(vacanciesList = VacanciesList.NoInternet)
-                    } else {
-                        state.value.copy(vacanciesList = VacanciesList.Error)
-                    }
-                }
-
-                emptyList<Vacancy>() -> {
-                    state.value.copy(vacanciesList = VacanciesList.Empty)
-                }
-
-                else -> {
-                    isNextPageLoading = false
-                    currentPage += 1
-                    result.first?.let { maxPage = it.pages }
-                    state.value.copy(vacanciesList = VacanciesList.Data(resultData, totalVacancyCount))
-
+        val vacancyState: VacancyState = when {
+            resultData == null -> {
+                if (result.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
+                    state.value.copy(vacanciesList = VacanciesList.NoInternet)
+                } else {
+                    state.value.copy(vacanciesList = VacanciesList.Error)
                 }
             }
+
+            resultData.isEmpty() -> state.value.copy(vacanciesList = VacanciesList.Empty)
+
+            else -> {
+                isNextPageLoading = false
+                currentPage += 1
+                result.first?.let { maxPage = it.pages }
+                state.value.copy(vacanciesList = VacanciesList.Data(resultData, totalVacancyCount))
+            }
+        }
         _state.value = vacancyState
     }
 
@@ -90,6 +88,6 @@ class SearchViewModel(
     }
 
     fun onLastItemReached() {
-        if (!isNextPageLoading && currentPage < maxPage) requestToServer(lastExpression)
+        if (!isNextPageLoading) requestToServer(lastExpression)
     }
 }

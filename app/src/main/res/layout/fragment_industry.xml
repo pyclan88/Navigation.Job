@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/white_to_black"
-    tools:context=".ui.filters.IndustryFragment">
+    tools:context=".ui.industry.IndustryFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline_16dp"

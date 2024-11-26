@@ -43,7 +43,7 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
     private fun setupListeners() {
         setupFieldListeners(
             binding.tiCountry
-        ) { Toast.makeText(requireContext(), "Нужно сделать переход на выбор страны", Toast.LENGTH_SHORT).show() }
+        ) { findNavController().navigate(R.id.action_location_fragment_to_countryFragment) }
 
         setupFieldListeners(
             binding.tiRegion
@@ -51,35 +51,41 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
     }
 
     private fun setupFieldListeners(
-        layout: TextInputLayout,
-        onClickEmpty: () -> Unit
+        view: TextInputLayout,
+        onClickEmptyField: () -> Unit
     ) {
-        layout.editText?.setOnClickListener {
-            if (layout.editText?.text.isNullOrEmpty()) onClickEmpty()
+        view.editText?.setOnClickListener {
+            if (view.editText?.text.isNullOrEmpty()) {
+                onClickEmptyField()
+            }
         }
 
-        layout.setEndIconOnClickListener {
-            if (layout.editText?.text?.isNotEmpty()!!) renderField(layout, null)
+        view.setEndIconOnClickListener {
+            if (view.editText?.text.isNullOrEmpty()) {
+                onClickEmptyField()
+            } else {
+                renderField(view = view, text = null)
+            }
+        }
+    }
+
+    private fun renderField(view: TextInputLayout, text: String?) {
+        view.editText?.setText(text)
+        when {
+            view.editText?.text.isNullOrEmpty() -> {
+                view.setEndIconDrawable(R.drawable.ic_arrow_forward)
+                view.defaultHintTextColor = requireContext().getColorStateList(R.color.dark_grey)
+            }
+
+            else -> {
+                view.setEndIconDrawable(R.drawable.ic_close)
+                view.defaultHintTextColor = requireContext().getColorStateList(R.color.text_color_hint_selection)
+            }
         }
     }
 
     private fun render(state: FieldState) {
-        renderField(binding.tiCountry, state.upperField)
-        renderField(binding.tiRegion, state.lowerField)
-    }
-
-    private fun renderField(layout: TextInputLayout, content: String?) {
-        layout.editText?.setText(content)
-        when {
-            layout.editText?.text.isNullOrEmpty() -> {
-                layout.setEndIconDrawable(R.drawable.ic_arrow_forward)
-                layout.defaultHintTextColor = requireContext().getColorStateList(R.color.dark_grey)
-            }
-
-            else -> {
-                layout.setEndIconDrawable(R.drawable.ic_close)
-                layout.defaultHintTextColor = requireContext().getColorStateList(R.color.text_color_hint_selection)
-            }
-        }
+        renderField(view = binding.tiCountry, text = state.upperField)
+        renderField(view = binding.tiRegion, text = state.lowerField)
     }
 }
