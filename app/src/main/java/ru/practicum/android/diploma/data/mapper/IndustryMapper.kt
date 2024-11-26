@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.domain.models.Industry
 class IndustryMapper {
 
     fun map(dto: IndustryResponse): List<Industry> =
-        dto.industriesList.flatMap { group ->
+        dto.industries.flatMap { group ->
             group.industries.map { industry ->
                 Industry(
                     id = industry.id,

@@ -18,6 +18,7 @@ import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.convertor.FavoriteVacancyDbConvertor
 import ru.practicum.android.diploma.data.mapper.IndustryMapper
 import ru.practicum.android.diploma.data.mapper.OptionMapper
+import ru.practicum.android.diploma.data.mapper.RegionMapper
 import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
 import ru.practicum.android.diploma.data.network.AuthorizationInterceptor
@@ -71,6 +72,10 @@ val dataModule = module {
 
     factory {
         IndustryMapper()
+    }
+
+    factory {
+        RegionMapper()
     }
 
     factory {

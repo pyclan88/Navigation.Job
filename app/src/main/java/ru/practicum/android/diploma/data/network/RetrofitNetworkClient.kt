@@ -8,6 +8,8 @@ import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
+import ru.practicum.android.diploma.data.dto.area.AreaRequest
+import ru.practicum.android.diploma.data.dto.area.AreaResponse
 import ru.practicum.android.diploma.data.dto.industry.IndustryResponse
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.util.getConnected
@@ -27,6 +29,7 @@ class RetrofitNetworkClient(
                     is VacancySearchRequest -> searchVacancies(dto)
                     is VacancyDetailsRequest -> getVacancyDetails(dto)
                     is IndustryRequest -> getIndustries()
+                    is AreaRequest -> getArea()
                     else -> Response().apply { resultCode = BAD_REQUEST_CODE }
                 }
             } catch (e: HttpException) {
@@ -52,7 +55,13 @@ class RetrofitNetworkClient(
 
     private suspend fun getIndustries(): IndustryResponse {
         val result = headHunterApiService.getIndustries()
-        return IndustryResponse(industriesList = result)
+        return IndustryResponse(industries = result)
+            .apply { resultCode = SUCCESS_CODE }
+    }
+
+    private suspend fun getArea(): AreaResponse {
+        val result = headHunterApiService.getArea()
+        return AreaResponse(area = result)
             .apply { resultCode = SUCCESS_CODE }
     }
 
