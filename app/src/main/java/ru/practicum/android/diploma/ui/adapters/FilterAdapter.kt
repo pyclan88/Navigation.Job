@@ -49,7 +49,7 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
             is RegionViewHolder -> holder.bind(item.data as Region)
             is IndustryViewHolder -> {
                 holder.bind(item.data as Industry)
-                holder.binding.rbIndustryButton.setOnCheckedChangeListener{ _, checkedId ->
+                holder.binding.rbIndustryButton.setOnCheckedChangeListener { _, checkedId ->
                     saveFilterListener?.onItemClicked(item)
                 }
             }
