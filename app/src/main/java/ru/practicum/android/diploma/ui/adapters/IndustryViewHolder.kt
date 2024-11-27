@@ -7,9 +7,9 @@ import ru.practicum.android.diploma.domain.models.Industry
 class IndustryViewHolder(val binding: IndustryItemBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(industry: Industry) {
         binding.rbIndustryButton.text = industry.name
-        binding.rbIndustryButton.isChecked = industry.isSelected
+//        binding.rbIndustryButton.isChecked = industry.isSelect
         binding.rbIndustryButton.setOnClickListener {
-            industry.isSelected = !industry.isSelected
+
         }
     }
 }

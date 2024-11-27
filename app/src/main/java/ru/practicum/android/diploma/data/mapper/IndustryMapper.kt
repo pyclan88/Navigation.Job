@@ -11,7 +11,7 @@ class IndustryMapper {
                 Industry(
                     id = industry.id,
                     name = industry.name,
-                    isSelected = false
+                    isSelect = false
                 )
             }
         }

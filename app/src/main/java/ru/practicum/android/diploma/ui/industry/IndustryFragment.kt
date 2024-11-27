@@ -80,7 +80,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         with(binding) {
             rvVacancies.invisible()
             pbSearch.invisible()
-            groupSelect.invisible()
+            cbApplyButton.invisible()
             placeholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
@@ -96,7 +96,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         with(binding) {
             pbSearch.visible()
             rvVacancies.invisible()
-            groupSelect.invisible()
+            cbApplyButton.invisible()
             placeholder.invisible()
         }
     }
@@ -105,7 +105,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         with(binding) {
             rvVacancies.invisible()
             pbSearch.invisible()
-            groupSelect.invisible()
+            cbApplyButton.invisible()
             placeholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
@@ -120,7 +120,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     private fun showError() {
         with(binding) {
             rvVacancies.invisible()
-            groupSelect.invisible()
+            cbApplyButton.invisible()
             pbSearch.invisible()
             placeholder.visible()
             imageAndTextHelper.setImageAndText(
@@ -135,24 +135,17 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     }
 
     private fun showSelectIndustry(industry: Industry) {
-        with(binding) {
-            rvVacancies.invisible()
-            pbSearch.invisible()
-            placeholder.invisible()
-            groupSelect.visible()
-            iIndustryItem.rbIndustryButton.text = industry.name
-            iIndustryItem.rbIndustryButton.isChecked = true
-            configureApplyButton(industry)
-        }
+        binding.cbApplyButton.visible()
+        configureApplyButton(industry)
     }
 
     private fun showContent(industryList: List<Industry>) {
         with(binding) {
             rvVacancies.visible()
             pbSearch.invisible()
-            groupSelect.invisible()
-            filterAdapter.updateIndustries(industryList)
+            cbApplyButton.invisible()
             placeholder.invisible()
+            filterAdapter.updateIndustries(industryList)
         }
     }
 

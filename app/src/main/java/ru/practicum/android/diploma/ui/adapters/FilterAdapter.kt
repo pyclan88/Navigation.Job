@@ -15,7 +15,7 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     var saveFilterListener: SaveFilterListener? = null
 
-    private var items: List<ItemFilter> = emptyList()
+    var items: List<ItemFilter> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -50,6 +50,7 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
             is IndustryViewHolder -> {
                 holder.bind(item.data as Industry)
                 holder.binding.rbIndustryButton.setOnCheckedChangeListener { _, isChecked ->
+                    updateIndustries(listOf(item.data))
                     saveFilterListener?.onItemClicked(item)
                 }
             }
