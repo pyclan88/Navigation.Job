@@ -89,7 +89,7 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
                 layoutPlaceholder.ivPlaceholder,
                 layoutPlaceholder.tvPlaceholder,
                 R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
-                resources.getString(R.string.no_vacancy_list)
+                resources.getString(R.string.no_such_region)
             )
         }
     }
