@@ -8,8 +8,8 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.state.RegionState
-import ru.practicum.android.diploma.domain.state.RegionState.Input
 import ru.practicum.android.diploma.domain.state.RegionState.Data
+import ru.practicum.android.diploma.domain.state.RegionState.Input
 import ru.practicum.android.diploma.domain.usecase.GetCountriesUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
