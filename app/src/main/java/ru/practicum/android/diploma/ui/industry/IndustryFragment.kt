@@ -1,9 +1,11 @@
 package ru.practicum.android.diploma.ui.industry
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -155,7 +157,18 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     }
 
     private fun configureSearch() = binding.etSearch.doOnTextChanged { text, _, _, _ ->
-        viewModel.searchFilter(text.toString())
+        with(binding.ivEditTextButton) {
+            setImageResource(if (text.isNullOrEmpty()) R.drawable.ic_search else R.drawable.ic_close)
+            setOnClickListener {
+                val inputMethodManager =
+                    requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(binding.ivEditTextButton.windowToken, 0)
+                binding.etSearch.text.clear()
+                viewModel.clearSearch()
+                clearFocus()
+            }
+        }
+        viewModel.searchDebounce(text.toString())
     }
 
     private fun configureApplyButton(industry: Industry) = binding.cbApplyButton.setOnClickListener {

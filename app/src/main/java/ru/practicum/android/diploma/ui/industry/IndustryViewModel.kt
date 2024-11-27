@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.state.IndustryState
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries
@@ -12,6 +13,7 @@ import ru.practicum.android.diploma.domain.state.IndustryState.Input
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
+import ru.practicum.android.diploma.util.debounce
 
 class IndustryViewModel(
     private val getIndustriesUseCase: GetIndustriesUseCase,
@@ -25,6 +27,14 @@ class IndustryViewModel(
         MutableStateFlow(IndustryState(Input.Empty, Industries.Loading))
     val state: StateFlow<IndustryState>
         get() = _state
+
+    val searchDebounce = debounce<String>(
+        delayMillis = CLICK_DEBOUNCE_DELAY,
+        coroutineScope = viewModelScope,
+        useLastParam = true
+    ) { changedText ->
+        searchFilter(changedText)
+    }
 
     fun getIndustries() = viewModelScope.launch {
         val industries = getIndustriesUseCase.execute()
@@ -43,13 +53,13 @@ class IndustryViewModel(
         setFiltersUseCase.execute(filters)
     }
 
-    fun selectIndustry(industryId: String) {
-
+    fun searchFilter(searchText: String) {
+        _state.value = state.value.copy(data = Industries.Data(industries = getIndustryList.filter {
+            it.name.lowercase().contains(searchText.lowercase())
+        }))
     }
 
-    fun searchFilter(searchText: String) {
-            _state.value = state.value.copy(data = Industries.Data(industries = getIndustryList.filter {
-                it.name.lowercase().contains(searchText.lowercase())
-            }))
+    fun clearSearch() {
+        _state.value = IndustryState(Input.Empty, Industries.Data(industries = getIndustryList))
     }
 }
