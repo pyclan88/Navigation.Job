@@ -54,6 +54,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
             is Data -> {
                 showContent(state.data.industries)
             }
+
             is Empty -> showEmpty()
             is Error -> showError()
             is Loading -> showLoading()
@@ -68,17 +69,16 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         rvVacancies.adapter = filterAdapter
         filterAdapter.saveFilterListener = object : FilterAdapter.SaveFilterListener {
             override fun onItemClicked(item: ItemFilter) {
-                viewModel.setFilters(item.data as Industry)
-                findNavController().navigateUp()
+                showSelectIndustry(item.data as Industry)
             }
         }
     }
-
 
     private fun showNoInternet() {
         with(binding) {
             rvVacancies.invisible()
             pbSearch.invisible()
+            groupSelect.invisible()
             placeholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
@@ -94,6 +94,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         with(binding) {
             pbSearch.visible()
             rvVacancies.invisible()
+            groupSelect.invisible()
             placeholder.invisible()
         }
     }
@@ -102,6 +103,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         with(binding) {
             rvVacancies.invisible()
             pbSearch.invisible()
+            groupSelect.invisible()
             placeholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
@@ -116,6 +118,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     private fun showError() {
         with(binding) {
             rvVacancies.invisible()
+            groupSelect.invisible()
             pbSearch.invisible()
             placeholder.visible()
             imageAndTextHelper.setImageAndText(
@@ -129,16 +132,34 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         }
     }
 
+    private fun showSelectIndustry(industry: Industry) {
+        with(binding) {
+            rvVacancies.invisible()
+            pbSearch.invisible()
+            placeholder.invisible()
+            groupSelect.visible()
+            iIndustryItem.rbIndustryButton.text = industry.name
+            iIndustryItem.rbIndustryButton.isChecked = true
+            configureApplyButton(industry)
+        }
+    }
+
     private fun showContent(industryList: List<Industry>) {
         with(binding) {
             rvVacancies.visible()
             pbSearch.invisible()
+            groupSelect.invisible()
             filterAdapter.updateIndustries(industryList)
             placeholder.invisible()
         }
     }
 
     private fun configureSearch() = binding.etSearch.doOnTextChanged { text, _, _, _ ->
-       viewModel.searchFilter(text.toString())
+        viewModel.searchFilter(text.toString())
+    }
+
+    private fun configureApplyButton(industry: Industry) = binding.cbApplyButton.setOnClickListener {
+        viewModel.setFilters(industry)
+        findNavController().navigateUp()
     }
 }

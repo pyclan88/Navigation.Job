@@ -19,7 +19,7 @@ class IndustryViewModel(
     private val setFiltersUseCase: SetFiltersUseCase
 ) : ViewModel() {
 
-    private var getIndustryList: List<Industry>? = mutableListOf()
+    private var getIndustryList: List<Industry> = mutableListOf()
 
     private val _state: MutableStateFlow<IndustryState> =
         MutableStateFlow(IndustryState(Input.Empty, Industries.Loading))
@@ -28,7 +28,7 @@ class IndustryViewModel(
 
     fun getIndustries() = viewModelScope.launch {
         val industries = getIndustriesUseCase.execute()
-        getIndustryList = industries.first
+        getIndustryList = industries.first ?: mutableListOf()
         val industryState = when {
             industries.first?.isEmpty() == true -> state.value.copy(data = Industries.Empty)
             industries.second?.isNotEmpty() == true -> state.value.copy(data = Industries.Error)
@@ -43,11 +43,13 @@ class IndustryViewModel(
         setFiltersUseCase.execute(filters)
     }
 
+    fun selectIndustry(industryId: String) {
+
+    }
+
     fun searchFilter(searchText: String) {
-        if (!getIndustryList.isNullOrEmpty()) {
-            _state.value = state.value.copy(data = Industries.Data(industries = getIndustryList!!.filter {
+            _state.value = state.value.copy(data = Industries.Data(industries = getIndustryList.filter {
                 it.name.lowercase().contains(searchText.lowercase())
             }))
-        }
     }
 }
