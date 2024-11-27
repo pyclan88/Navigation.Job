@@ -1,9 +1,12 @@
 package ru.practicum.android.diploma.ui.region
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
@@ -41,6 +44,7 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
 
         configureBackButton()
         configureRegionsAdapter()
+        configureSearchInput()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state -> render(state) }
@@ -69,6 +73,21 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
                 findNavController().navigateUp()
             }
         }
+    }
+
+    private fun configureSearchInput() = binding.etSearch.doOnTextChanged { text, _, _, _ ->
+        with(binding.ivEditTextButton) {
+            setImageResource(if (text.isNullOrEmpty()) R.drawable.ic_search else R.drawable.ic_close)
+            setOnClickListener {
+                val inputMethodManager =
+                    requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(binding.ivEditTextButton.windowToken, 0)
+                binding.etSearch.text.clear()
+                viewModel.clearRegion()
+                clearFocus()
+            }
+        }
+        text?.let { viewModel.sortDebounce(it.toString()) }
     }
 
     private fun showLoading() {
