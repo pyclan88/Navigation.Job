@@ -20,7 +20,6 @@ class FiltersViewModel(
 
     fun getFilters() {
         _state.value = FiltersState.Data(getFiltersUseCase.execute())
-        println("123"+_state.value)
     }
 
     fun setFilters(salary: Int?, withoutSalaryButton: Boolean) {

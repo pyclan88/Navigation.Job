@@ -42,7 +42,7 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
     private fun render(state: RegionState) {
         when (state.data) {
             is RegionState.Data.Data -> filterAdapter.updateRegions(state.data.regions)
-            is RegionState.Data.Loading->{}
+            is RegionState.Data.Loading-> { }
             else -> throw UnsupportedOperationException("Будет позже")
         }
     }
