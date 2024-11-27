@@ -52,6 +52,7 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
         }
 
         holder.itemView.setOnClickListener { saveFilterListener?.onItemClicked(item) }
+
     }
 
     fun updateCountries(data: List<Country>) {

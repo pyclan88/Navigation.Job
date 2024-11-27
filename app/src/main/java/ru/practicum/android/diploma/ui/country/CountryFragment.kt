@@ -69,20 +69,20 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
         }
     }
 
-/*    private fun showNoInternet() {
-        with(binding) {
-            rvCountries.invisible()
-            pbSearch.invisible()
-            placeholder.visible()
-            imageAndTextHelper.setImageAndText(
-                requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
-                R.drawable.placeholder_vacancy_search_no_internet_skull,
-                resources.getString(R.string.no_internet)
-            )
-        }
-    }*/
+    /*    private fun showNoInternet() {
+            with(binding) {
+                rvCountries.invisible()
+                pbSearch.invisible()
+                placeholder.visible()
+                imageAndTextHelper.setImageAndText(
+                    requireContext(),
+                    layoutPlaceholder.ivPlaceholder,
+                    layoutPlaceholder.tvPlaceholder,
+                    R.drawable.placeholder_vacancy_search_no_internet_skull,
+                    resources.getString(R.string.no_internet)
+                )
+            }
+        }*/
 
     private fun showLoading() {
         with(binding) {

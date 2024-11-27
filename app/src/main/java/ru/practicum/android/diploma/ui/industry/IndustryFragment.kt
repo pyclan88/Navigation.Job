@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
@@ -39,6 +40,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
 
         configureBackButton()
         configureIndustriesAdapter()
+        configureSearch()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state -> render(state) }
@@ -49,7 +51,9 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
 
     private fun render(state: IndustryState) {
         when (state.data) {
-            is Data -> showContent(state.data.industries)
+            is Data -> {
+                showContent(state.data.industries)
+            }
             is Empty -> showEmpty()
             is Error -> showError()
             is Loading -> showLoading()
@@ -69,6 +73,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
             }
         }
     }
+
 
     private fun showNoInternet() {
         with(binding) {
@@ -131,5 +136,9 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
             filterAdapter.updateIndustries(industryList)
             placeholder.invisible()
         }
+    }
+
+    private fun configureSearch() = binding.etSearch.doOnTextChanged { text, _, _, _ ->
+       viewModel.searchFilter(text.toString())
     }
 }
