@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.ui.region
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +30,7 @@ class RegionViewModel(
     val state: StateFlow<RegionState>
         get() = _state
 
-    fun getRegions(sortExpression: String = "") = viewModelScope.launch {
+    fun getRegions(sortExpression: String = "") = viewModelScope.launch(Dispatchers.Main) {
         val countries = getCountriesUseCase.execute()
         val dataState = when {
             countries.first?.isEmpty() == true -> Data.Empty
