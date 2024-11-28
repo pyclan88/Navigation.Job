@@ -28,7 +28,7 @@ class FiltersViewModel(
     }
 
     fun setEmptyCountry() {
-        val filters = getFiltersUseCase.execute().copy(area = null)
+        val filters = getFiltersUseCase.execute().copy(area = null, region = null)
         setFiltersUseCase.execute(filters)
     }
 
@@ -37,9 +37,9 @@ class FiltersViewModel(
         setFiltersUseCase.execute(filters)
     }
 
-    fun setFilters(salary: Int?, withoutSalaryButton: Boolean, area: Country?, industry: Industry?) {
+    fun setFilters(salary: Int?, withoutSalaryButton: Boolean) {
         val filters = getFiltersUseCase.execute()
-            .copy(salary = salary, withoutSalaryButton = withoutSalaryButton, area = area)
+            .copy(salary = salary, withoutSalaryButton = withoutSalaryButton)
         setFiltersUseCase.execute(filters)
     }
 

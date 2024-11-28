@@ -112,10 +112,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
             viewModel.setFilters(
                 salary = tiSalaryInputText.text.toIntOrNull(),
                 withoutSalaryButton = cbWithoutSalaryButton.isChecked,
-                area = null,
-                industry = null,
-
-                )
+            )
         }
     }
 

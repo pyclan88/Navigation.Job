@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.ui.industry
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -24,7 +25,7 @@ class IndustryViewModel(
     val state: StateFlow<IndustryState>
         get() = _state
 
-    fun getIndustries() = viewModelScope.launch {
+    fun getIndustries() = viewModelScope.launch(Dispatchers.Main) {
         val industries = getIndustriesUseCase.execute()
         val industryState = when {
             industries.first?.isEmpty() == true -> state.value.copy(data = Industries.Empty)
