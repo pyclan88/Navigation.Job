@@ -9,7 +9,8 @@ import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.state.IndustryState
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries
-import ru.practicum.android.diploma.domain.state.IndustryState.Input
+import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Loading
+import ru.practicum.android.diploma.domain.state.IndustryState.Input.Empty
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
@@ -21,30 +22,29 @@ class IndustryViewModel(
     private val setFiltersUseCase: SetFiltersUseCase
 ) : ViewModel() {
 
-    private var getIndustryList: List<Industry> = mutableListOf()
+    private var industries: List<Industry> = mutableListOf()
 
     private val _state: MutableStateFlow<IndustryState> =
-        MutableStateFlow(IndustryState(Input.Empty, Industries.Loading))
+        MutableStateFlow(IndustryState(Empty, Loading))
     val state: StateFlow<IndustryState>
         get() = _state
 
-    val searchDebounce = debounce<String>(
+    val searchDebounce: (String) -> Unit = debounce(
         delayMillis = CLICK_DEBOUNCE_DELAY,
         coroutineScope = viewModelScope,
         useLastParam = true
-    ) { changedText ->
-        searchFilter(changedText)
-    }
+    ) { changedText -> searchFilter(changedText) }
 
     fun getIndustries() = viewModelScope.launch {
-        val industries = getIndustriesUseCase.execute()
-        getIndustryList = industries.first ?: mutableListOf()
-        val industryState = when {
-            industries.first?.isEmpty() == true -> state.value.copy(data = Industries.Empty)
-            industries.second?.isNotEmpty() == true -> state.value.copy(data = Industries.Error)
-            else -> state.value.copy(data = Industries.Data(industries = industries.first!!))
+        val response = getIndustriesUseCase.execute()
+        industries = response.first ?: mutableListOf()
+        val dataState = when {
+            response.first?.isEmpty() == true -> Industries.Empty
+            response.second?.isNotEmpty() == true -> Industries.Error
+            else -> Industries.Data(industries = response.first!!)
         }
-        _state.value = industryState
+
+        _state.value = state.value.copy(data = dataState)
     }
 
     fun setFilters(industry: Industry) {
@@ -53,17 +53,14 @@ class IndustryViewModel(
         setFiltersUseCase.execute(filters)
     }
 
-    fun showSelectIndustry(industry: Industry) {
-        _state.value = state.value.copy(data = Industries.Data(industries = listOf(industry)))
-    }
-
-    fun searchFilter(searchText: String) {
-        _state.value = state.value.copy(data = Industries.Data(industries = getIndustryList.filter {
+    private fun searchFilter(searchText: String) {
+        val filteredIndustries = industries.filter {
             it.name.lowercase().contains(searchText.lowercase())
-        }))
+        }
+        _state.value = state.value.copy(data = Industries.Data(filteredIndustries))
     }
 
     fun clearSearch() {
-        _state.value = IndustryState(Input.Empty, Industries.Data(industries = getIndustryList))
+        _state.value = IndustryState(Empty, Industries.Data(industries))
     }
 }

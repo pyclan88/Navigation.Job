@@ -10,7 +10,8 @@ class IndustryMapper {
             group.industries.map { industry ->
                 Industry(
                     id = industry.id,
-                    name = industry.name
+                    name = industry.name,
+                    isSelected = false
                 )
             }
         }
