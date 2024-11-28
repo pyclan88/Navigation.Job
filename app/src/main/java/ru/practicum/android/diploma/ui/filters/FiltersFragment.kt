@@ -64,7 +64,10 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         tlPlaceWorkLayout.setEndIconOnClickListener {
             when (tlPlaceWorkLayout.editText?.text.isNullOrEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
-                else -> setViewState(tlPlaceWorkLayout, EMPTY_PARAM_VALUE)
+                else -> {
+                    viewModel.setEmptyCountry()
+                    setViewState(tlPlaceWorkLayout, EMPTY_PARAM_VALUE)
+                }
             }
             etBranch.doOnTextChanged { _, _, _, _ ->
                 configureResetButtonVisible()
@@ -77,7 +80,10 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         tlBranchLayout.setEndIconOnClickListener {
             when (tlBranchLayout.editText?.text.isNullOrEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
-                else -> setViewState(tlBranchLayout, EMPTY_PARAM_VALUE)
+                else -> {
+                    viewModel.setEmptyIndustry()
+                    setViewState(tlBranchLayout, EMPTY_PARAM_VALUE)
+                }
             }
 
             etBranch.doOnTextChanged { _, _, _, _ ->
@@ -105,8 +111,11 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         cbApplyButton.setOnClickListener {
             viewModel.setFilters(
                 salary = tiSalaryInputText.text.toIntOrNull(),
-                withoutSalaryButton = cbWithoutSalaryButton.isChecked
-            )
+                withoutSalaryButton = cbWithoutSalaryButton.isChecked,
+                area = null,
+                industry = null,
+
+                )
         }
     }
 
