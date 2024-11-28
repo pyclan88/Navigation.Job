@@ -6,8 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.models.Country
-import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.domain.usecase.filters.ClearFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
