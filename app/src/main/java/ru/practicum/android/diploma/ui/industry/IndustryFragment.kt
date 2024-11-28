@@ -135,6 +135,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     }
 
     private fun showSelectIndustry(industry: Industry) {
+        viewModel.showSelectIndustry(industry)
         binding.cbApplyButton.visible()
         configureApplyButton(industry)
     }

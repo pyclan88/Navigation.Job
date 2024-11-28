@@ -53,6 +53,10 @@ class IndustryViewModel(
         setFiltersUseCase.execute(filters)
     }
 
+    fun showSelectIndustry(industry: Industry) {
+        _state.value = state.value.copy(data = Industries.Data(industries = listOf(industry.copy(isSelect = true))))
+    }
+
     fun searchFilter(searchText: String) {
         _state.value = state.value.copy(data = Industries.Data(industries = getIndustryList.filter {
             it.name.lowercase().contains(searchText.lowercase())
