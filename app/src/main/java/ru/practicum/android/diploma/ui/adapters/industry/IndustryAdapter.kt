@@ -26,9 +26,12 @@ class IndustryAdapter(
         holder.bind(industry)
 
         holder.itemView.setOnClickListener {
-
-            handle(position)
             clickListener.onIndustryClick(industry)
+
+            lastCheckedIndustry?.let { it.isSelected = false }
+            industries[position].isSelected = true
+            lastCheckedIndustry = industries[position]
+            notifyDataSetChanged()
         }
     }
 
@@ -39,13 +42,6 @@ class IndustryAdapter(
         }
 
         this.industries = industries
-        notifyDataSetChanged()
-    }
-
-    private fun handle(adapterPosition: Int) {
-        lastCheckedIndustry?.let { it.isSelected = false }
-        industries[adapterPosition].isSelected = true
-        lastCheckedIndustry = industries[adapterPosition]
         notifyDataSetChanged()
     }
 
