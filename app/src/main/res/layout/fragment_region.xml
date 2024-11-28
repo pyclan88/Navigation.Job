@@ -32,36 +32,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ti_search"
+    <EditText
+        android:id="@+id/et_search"
         android:layout_width="0dp"
-        android:layout_height="@dimen/mark_56dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/mark_8dp"
         android:background="@drawable/bg_search_edittext"
-        android:orientation="vertical"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:cursorColor="@color/blue"
-        app:endIconDrawable="@drawable/ic_close"
-        app:endIconMode="clear_text"
-        app:endIconTint="@color/black"
-        app:hintEnabled="false"
-        app:layout_constraintEnd_toStartOf="@+id/end_guideline_16dp"
-        app:layout_constraintStart_toStartOf="@+id/start_guideline_16dp"
-        app:layout_constraintTop_toBottomOf="@id/tb_header">
+        android:elevation="@dimen/mark_1dp"
+        android:hint="@string/search_hint"
+        android:inputType="text"
+        android:padding="@dimen/mark_20dp"
+        android:textColor="@color/black"
+        android:textColorHint="?attr/dark_grey_to_white"
+        android:textCursorDrawable="@drawable/custom_cursor"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
+        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
+        app:layout_constraintTop_toBottomOf="@id/tb_header" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ti_search_input"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/noColor"
-            android:drawableEnd="@drawable/ic_search"
-            android:hint="@string/enter_industry"
-            android:maxLines="1"
-            android:padding="@dimen/mark_10dp"
-            android:textColor="@color/black"
-            android:textColorHint="?attr/dark_grey_to_white" />
-    </com.google.android.material.textfield.TextInputLayout>
+    <ImageView
+        android:id="@+id/iv_edit_text_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/mark_1dp"
+        android:paddingHorizontal="@dimen/mark_20dp"
+        android:paddingVertical="@dimen/mark_18dp"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="@id/et_search"
+        app:layout_constraintEnd_toEndOf="@id/et_search"
+        app:layout_constraintTop_toTopOf="@id/et_search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_regions"
@@ -71,43 +69,37 @@
         android:clipToPadding="false"
         android:paddingTop="@dimen/mark_36dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
-        app:layout_constraintTop_toTopOf="@id/ti_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/et_search"
         tools:listitem="@layout/country_item" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_placeholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="iv_placeholder, tv_placeholder" />
-
-    <ImageView
-        android:id="@+id/iv_placeholder"
+    <LinearLayout
+        android:id="@+id/placeholder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        app:layout_constraintBottom_toTopOf="@id/tv_placeholder"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline_16dp"
-        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
-        app:layout_constraintTop_toBottomOf="@id/tb_header"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:src="@drawable/smile" />
-
-    <TextView
-        android:id="@+id/tv_placeholder"
-        style="@style/PlaceholderTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/mark_16dp"
-        android:gravity="center"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_placeholder"
-        tools:text="Улыбок тебе дед макар" />
+        app:layout_constraintTop_toBottomOf="@id/tb_header">
+
+        <include
+            android:id="@+id/layout_placeholder"
+            layout="@layout/placeholder_layout" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_search"
+        android:layout_width="@dimen/mark_48dp"
+        android:layout_height="@dimen/mark_48dp"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
