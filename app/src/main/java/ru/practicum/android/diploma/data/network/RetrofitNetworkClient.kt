@@ -3,11 +3,15 @@ package ru.practicum.android.diploma.data.network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.practicum.android.diploma.data.dto.industry.IndustryRequest
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
-import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsDto
+import ru.practicum.android.diploma.data.dto.area.AreaRequest
+import ru.practicum.android.diploma.data.dto.area.AreaResponse
+import ru.practicum.android.diploma.data.dto.industry.IndustryResponse
+import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.util.getConnected
 
 class RetrofitNetworkClient(
@@ -24,6 +28,8 @@ class RetrofitNetworkClient(
                 when (dto) {
                     is VacancySearchRequest -> searchVacancies(dto)
                     is VacancyDetailsRequest -> getVacancyDetails(dto)
+                    is IndustryRequest -> getIndustries()
+                    is AreaRequest -> getArea()
                     else -> Response().apply { resultCode = BAD_REQUEST_CODE }
                 }
             } catch (e: HttpException) {
@@ -36,20 +42,28 @@ class RetrofitNetworkClient(
     private suspend fun searchVacancies(
         input: VacancySearchRequest
     ): VacanciesSearchResponse {
-        println("text:${input.expression},page:${input.page},perPage:${input.perPage}")
         return headHunterApiService.searchVacancies(
-            text = input.expression,
-            page = input.page,
-            perPage = input.perPage
+            options = input.options
         ).apply { resultCode = SUCCESS_CODE }
-
     }
 
     private suspend fun getVacancyDetails(
         input: VacancyDetailsRequest
-    ): VacancyDetailsDto = headHunterApiService.getVacancyDetails(
+    ): VacancyDetailsResponse = headHunterApiService.getVacancyDetails(
         vacancyId = input.id
     ).apply { resultCode = SUCCESS_CODE }
+
+    private suspend fun getIndustries(): IndustryResponse {
+        val result = headHunterApiService.getIndustries()
+        return IndustryResponse(industries = result)
+            .apply { resultCode = SUCCESS_CODE }
+    }
+
+    private suspend fun getArea(): AreaResponse {
+        val result = headHunterApiService.getArea()
+        return AreaResponse(area = result)
+            .apply { resultCode = SUCCESS_CODE }
+    }
 
     companion object {
         const val FAILED_INTERNET_CONNECTION_CODE = -1

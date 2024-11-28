@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.nested.SalaryDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.ScheduleDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.WorkingItemDto
 
-data class VacancyDetailsDto(
+data class VacancyDetailsResponse(
     @SerializedName("address")
     val address: AddressDto?,
     @SerializedName("alternate_url")

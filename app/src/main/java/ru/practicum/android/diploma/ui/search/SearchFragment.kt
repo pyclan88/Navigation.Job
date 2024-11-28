@@ -59,6 +59,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
         configureRecycler()
         configureSearchInput()
+        configureFilterButton()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state ->
@@ -189,28 +190,37 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     private fun configureRecycler() {
         binding.rvVacancies.apply {
             adapter = vacanciesAdapter
-            binding.rvVacancies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 
-                    if (dy > 0) {
-                        val pos =
-                            (binding.rvVacancies.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                        val itemsCount = vacanciesAdapter.itemCount
-                        if (pos >= itemsCount - 1) {
-                            if (getConnected()) {
-                                binding.pbSearch.visible()
-                            } else {
-                                binding.pbSearch.invisible()
-                            }
-                            viewModel.onLastItemReached()
-                        }
+                    if (dy > 0 && shouldLoadNextPage()) {
+                        handleLoadingIndicator()
+                        viewModel.onLastItemReached()
                     }
                 }
             })
-
         }
     }
+
+    private fun shouldLoadNextPage(): Boolean {
+        val layoutManager = binding.rvVacancies.layoutManager as LinearLayoutManager
+        val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+        val itemCount = vacanciesAdapter.itemCount
+        return lastVisibleItemPosition >= itemCount - 1 && viewModel.isNotLastPage
+    }
+
+    private fun handleLoadingIndicator() {
+        binding.pbSearch.visibility = if (getConnected()) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun configureFilterButton() =
+        binding.tbHeader.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_filter -> findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
+            }
+            true
+        }
 
     private fun convertToFoundVacancies(amount: Int): String {
         val vacanciesWord = resources.getString(EndingConvertor.vacancies(amount))
