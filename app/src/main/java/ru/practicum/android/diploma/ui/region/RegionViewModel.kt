@@ -24,6 +24,7 @@ class RegionViewModel(
 ) : ViewModel() {
 
     private var lastExpression = ""
+    private var countries: List<Country> = emptyList()
 
     private val _state: MutableStateFlow<RegionState> =
         MutableStateFlow(RegionState(Input.Empty, Data.Loading))
@@ -31,19 +32,21 @@ class RegionViewModel(
         get() = _state
 
     fun getRegions(sortExpression: String = "") = viewModelScope.launch(Dispatchers.Main) {
-        val countries = getCountriesUseCase.execute()
+        val response = getCountriesUseCase.execute()
+        countries = response.first ?: emptyList()
+
         val dataState = when {
-            countries.first?.isEmpty() == true -> Data.Empty
-            countries.second?.isNotEmpty() == true -> Data.Error
+            response.first?.isEmpty() == true -> Data.Empty
+            response.second?.isNotEmpty() == true -> Data.Error
             else -> {
-                val sortedRegions = sortRegionsIfNeeded(parseRegions(countries.first!!), sortExpression)
+                val sortedRegions = sortRegionsIfNeeded(parseRegions(response.first!!), sortExpression)
                 if (sortedRegions.isEmpty()) Data.Empty else Data.Data(sortedRegions)
             }
         }
         _state.value = state.value.copy(data = dataState)
     }
 
-    private val searchDebounceAction = debounce<String>(
+    private val searchDebounceAction: (String) -> Unit = debounce(
         delayMillis = SEARCH_DEBOUNCE_DELAY,
         coroutineScope = viewModelScope,
         useLastParam = true
@@ -74,8 +77,10 @@ class RegionViewModel(
     }
 
     fun setFilter(region: Region) {
+        val country = findCountryByRegion(region)
         val filters = getFiltersUseCase.execute()
-            .copy(region = region)
+            .copy(area = country, region = region)
+
         setFiltersUseCase.execute(filters)
     }
 
@@ -87,5 +92,16 @@ class RegionViewModel(
             filter.area.regions
         }
         return regions
+    }
+
+    private fun findCountryByRegion(neededRegion: Region): Country? {
+        for (country in countries) {
+            for (region in country.regions) {
+                if (region == neededRegion) {
+                    return country
+                }
+            }
+        }
+        return null
     }
 }
