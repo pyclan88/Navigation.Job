@@ -54,7 +54,7 @@ class IndustryViewModel(
     }
 
     fun showSelectIndustry(industry: Industry) {
-        _state.value = state.value.copy(data = Industries.Data(industries = listOf(industry.copy(isSelect = true))))
+        _state.value = state.value.copy(data = Industries.Data(industries = listOf(industry)))
     }
 
     fun searchFilter(searchText: String) {

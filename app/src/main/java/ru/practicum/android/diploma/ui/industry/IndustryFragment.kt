@@ -53,10 +53,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
 
     private fun render(state: IndustryState) {
         when (state.data) {
-            is Data -> {
-                showContent(state.data.industries)
-            }
-
+            is Data -> showContent(state.data.industries)
             is Empty -> showEmpty()
             is Error -> showError()
             is Loading -> showLoading()
@@ -135,7 +132,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     }
 
     private fun showSelectIndustry(industry: Industry) {
-        viewModel.showSelectIndustry(industry)
+//        viewModel.showSelectIndustry(industry)
         binding.cbApplyButton.visible()
         configureApplyButton(industry)
     }

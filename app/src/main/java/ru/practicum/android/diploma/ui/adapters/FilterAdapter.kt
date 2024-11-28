@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import ru.practicum.android.diploma.databinding.CountryItemBinding
@@ -14,8 +15,9 @@ import ru.practicum.android.diploma.domain.models.Region
 class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     var saveFilterListener: SaveFilterListener? = null
-
+    private var lastView: RadioButton? = null
     var items: List<ItemFilter> = emptyList()
+    var selectedPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -45,14 +47,37 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         when (holder) {
-            is CountryViewHolder -> holder.bind(item.data as Country)
-            is RegionViewHolder -> holder.bind(item.data as Region)
-            is IndustryViewHolder -> holder.bind(item.data as Industry)
+            is CountryViewHolder -> {
+                holder.bind(item.data as Country)
+                holder.itemView.setOnClickListener { saveFilterListener?.onItemClicked(item) }
+            }
+
+            is RegionViewHolder -> {
+                holder.bind(item.data as Region)
+                holder.itemView.setOnClickListener { saveFilterListener?.onItemClicked(item) }
+            }
+
+            is IndustryViewHolder -> {
+
+                holder.bind(item.data as Industry)
+
+                holder.binding.rbIndustryButton.isChecked = position == selectedPosition
+
+//
+                holder.binding.rbIndustryButton.setOnCheckedChangeListener { buttonView, isChecked ->
+//
+
+                    if (isChecked) {
+
+                        selectedPosition = holder.getAdapterPosition()
+
+                    }
+                }
+                notifyDataSetChanged()
+            }
+
             else -> throw IllegalArgumentException("Unknown ViewHolder for position $position")
         }
-
-        holder.itemView.setOnClickListener { saveFilterListener?.onItemClicked(item) }
-
     }
 
     fun updateCountries(data: List<Country>) {
