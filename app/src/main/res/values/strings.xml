@@ -9,6 +9,7 @@
     <string name="no_vacancy_list">Не удалось получить\nсписок вакансий</string>
     <string name="no_internet">Нет интернета</string>
     <string name="no_such_region">Такого региона нет</string>
+    <string name="no_such_industry">Такой отрасли нет</string>
     <string name="region_select">Выбор региона</string>
     <string name="no_region_list">Не удалось получить\nсписок</string>
     <string name="main_bottom_navigation">Главная</string>
