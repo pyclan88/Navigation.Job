@@ -26,7 +26,7 @@ class RootActivity : AppCompatActivity() {
             val isVisible = when (destination.id) {
                 R.id.filters_fragment,
                 R.id.vacancy_fragment,
-                R.id.industryFragment -> false
+                R.id.industry_fragment -> false
 
                 else -> true
             }
