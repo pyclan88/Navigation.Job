@@ -48,11 +48,12 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         }
 
         viewModel.getFilters()
+        println("FiltersFragment:onViewCreated")
     }
 
     private fun render(state: FiltersState) {
         when (state) {
-            is FiltersState.Empty -> { }
+            is FiltersState.Empty -> {}
             is FiltersState.Data -> showContent(state.filters)
         }
     }
@@ -61,8 +62,8 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
 
     private fun configureWorkButton() = with(binding) {
-        tlPlaceWorkLayout.setEndIconOnClickListener {
-            when (tlPlaceWorkLayout.editText?.text.isNullOrEmpty()) {
+        tlPlaceWorkLayout.editText?.setOnClickListener {
+            when (tlPlaceWorkLayout.editText?.text.toString().isEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
                 else -> {
                     viewModel.setEmptyCountry()
@@ -77,7 +78,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     }
 
     private fun configureIndustryButton() = with(binding) {
-        tlBranchLayout.setEndIconOnClickListener {
+        tlBranchLayout.editText?.setOnClickListener {
             when (tlBranchLayout.editText?.text.isNullOrEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
                 else -> {
