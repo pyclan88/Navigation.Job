@@ -43,7 +43,6 @@ class IndustryViewModel(
             response.second?.isNotEmpty() == true -> Industries.Error
             else -> Industries.Data(industries = response.first!!)
         }
-
         _state.value = state.value.copy(data = dataState)
     }
 
@@ -57,9 +56,10 @@ class IndustryViewModel(
         val filteredIndustries = industries.filter {
             it.name.lowercase().contains(searchText.lowercase())
         }
-        _state.value = if (filteredIndustries.isNotEmpty())  state.value.copy(data = Industries.Data(filteredIndustries)) else state.value.copy(data = Industries.Empty)
-
-
+        _state.value =
+            if (filteredIndustries.isNotEmpty()) state.value.copy(data = Industries.Data(filteredIndustries)) else state.value.copy(
+                data = Industries.Empty
+            )
     }
 
     fun clearSearch() {

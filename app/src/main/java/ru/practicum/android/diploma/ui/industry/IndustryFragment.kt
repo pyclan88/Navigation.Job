@@ -54,7 +54,6 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state -> render(state) }
         }
-
         viewModel.getIndustries()
     }
 
