@@ -57,7 +57,9 @@ class IndustryViewModel(
             it.name.lowercase().contains(searchText.lowercase())
         }
         _state.value =
-            if (filteredIndustries.isNotEmpty()) state.value.copy(data = Industries.Data(filteredIndustries)) else state.value.copy(
+            if (filteredIndustries.isNotEmpty())
+                state.value.copy(data = Industries.Data(filteredIndustries))
+            else state.value.copy(
                 data = Industries.Empty
             )
     }
