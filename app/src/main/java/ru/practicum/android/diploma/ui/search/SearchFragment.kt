@@ -134,6 +134,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             placeholder.visible()
             tvCountVacancies.visible()
             tvCountVacancies.text = resources.getText(R.string.no_such_vacancies)
+            vacanciesAdapter.clear()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
                 layoutPlaceholder.ivPlaceholder,
