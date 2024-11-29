@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.domain.usecase.filters.ClearFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
@@ -17,12 +18,16 @@ class FiltersViewModel(
     private val clearFiltersUseCase: ClearFiltersUseCase
 ) : ViewModel() {
 
+    private var currentFilter = Filter.empty
+
     private val _state: MutableStateFlow<FiltersState> = MutableStateFlow(FiltersState.Empty)
     val state: StateFlow<FiltersState>
         get() = _state
 
     fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
-        _state.value = FiltersState.Data(getFiltersUseCase.execute())
+        val filters = FiltersState.Data(getFiltersUseCase.execute())
+        _state.value = filters
+        currentFilter = filters.filters
     }
 
     fun setEmptyCountry() {

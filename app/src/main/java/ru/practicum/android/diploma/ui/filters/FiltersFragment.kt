@@ -22,6 +22,7 @@ import ru.practicum.android.diploma.util.toIntOrNull
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private val viewModel: FiltersViewModel by viewModel()
+    val filter = Filter.empty
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -117,6 +118,14 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     }
 
     private fun configureApplyButtonVisible() = with(binding) {
+            binding.cbApplyButton.isVisible = !(
+                binding.etPlaceWork.text.toString() == filter.location &&
+                    binding.etBranch.text.toString() == filter.industry?.name &&
+                    binding.tiSalaryInputText.text.toIntOrNull() == filter.salary &&
+                    binding.cbWithoutSalaryButton.isChecked == filter.withoutSalaryButton
+                )
+
+
         val isEmpty = etPlaceWork.text.isNullOrBlank()
             && etBranch.text.isNullOrBlank()
             && tiSalaryInputText.text.isNullOrBlank()
