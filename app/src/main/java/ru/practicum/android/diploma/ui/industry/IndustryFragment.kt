@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -127,8 +128,8 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     private fun showContent(industryList: List<Industry>) = with(binding) {
         rvVacancies.visible()
         pbSearch.invisible()
-        cbApplyButton.invisible()
         placeholder.invisible()
+        cbApplyButton.isVisible = industryList.any { it.isSelected }
         filterAdapter.updateIndustries(industryList)
     }
 
