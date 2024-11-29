@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.ui.filters
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +22,8 @@ import ru.practicum.android.diploma.util.toIntOrNull
 
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
+    private var currentFilter = Filter.empty
     private val viewModel: FiltersViewModel by viewModel()
-    val filter = Filter.empty
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -32,6 +33,8 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getFilters()
+
         configureBackButton()
         configureWorkButton()
         configureIndustryButton()
@@ -39,7 +42,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         configureWithoutSalaryButton()
 
         configureApplyButtonListener()
-        configureApplyButtonVisible()
+//        configureApplyButtonVisible()
 
         configureResetButtonListener()
         configureResetButtonVisible()
@@ -72,7 +75,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
             }
             etBranch.doOnTextChanged { _, _, _, _ ->
                 configureResetButtonVisible()
-                configureApplyButtonVisible()
+//                configureApplyButtonVisible()
             }
         }
     }
@@ -86,18 +89,19 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
                     setViewState(tlBranchLayout, EMPTY_PARAM_VALUE)
                 }
             }
-
-            etBranch.doOnTextChanged { _, _, _, _ ->
-                configureResetButtonVisible()
-                configureApplyButtonVisible()
-            }
+//            etBranch.doOnTextChanged { _, _, _, _ ->
+//                configureResetButtonVisible()
+//                configureApplyButtonVisible()
+//            }
+            configureResetButtonVisible()
+            configureApplyButtonVisible()
         }
     }
 
     private fun configureSalaryInput() = with(binding) {
         tiSalaryInputText.doOnTextChanged { _, _, _, _ ->
             configureResetButtonVisible()
-            configureApplyButtonVisible()
+//            configureApplyButtonVisible()
         }
     }
 
@@ -115,22 +119,19 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
                 withoutSalaryButton = cbWithoutSalaryButton.isChecked,
             )
         }
+
     }
 
+
     private fun configureApplyButtonVisible() = with(binding) {
-            binding.cbApplyButton.isVisible = !(
-                binding.etPlaceWork.text.toString() == filter.location &&
-                    binding.etBranch.text.toString() == filter.industry?.name &&
-                    binding.tiSalaryInputText.text.toIntOrNull() == filter.salary &&
-                    binding.cbWithoutSalaryButton.isChecked == filter.withoutSalaryButton
-                )
 
-
-        val isEmpty = etPlaceWork.text.isNullOrBlank()
-            && etBranch.text.isNullOrBlank()
-            && tiSalaryInputText.text.isNullOrBlank()
-            && !cbWithoutSalaryButton.isChecked
+        val isEmpty = etPlaceWork.text.toString() == (currentFilter.location ?: "") &&
+            etBranch.text.toString() == (currentFilter.industry ?: "") &&
+            tiSalaryInputText.text.toIntOrNull() == currentFilter.salary &&
+            cbWithoutSalaryButton.isChecked == currentFilter.withoutSalaryButton
         cbApplyButton.isVisible = !isEmpty
+
+        Log.d("applybut", "${etPlaceWork.text.toString()} - ${currentFilter.location ?: " "}")
     }
 
     private fun configureResetButtonVisible() = with(binding) {
@@ -150,6 +151,9 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         setViewState(binding.tlBranchLayout, state.industry?.name)
         binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
         binding.cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
+        currentFilter = state
+        configureApplyButtonVisible()
+        configureResetButtonVisible()
     }
 
     private fun setViewState(layout: TextInputLayout, content: String?) {

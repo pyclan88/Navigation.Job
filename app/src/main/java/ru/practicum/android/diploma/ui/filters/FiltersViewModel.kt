@@ -18,7 +18,7 @@ class FiltersViewModel(
     private val clearFiltersUseCase: ClearFiltersUseCase
 ) : ViewModel() {
 
-    private var currentFilter = Filter.empty
+
 
     private val _state: MutableStateFlow<FiltersState> = MutableStateFlow(FiltersState.Empty)
     val state: StateFlow<FiltersState>
@@ -27,23 +27,25 @@ class FiltersViewModel(
     fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
         val filters = FiltersState.Data(getFiltersUseCase.execute())
         _state.value = filters
-        currentFilter = filters.filters
     }
 
     fun setEmptyCountry() {
         val filters = getFiltersUseCase.execute().copy(area = null, region = null)
         setFiltersUseCase.execute(filters)
+        getFilters()
     }
 
     fun setEmptyIndustry() {
         val filters = getFiltersUseCase.execute().copy(industry = null)
         setFiltersUseCase.execute(filters)
+        getFilters()
     }
 
     fun setFilters(salary: Int?, withoutSalaryButton: Boolean) {
         val filters = getFiltersUseCase.execute()
             .copy(salary = salary, withoutSalaryButton = withoutSalaryButton)
         setFiltersUseCase.execute(filters)
+        getFilters()
     }
 
     fun clearFilters() {
