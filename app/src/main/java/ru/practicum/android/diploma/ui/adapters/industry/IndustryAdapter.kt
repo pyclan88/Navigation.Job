@@ -11,6 +11,7 @@ class IndustryAdapter(
 ) : RecyclerView.Adapter<IndustryViewHolder>() {
 
     private var lastCheckedIndustry: Industry? = null
+    private var lastPosition: Int = -1
     private var industries: List<Industry> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
@@ -22,16 +23,21 @@ class IndustryAdapter(
     override fun getItemCount(): Int = industries.size
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
-        val industry = industries[position]
-        holder.bind(industry)
+        with(holder) {
+            val industry = industries[position]
+            bind(industry)
 
-        holder.itemView.setOnClickListener {
-            clickListener.onIndustryClick(industry)
+            itemView.setOnClickListener {
+                clickListener.onIndustryClick(industry)
 
-            lastCheckedIndustry?.let { it.isSelected = false }
-            industries[position].isSelected = true
-            lastCheckedIndustry = industries[position]
-            notifyDataSetChanged()
+                lastCheckedIndustry?.let { it.isSelected = false }
+                notifyItemChanged(lastPosition)
+                lastPosition = adapterPosition
+
+                industries[adapterPosition].isSelected = true
+                lastCheckedIndustry = industries[adapterPosition]
+                notifyItemChanged(adapterPosition)
+            }
         }
     }
 

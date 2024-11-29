@@ -31,8 +31,15 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
 
     private val viewModel: IndustryViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
-
-    private val filterAdapter: IndustryAdapter = IndustryAdapter { viewModel.setFilters(it) }
+    private val filterAdapter: IndustryAdapter = IndustryAdapter { industry ->
+        with(binding.cbApplyButton) {
+            visible()
+            setOnClickListener {
+                viewModel.setFilters(industry)
+                findNavController().popBackStack()
+            }
+        }
+    }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentIndustryBinding.inflate(inflater, container, false)
@@ -138,6 +145,6 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
                 clearFocus()
             }
         }
-        viewModel.searchDebounce(text.toString())
+        text?.let { viewModel.searchDebounce(it.toString()) }
     }
 }
