@@ -57,17 +57,21 @@
         android:label="fragment_location"
         tools:layout="@layout/fragment_location" >
         <action
-            android:id="@+id/action_location_fragment_to_regionFragment"
-            app:destination="@id/region_fragment" />
-        <action
             android:id="@+id/action_location_fragment_to_countryFragment"
             app:destination="@id/country_fragment" />
+        <action
+            android:id="@+id/action_location_fragment_to_regionFragment"
+            app:destination="@id/region_fragment" />
     </fragment>
     <fragment
         android:id="@+id/industry_fragment"
         android:name="ru.practicum.android.diploma.ui.industry.IndustryFragment"
         android:label="fragment_industry"
         tools:layout="@layout/fragment_industry" />
+    <fragment
+        android:id="@+id/country_fragment"
+        android:name="ru.practicum.android.diploma.ui.country.CountryFragment"
+        android:label="country_fragment" />
     <fragment
         android:id="@+id/region_fragment"
         android:name="ru.practicum.android.diploma.ui.region.RegionFragment"
