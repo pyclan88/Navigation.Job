@@ -45,7 +45,7 @@ class FilterMapper {
         parentId = parentId
     )
 
-    private fun map(dto: IndustryDto) = Industry(id = dto.id, name = dto.name)
+    private fun map(dto: IndustryDto) = Industry(id = dto.id, name = dto.name, isSelected = false)
 
     private fun map(industry: Industry) = IndustryDto(id = industry.id, name = industry.name)
 

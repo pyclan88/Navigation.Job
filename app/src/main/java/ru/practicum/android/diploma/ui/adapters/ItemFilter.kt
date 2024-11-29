@@ -7,6 +7,5 @@ data class ItemFilter(
     companion object {
         const val TYPE_AREA = 0
         const val TYPE_REGION = 1
-        const val TYPE_INDUSTRY = 2
     }
 }
