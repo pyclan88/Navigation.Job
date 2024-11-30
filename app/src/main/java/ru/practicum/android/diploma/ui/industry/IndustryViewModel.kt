@@ -6,10 +6,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
+import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.state.IndustryState
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries
+import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Data
+import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Error
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Loading
+import ru.practicum.android.diploma.domain.state.IndustryState.Industries.NoInternet
 import ru.practicum.android.diploma.domain.state.IndustryState.Input.Empty
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
@@ -40,8 +44,14 @@ class IndustryViewModel(
         industries = response.first ?: mutableListOf()
         val dataState = when {
             response.first?.isEmpty() == true -> Industries.Empty
-            response.second?.isNotEmpty() == true -> Industries.Error
-            else -> Industries.Data(industries = response.first!!)
+            response.second?.isNotEmpty() == true -> {
+                if (response.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
+                    NoInternet
+                } else {
+                    Error
+                }
+            }
+            else -> Data(industries = response.first!!)
         }
         _state.value = state.value.copy(data = dataState)
     }
@@ -58,7 +68,7 @@ class IndustryViewModel(
         }
         _state.value =
             if (filteredIndustries.isNotEmpty()) {
-                state.value.copy(data = Industries.Data(filteredIndustries))
+                state.value.copy(data = Data(filteredIndustries))
             } else {
                 state.value.copy(
                     data = Industries.Empty
@@ -67,6 +77,6 @@ class IndustryViewModel(
     }
 
     fun clearSearch() {
-        _state.value = IndustryState(Empty, Industries.Data(industries))
+        _state.value = IndustryState(Empty, Data(industries))
     }
 }

@@ -25,7 +25,6 @@ class RegionViewModel(
 ) : ViewModel() {
 
     private var lastExpression = ""
-    private val regions = emptyList<Region>()
 
     private val _state: MutableStateFlow<RegionState> =
         MutableStateFlow(RegionState(Input.Empty, Data.Loading))

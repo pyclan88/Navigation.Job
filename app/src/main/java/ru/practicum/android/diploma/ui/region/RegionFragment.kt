@@ -60,7 +60,7 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
             is Empty -> showEmpty()
             is Error -> showError()
             is Loading -> showLoading()
-            is NoInternet -> {}
+            is NoInternet -> showNoInternet()
         }
     }
 
@@ -97,6 +97,21 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
             pbSearch.visible()
             rvRegions.invisible()
             placeholder.invisible()
+        }
+    }
+
+    private fun showNoInternet() {
+        with(binding) {
+            rvRegions.invisible()
+            pbSearch.invisible()
+            placeholder.visible()
+            imageAndTextHelper.setImageAndText(
+                requireContext(),
+                layoutPlaceholder.ivPlaceholder,
+                layoutPlaceholder.tvPlaceholder,
+                R.drawable.placeholder_vacancy_search_no_internet_skull,
+                resources.getString(R.string.no_internet)
+            )
         }
     }
 
