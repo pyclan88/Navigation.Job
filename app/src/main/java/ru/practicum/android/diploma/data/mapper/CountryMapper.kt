@@ -7,10 +7,19 @@ import ru.practicum.android.diploma.domain.models.Region
 
 class CountryMapper {
 
+    companion object {
+        private const val OTHER_COUNTRY_ITEM_ID = "1001"
+    }
+
     fun map(dto: AreaResponse): List<Country> {
-        return dto.area.map {
-            convertAreaDtoToCountry(it)
+        val countries = dto.area.map { convertAreaDtoToCountry(it) }.toMutableList()
+
+        countries.find { it.id == OTHER_COUNTRY_ITEM_ID }?.let {
+            countries.remove(it)
+            countries.add(it)
         }
+
+        return countries
     }
 
     private fun convertAreaDtoToCountry(dto: AreaDto): Country {
