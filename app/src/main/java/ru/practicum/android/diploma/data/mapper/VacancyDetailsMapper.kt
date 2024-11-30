@@ -11,7 +11,7 @@ class VacancyDetailsMapper {
     fun map(dto: VacancyDetailsResponse) = VacancyDetails(
         id = dto.id,
         imageUrl = dto.employer?.logoUrls?.original,
-        name = dto.name.orEmpty() ,
+        name = dto.name.orEmpty(),
         area = dto.area.name.orEmpty(),
         salaryFrom = dto.salary?.from ?: EMPTY_INT_PARAM_VALUE,
         salaryTo = dto.salary?.to ?: EMPTY_INT_PARAM_VALUE,
