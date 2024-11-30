@@ -42,12 +42,7 @@ class SearchViewModel(
         coroutineScope = viewModelScope,
         useLastParam = true
     ) { changedText ->
-        // основное исправления сосредоточено здесь. дебаунсу попадает последний введеный символ при стирании (пустота)
-        // и мы отменяем запрос
-        if (changedText.isBlank()) {
-            return@debounce
-        }
-        if (changedText != lastExpression) {
+        if (changedText != lastExpression && changedText.isNotBlank()) {
             search(changedText)
         }
     }
@@ -103,10 +98,6 @@ class SearchViewModel(
     }
 
     fun searchDebounce(expression: String) {
-        // return здесь не поможет, т.к. дебаунс срабатывает после каждого ввода/удаления символа и в итоге обработает
-        // запрос последнего символа перед пустым expression
-        // if (expression.isBlank()) return
-        // очищаем поиск здесь, а не в дебаунсе, потому что это будет сразу сделано
         if (expression.isBlank()) clearSearch()
         searchDebounceAction(expression)
     }
