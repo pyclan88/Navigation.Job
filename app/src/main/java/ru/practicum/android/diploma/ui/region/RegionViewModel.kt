@@ -74,7 +74,6 @@ class RegionViewModel(
     }
 
     fun setFilter(region: Region) {
-        println("RegionViewModel:${region}")
         val filters = getFiltersUseCase.execute()
             .copy(region = region)
         println(
