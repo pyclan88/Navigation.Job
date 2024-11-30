@@ -13,6 +13,8 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentLocationBinding
 import ru.practicum.android.diploma.domain.state.LocationState
 import ru.practicum.android.diploma.util.BindingFragment
+import ru.practicum.android.diploma.util.invisible
+import ru.practicum.android.diploma.util.visible
 
 class LocationFragment : BindingFragment<FragmentLocationBinding>() {
 
@@ -34,6 +36,13 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
         }
 
         viewModel.getFilters()
+
+        binding.cbApplyButton.setOnClickListener {
+            val isCountryFilled = !binding.tiCountry.editText?.text.isNullOrEmpty()
+            val isRegionFilled = !binding.tiRegion.editText?.text.isNullOrEmpty()
+            viewModel.setFilter(isCountryFilled, isRegionFilled)
+            findNavController().popBackStack()
+        }
     }
 
     private fun configureBackButton() =
@@ -70,6 +79,11 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
 
     private fun renderField(view: TextInputLayout, text: String?) {
         view.editText?.setText(text)
+        if (binding.tiCountry.editText?.text.isNullOrEmpty() &&
+            binding.tiRegion.editText?.text.isNullOrEmpty()
+        ) {
+            viewModel.clearState()
+        }
         when {
             view.editText?.text.isNullOrEmpty() -> {
                 view.setEndIconDrawable(R.drawable.ic_arrow_forward)
@@ -84,7 +98,16 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
     }
 
     private fun render(state: LocationState) {
-        renderField(view = binding.tiCountry, text = state.country)
-        renderField(view = binding.tiRegion, text = state.region)
+        when (state) {
+            is LocationState.Data -> with(binding) {
+                cbApplyButton.visible()
+                renderField(view = tiCountry, text = state.country?.name)
+                renderField(view = tiRegion, text = state.region?.name)
+            }
+
+            is LocationState.Empty -> with(binding) {
+                cbApplyButton.invisible()
+            }
+        }
     }
 }

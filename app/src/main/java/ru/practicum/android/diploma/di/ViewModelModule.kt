@@ -39,7 +39,8 @@ val viewModelModule = module {
 
     viewModel {
         LocationViewModel(
-            getFiltersUseCase = get()
+            getFiltersUseCase = get(),
+            setFiltersUseCase = get()
         )
     }
 
