@@ -99,7 +99,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             pbSearch.invisible()
             rvVacancies.invisible()
             ivLookingForPlaceholder.visible()
-            placeholder.invisible()
+            placeholder.layoutPlaceholder.invisible()
             tvCountVacancies.invisible()
             vacanciesAdapter.clear()
         }
@@ -111,12 +111,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 rvVacancies.invisible()
                 ivLookingForPlaceholder.invisible()
                 pbSearch.invisible()
-                placeholder.visible()
+                placeholder.layoutPlaceholder.visible()
                 tvCountVacancies.invisible()
                 imageAndTextHelper.setImageAndText(
                     requireContext(),
-                    layoutPlaceholder.ivPlaceholder,
-                    layoutPlaceholder.tvPlaceholder,
+                    placeholder.ivPlaceholder,
+                    placeholder.tvPlaceholder,
                     R.drawable.placeholder_vacancy_search_no_internet_skull,
                     resources.getString(R.string.no_internet)
                 )
@@ -131,14 +131,14 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             rvVacancies.invisible()
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             tvCountVacancies.visible()
             tvCountVacancies.text = resources.getText(R.string.no_such_vacancies)
             vacanciesAdapter.clear()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
                 resources.getString(R.string.no_vacancy_list)
             )
@@ -150,7 +150,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             pbSearch.visible()
             rvVacancies.invisible()
             ivLookingForPlaceholder.invisible()
-            placeholder.invisible()
+            placeholder.layoutPlaceholder.invisible()
             tvCountVacancies.invisible()
         }
     }
@@ -160,12 +160,12 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             rvVacancies.invisible()
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             tvCountVacancies.invisible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.placeholder_vacancy_search_server_error_cry,
                 resources.getString(R.string.server_error)
             )
@@ -179,7 +179,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
             pbSearch.invisible()
             ivLookingForPlaceholder.invisible()
             vacanciesAdapter.updateVacancies(vacanciesList.vacancies)
-            placeholder.invisible()
+            placeholder.layoutPlaceholder.invisible()
             tvCountVacancies.let {
                 it.visible()
                 it.text = convertToFoundVacancies(vacanciesList.totalVacancyCount)

@@ -75,12 +75,12 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun showEmpty() = with(binding) {
         groupVacancy.invisible()
-        groupPlaceholder.visible()
+        placeholder.layoutPlaceholder.visible()
         pbVacancy.invisible()
         imageAndTextHelper.setImageAndText(
             requireContext(),
-            ivPlaceholder,
-            tvPlaceholder,
+            placeholder.ivPlaceholder,
+            placeholder.tvPlaceholder,
             R.drawable.vacancy_not_found_or_deleted_andy,
             resources.getString(R.string.no_vacancy)
         )
@@ -88,18 +88,18 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun showLoading() = with(binding) {
         groupVacancy.invisible()
-        groupPlaceholder.invisible()
+        placeholder.layoutPlaceholder.invisible()
         pbVacancy.visible()
     }
 
     private fun showError() = with(binding) {
         groupVacancy.invisible()
-        groupPlaceholder.visible()
+        placeholder.layoutPlaceholder.visible()
         pbVacancy.invisible()
         imageAndTextHelper.setImageAndText(
             requireContext(),
-            ivPlaceholder,
-            tvPlaceholder,
+            placeholder.ivPlaceholder,
+            placeholder.tvPlaceholder,
             R.drawable.placeholder_vacancy_server_error_cat,
             resources.getString(R.string.server_error)
         )
@@ -107,12 +107,12 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun showNoInternet() = with(binding) {
         groupVacancy.invisible()
-        groupPlaceholder.visible()
+        placeholder.layoutPlaceholder.visible()
         pbVacancy.invisible()
         imageAndTextHelper.setImageAndText(
             requireContext(),
-            ivPlaceholder,
-            tvPlaceholder,
+            placeholder.ivPlaceholder,
+            placeholder.tvPlaceholder,
             R.drawable.placeholder_vacancy_search_no_internet_skull,
             resources.getString(R.string.no_internet)
         )
@@ -120,7 +120,7 @@ class VacancyFragment : BindingFragment<FragmentVacancyBinding>() {
 
     private fun showContent(vacancy: VacancyDetails) = with(binding) {
         groupVacancy.visible()
-        groupPlaceholder.invisible()
+        placeholder.layoutPlaceholder.invisible()
         pbVacancy.invisible()
         tvVacancyName.text = vacancy.name
         tvVacancyEmployerName.text = vacancy.employerName

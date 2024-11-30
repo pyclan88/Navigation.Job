@@ -121,20 +121,18 @@
         app:layout_constraintStart_toStartOf="@id/start_guideline_16dp"
         app:layout_constraintTop_toBottomOf="@id/iv_placeholder" />
 
-    <LinearLayout
+    <include
         android:id="@+id/placeholder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:layout_marginHorizontal="@dimen/mark_16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tb_header">
-
-        <include
-            android:id="@+id/layout_placeholder"
-            layout="@layout/placeholder_layout" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/tb_header"
+        layout="@layout/placeholder_layout">
+    </include>
 
     <ProgressBar
         android:id="@+id/pb_search"

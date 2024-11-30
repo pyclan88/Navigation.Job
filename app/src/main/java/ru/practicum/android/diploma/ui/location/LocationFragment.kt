@@ -30,19 +30,13 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
 
         configureBackButton()
         setupListeners()
+        configureApplyButton()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state -> render(state) }
         }
 
         viewModel.getFilters()
-
-        binding.cbApplyButton.setOnClickListener {
-            val isCountryFilled = !binding.tiCountry.editText?.text.isNullOrEmpty()
-            val isRegionFilled = !binding.tiRegion.editText?.text.isNullOrEmpty()
-            viewModel.setFilter(isCountryFilled, isRegionFilled)
-            findNavController().popBackStack()
-        }
     }
 
     private fun configureBackButton() =
@@ -108,6 +102,15 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
             is LocationState.Empty -> with(binding) {
                 cbApplyButton.invisible()
             }
+        }
+    }
+
+    private fun configureApplyButton() {
+        binding.cbApplyButton.setOnClickListener {
+            val isCountryFilled = !binding.tiCountry.editText?.text.isNullOrEmpty()
+            val isRegionFilled = !binding.tiRegion.editText?.text.isNullOrEmpty()
+            viewModel.setFilter(isCountryFilled, isRegionFilled)
+            findNavController().popBackStack()
         }
     }
 }

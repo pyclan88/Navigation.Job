@@ -96,7 +96,7 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
         with(binding) {
             pbSearch.visible()
             rvRegions.invisible()
-            placeholder.invisible()
+            placeholder.layoutPlaceholder.invisible()
         }
     }
 
@@ -104,11 +104,11 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
         with(binding) {
             rvRegions.invisible()
             pbSearch.invisible()
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.placeholder_vacancy_search_no_internet_skull,
                 resources.getString(R.string.no_internet)
             )
@@ -119,11 +119,11 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
         with(binding) {
             rvRegions.invisible()
             pbSearch.invisible()
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
                 resources.getString(R.string.no_such_region)
             )
@@ -134,11 +134,11 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
         with(binding) {
             rvRegions.invisible()
             pbSearch.invisible()
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.placeholder_vacancy_search_server_error_cry,
                 resources.getString(R.string.server_error)
             )
@@ -151,7 +151,7 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
             filterAdapter.updateRegions(regionList)
             rvRegions.visible()
             pbSearch.invisible()
-            placeholder.invisible()
+            placeholder.layoutPlaceholder.invisible()
         }
     }
 }
