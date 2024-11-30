@@ -45,7 +45,7 @@ class FilterMapper {
         parentId = parentId
     )
 
-    private fun convertToIndustry(dto: IndustryDto) = Industry(id = dto.id, name = dto.name)
+    private fun convertToIndustry(dto: IndustryDto) = Industry(id = dto.id, name = dto.name, isSelected = false)
 
     private fun convertToIndustryDto(industry: Industry) = IndustryDto(id = industry.id, name = industry.name)
 

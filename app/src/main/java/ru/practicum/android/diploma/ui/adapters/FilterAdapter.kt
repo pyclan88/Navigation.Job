@@ -5,17 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import ru.practicum.android.diploma.databinding.CountryItemBinding
-import ru.practicum.android.diploma.databinding.IndustryItemBinding
 import ru.practicum.android.diploma.databinding.RegionItemBinding
 import ru.practicum.android.diploma.domain.models.Country
-import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Region
 
 class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     var saveFilterListener: SaveFilterListener? = null
-
-    private var items: List<ItemFilter> = emptyList()
+    var items: List<ItemFilter> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -26,10 +23,6 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
 
             ItemFilter.TYPE_REGION -> RegionViewHolder(
                 binding = RegionItemBinding.inflate(layoutInflater, parent, false)
-            )
-
-            ItemFilter.TYPE_INDUSTRY -> IndustryViewHolder(
-                binding = IndustryItemBinding.inflate(layoutInflater, parent, false)
             )
 
             else -> throw IllegalArgumentException("Unknown view type: $viewType")
@@ -45,19 +38,18 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         when (holder) {
-            is CountryViewHolder -> holder.bind(item.data as Country)
-            is RegionViewHolder -> holder.bind(item.data as Region)
-            is IndustryViewHolder -> {
-                holder.bind(item.data as Industry)
-                holder.binding.rbIndustryButton.setOnCheckedChangeListener { _, checkedId ->
-                    saveFilterListener?.onItemClicked(item)
-                }
+            is CountryViewHolder -> {
+                holder.bind(item.data as Country)
+                holder.itemView.setOnClickListener { saveFilterListener?.onItemClicked(item) }
+            }
+
+            is RegionViewHolder -> {
+                holder.bind(item.data as Region)
+                holder.itemView.setOnClickListener { saveFilterListener?.onItemClicked(item) }
             }
 
             else -> throw IllegalArgumentException("Unknown ViewHolder for position $position")
         }
-
-        holder.itemView.setOnClickListener { saveFilterListener?.onItemClicked(item) }
     }
 
     fun updateCountries(data: List<Country>) {
@@ -66,10 +58,6 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     fun updateRegions(data: List<Region>) {
         updateItems(convertToItemFilter(data, ItemFilter.TYPE_REGION))
-    }
-
-    fun updateIndustries(data: List<Industry>) {
-        updateItems(convertToItemFilter(data, ItemFilter.TYPE_INDUSTRY))
     }
 
     private fun updateItems(items: List<ItemFilter>) {

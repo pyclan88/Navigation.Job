@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_filters_fragment_to_industryFragment"
             app:destination="@id/industry_fragment" />
+        <action
+            android:id="@+id/action_filters_fragment_to_search_fragment"
+            app:destination="@id/search_fragment" />
     </fragment>
     <fragment
         android:id="@+id/vacancy_fragment"
@@ -75,4 +78,9 @@
         android:label="fragment_region"
         tools:layout="@layout/fragment_region" >
     </fragment>
+    <fragment
+        android:id="@+id/country_fragment"
+        android:name="ru.practicum.android.diploma.ui.country.CountryFragment"
+        android:label="fragment_country"
+        tools:layout="@layout/fragment_country" />
 </navigation>

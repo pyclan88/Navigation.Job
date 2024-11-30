@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
@@ -43,6 +44,10 @@ class SearchViewModel(
             search(changedText)
         }
     }
+
+    private fun getFilter() = getFiltersUseCase.execute()
+
+    fun isFilterApplied() = getFilter() != Filter.empty
 
     fun clearSearch() {
         _state.value = VacancyState(Input.Empty, VacanciesList.Start)
