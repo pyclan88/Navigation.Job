@@ -48,7 +48,8 @@ val viewModelModule = module {
             setFiltersUseCase = get(),
             getFiltersUseCase = get(),
             clearFiltersUseCase = get(),
-            setSearchFiltersUseCase = get()
+            setSearchFiltersUseCase = get(),
+            getSearchFiltersUseCase = get()
         )
     }
 
