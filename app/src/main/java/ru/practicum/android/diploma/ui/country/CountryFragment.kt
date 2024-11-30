@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.domain.state.CountryState.Data
 import ru.practicum.android.diploma.domain.state.CountryState.Empty
 import ru.practicum.android.diploma.domain.state.CountryState.Error
 import ru.practicum.android.diploma.domain.state.CountryState.Loading
+import ru.practicum.android.diploma.domain.state.CountryState.NoInternet
 import ru.practicum.android.diploma.ui.adapters.FilterAdapter
 import ru.practicum.android.diploma.ui.adapters.FilterAdapter.SaveFilterListener
 import ru.practicum.android.diploma.ui.adapters.ItemFilter
@@ -53,6 +54,7 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
             is Empty -> showEmpty()
             is Error -> showError()
             is Loading -> showLoading()
+            is NoInternet -> showNoInternet()
         }
     }
 
@@ -69,20 +71,20 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
         }
     }
 
-    /*    private fun showNoInternet() {
-            with(binding) {
-                rvCountries.invisible()
-                pbSearch.invisible()
-                placeholder.visible()
-                imageAndTextHelper.setImageAndText(
-                    requireContext(),
-                    layoutPlaceholder.ivPlaceholder,
-                    layoutPlaceholder.tvPlaceholder,
-                    R.drawable.placeholder_vacancy_search_no_internet_skull,
-                    resources.getString(R.string.no_internet)
-                )
-            }
-        }*/
+    private fun showNoInternet() {
+        with(binding) {
+            rvCountries.invisible()
+            pbSearch.invisible()
+            placeholder.visible()
+            imageAndTextHelper.setImageAndText(
+                requireContext(),
+                layoutPlaceholder.ivPlaceholder,
+                layoutPlaceholder.tvPlaceholder,
+                R.drawable.placeholder_vacancy_search_no_internet_skull,
+                resources.getString(R.string.no_internet)
+            )
+        }
+    }
 
     private fun showLoading() {
         with(binding) {

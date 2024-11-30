@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
+import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.state.RegionState
@@ -34,7 +35,13 @@ class RegionViewModel(
         val countries = getCountriesUseCase.execute()
         val dataState = when {
             countries.first?.isEmpty() == true -> Data.Empty
-            countries.second?.isNotEmpty() == true -> Data.Error
+            countries.second?.isNotEmpty() == true -> {
+                if (countries.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
+                    Data.NoInternet
+                } else {
+                    Data.Error
+                }
+            }
             else -> {
                 val sortedRegions = sortRegionsIfNeeded(parseRegions(countries.first!!), sortExpression)
                 if (sortedRegions.isEmpty()) Data.Empty else Data.Data(sortedRegions)
@@ -74,19 +81,8 @@ class RegionViewModel(
     }
 
     fun setFilter(region: Region) {
-        val filters = getFiltersUseCase.execute()
-            .copy(region = region)
-        val newfilters = filters
-            .copy(
-                area = filters.area?.let { Country(id = filters.area.id, name = it.name, regions = emptyList()) },
-                region = region
-            )
-        println(
-            "RegionViewModel:${
-                newfilters
-            }"
-        )
-        setFiltersUseCase.execute(newfilters)
+        val filters = getFiltersUseCase.execute().copy(region = region)
+        setFiltersUseCase.execute(filters)
     }
 
     private fun parseRegions(countries: List<Country>): List<Region> {

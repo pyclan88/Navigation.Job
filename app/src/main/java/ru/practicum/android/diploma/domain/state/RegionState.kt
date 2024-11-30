@@ -13,6 +13,7 @@ data class RegionState(
     }
 
     sealed interface Data {
+        data object NoInternet : RegionState.Data
         data object Empty : RegionState.Data
         data object Loading : RegionState.Data
         data object Error : RegionState.Data
