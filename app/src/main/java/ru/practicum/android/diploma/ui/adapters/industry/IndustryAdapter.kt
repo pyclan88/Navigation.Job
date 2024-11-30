@@ -23,21 +23,16 @@ class IndustryAdapter(
     override fun getItemCount(): Int = industries.size
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
-        with(holder) {
-            val industry = industries[position]
-            bind(industry)
+        val industry = industries[position]
+        holder.bind(industry)
 
-            itemView.setOnClickListener {
-                clickListener.onIndustryClick(industry)
+        holder.itemView.setOnClickListener {
+            clickListener.onIndustryClick(industry)
 
-                lastCheckedIndustry?.let { it.isSelected = false }
-                notifyItemChanged(lastPosition)
-                lastPosition = adapterPosition
-
-                industries[adapterPosition].isSelected = true
-                lastCheckedIndustry = industries[adapterPosition]
-                notifyItemChanged(adapterPosition)
-            }
+            lastCheckedIndustry?.let { it.isSelected = false }
+            industries[position].isSelected = true
+            lastCheckedIndustry = industries[position]
+            notifyDataSetChanged()
         }
     }
 
