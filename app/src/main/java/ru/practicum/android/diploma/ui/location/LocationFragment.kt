@@ -40,7 +40,10 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
     }
 
     private fun configureBackButton() =
-        binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
+        binding.tbHeader.setNavigationOnClickListener {
+            viewModel.setEmptyFilter()
+            findNavController().popBackStack()
+        }
 
     private fun setupListeners() {
         setupFieldListeners(

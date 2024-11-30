@@ -45,5 +45,10 @@ class LocationViewModel(
         val filters = getFiltersUseCase.execute().copy(area = country, region = region)
         setFiltersUseCase.execute(filters)
     }
+
+    fun setEmptyFilter() {
+        val filters = getFiltersUseCase.execute().copy(area = null, region = null)
+        setFiltersUseCase.execute(filters)
+    }
 }
 
