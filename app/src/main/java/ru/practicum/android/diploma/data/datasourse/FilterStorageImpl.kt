@@ -42,7 +42,7 @@ class FilterStorageImpl(
         set(value) {
             val json = gson.toJson(value)
             sharedPreferences.edit()
-                .putString(KEY_FILTERS, json)
+                .putString(KEY_SEARCH_FILTERS, json)
                 .apply()
         }
 }

@@ -10,8 +10,8 @@ import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.state.RegionState
-import ru.practicum.android.diploma.domain.state.RegionState.Input
 import ru.practicum.android.diploma.domain.state.RegionState.Data
+import ru.practicum.android.diploma.domain.state.RegionState.Input
 import ru.practicum.android.diploma.domain.usecase.GetCountriesUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
@@ -74,8 +74,15 @@ class RegionViewModel(
     }
 
     fun setFilter(region: Region) {
+        println("RegionViewModel:${region}")
         val filters = getFiltersUseCase.execute()
             .copy(region = region)
+        println(
+            "RegionViewModel:${
+                getFiltersUseCase.execute()
+                    .copy(region = region)
+            }"
+        )
         setFiltersUseCase.execute(filters)
     }
 

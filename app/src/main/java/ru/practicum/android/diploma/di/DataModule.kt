@@ -101,11 +101,17 @@ val dataModule = module {
     }
 
     single<FilterStorage> {
-        FilterStorageImpl(get(), get())
+        FilterStorageImpl(
+            sharedPreferences = get(),
+            gson = get()
+        )
     }
 
     single<FilterRepository> {
-        FilterRepositoryImpl(get(), get())
+        FilterRepositoryImpl(
+            filterStorage = get(),
+            filterMapper = get()
+        )
     }
 
     factory {
