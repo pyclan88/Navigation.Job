@@ -13,7 +13,9 @@ import ru.practicum.android.diploma.domain.usecase.favorite.GetAllFavoriteVacanc
 import ru.practicum.android.diploma.domain.usecase.favorite.GetFavoriteVacancyByIdUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.ClearFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.GetSearchFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.SetSearchFiltersUseCase
 
 val useCaseModule = module {
 
@@ -63,5 +65,13 @@ val useCaseModule = module {
 
     single {
         GetCountriesUseCase(get())
+    }
+
+    single {
+        SetSearchFiltersUseCase(get())
+    }
+
+    single {
+        GetSearchFiltersUseCase(get())
     }
 }
