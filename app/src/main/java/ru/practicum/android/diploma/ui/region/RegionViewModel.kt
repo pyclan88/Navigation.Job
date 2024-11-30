@@ -76,13 +76,17 @@ class RegionViewModel(
     fun setFilter(region: Region) {
         val filters = getFiltersUseCase.execute()
             .copy(region = region)
+        val newfilters = filters
+            .copy(
+                area = filters.area?.let { Country(id = filters.area.id, name = it.name, regions = emptyList()) },
+                region = region
+            )
         println(
             "RegionViewModel:${
-                getFiltersUseCase.execute()
-                    .copy(region = region)
+                newfilters
             }"
         )
-        setFiltersUseCase.execute(filters)
+        setFiltersUseCase.execute(newfilters)
     }
 
     private fun parseRegions(countries: List<Country>): List<Region> {

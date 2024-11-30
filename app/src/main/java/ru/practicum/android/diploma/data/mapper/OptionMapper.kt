@@ -17,7 +17,8 @@ class OptionMapper {
 
         filter.area?.let { options["area"] = it.id }
         filter.salary?.let { options["salary"] = it }
-        filter.industry?.let { options["industry"] = it }
+        filter.industry?.let { options["industry"] = it.id }
+        filter.region?.let { options["sub_area"] = it.id }
 
         return options
     }
