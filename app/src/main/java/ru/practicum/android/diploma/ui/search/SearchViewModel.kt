@@ -12,12 +12,14 @@ import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.GetSearchFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase,
-    private val getFiltersUseCase: GetFiltersUseCase
+    private val getFiltersUseCase: GetFiltersUseCase,
+    private val getSearchFiltersUseCase: GetSearchFiltersUseCase
 ) : ViewModel() {
 
     private var lastExpression = ""
@@ -68,8 +70,9 @@ class SearchViewModel(
         val result = getVacanciesUseCase.execute(
             expression = expression,
             page = currentPage,
-            filter = getFiltersUseCase.execute()
+            filter = getSearchFiltersUseCase.execute()
         )
+        println("requestToServer:${getSearchFiltersUseCase.execute()}")
 
         val resultData = result.first?.items
         val totalVacancyCount = result.first?.found ?: 0

@@ -10,11 +10,13 @@ import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.domain.usecase.filters.ClearFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.SetSearchFiltersUseCase
 
 class FiltersViewModel(
     private val setFiltersUseCase: SetFiltersUseCase,
     private val getFiltersUseCase: GetFiltersUseCase,
-    private val clearFiltersUseCase: ClearFiltersUseCase
+    private val clearFiltersUseCase: ClearFiltersUseCase,
+    private val setSearchFiltersUseCase: SetSearchFiltersUseCase
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<FiltersState> = MutableStateFlow(FiltersState.Empty)
@@ -38,7 +40,8 @@ class FiltersViewModel(
     fun setFilters(salary: Int?, withoutSalaryButton: Boolean) {
         val filters = getFiltersUseCase.execute()
             .copy(salary = salary, withoutSalaryButton = withoutSalaryButton)
-        setFiltersUseCase.execute(filters)
+        println("setFilters:${getFiltersUseCase.execute()}")
+        setSearchFiltersUseCase.execute(filters)
     }
 
     fun clearFilters() {

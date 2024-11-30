@@ -6,6 +6,8 @@ import com.google.gson.reflect.TypeToken
 import ru.practicum.android.diploma.data.dto.filter.FilterDto
 
 private const val KEY_FILTERS = "items_filter"
+private const val KEY_SEARCH_FILTERS = "items_search_filter"
+
 
 class FilterStorageImpl(
     private val sharedPreferences: SharedPreferences,
@@ -25,6 +27,22 @@ class FilterStorageImpl(
             val json = gson.toJson(value)
             sharedPreferences.edit()
                 .putString(KEY_FILTERS, json)
+                .apply()
+        }
+
+    override var searchFilters: FilterDto
+        get() {
+            val json: String? = sharedPreferences.getString(KEY_SEARCH_FILTERS, null)
+            return if (json != null) {
+                gson.fromJson(json, object : TypeToken<FilterDto>() {}.type)
+            } else {
+                FilterDto.empty
+            }
+        }
+        set(value) {
+            val json = gson.toJson(value)
+            sharedPreferences.edit()
+                .putString(KEY_SEARCH_FILTERS, json)
                 .apply()
         }
 }
