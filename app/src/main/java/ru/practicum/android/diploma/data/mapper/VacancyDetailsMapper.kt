@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.data.mapper
 
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_INT_PARAM_VALUE
-import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.data.formatter.AddressFormatter
 import ru.practicum.android.diploma.data.formatter.SkillsFormatter
@@ -12,23 +11,18 @@ class VacancyDetailsMapper {
     fun map(dto: VacancyDetailsResponse) = VacancyDetails(
         id = dto.id,
         imageUrl = dto.employer?.logoUrls?.original,
-        name = getValueOrDefault(dto.name),
-        area = getValueOrDefault(dto.area.name),
+        name = dto.name.orEmpty() ,
+        area = dto.area.name.orEmpty(),
         salaryFrom = dto.salary?.from ?: EMPTY_INT_PARAM_VALUE,
         salaryTo = dto.salary?.to ?: EMPTY_INT_PARAM_VALUE,
-        currency = getValueOrDefault(dto.salary?.currency),
-        employerName = getValueOrDefault(dto.employer?.name),
-        experience = getValueOrDefault(dto.experience?.name),
-        employmentName = getValueOrDefault(dto.employment?.name),
-        schedule = getValueOrDefault(dto.schedule.name),
-        description = getValueOrDefault(dto.description),
+        currency = dto.salary?.currency.orEmpty(),
+        employerName = dto.employer?.name.orEmpty(),
+        experience = dto.experience?.name.orEmpty(),
+        employmentName = dto.employment?.name.orEmpty(),
+        schedule = dto.schedule.name.orEmpty(),
+        description = dto.description.orEmpty(),
         descriptionSkills = SkillsFormatter.format(dto.keySkills),
-        url = getValueOrDefault(dto.alternateUrl),
+        url = dto.alternateUrl.orEmpty(),
         address = AddressFormatter.format(dto.address)
     )
-
-    private fun <T> getValueOrDefault(
-        value: T?
-    ): String = value?.toString() ?: EMPTY_PARAM_VALUE
-
 }
