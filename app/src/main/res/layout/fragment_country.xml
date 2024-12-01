@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.country.CountryFragment">
 
     <Toolbar
         android:id="@+id/tb_header"
@@ -30,20 +31,18 @@
         tools:itemCount="5"
         tools:listitem="@layout/country_item" />
 
-    <LinearLayout
+    <include
         android:id="@+id/placeholder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:layout_marginHorizontal="@dimen/mark_16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tb_header">
-
-        <include
-            android:id="@+id/layout_placeholder"
-            layout="@layout/placeholder_layout" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/tb_header"
+        layout="@layout/placeholder_layout">
+    </include>
 
     <ProgressBar
         android:id="@+id/pb_search"

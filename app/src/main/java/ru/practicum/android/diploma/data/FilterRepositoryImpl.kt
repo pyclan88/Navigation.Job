@@ -10,8 +10,16 @@ class FilterRepositoryImpl(
     private val filterMapper: FilterMapper
 ) : FilterRepository {
 
-    override fun setFilters(items: Filter) {
-        filterStorage.filters = filterMapper.map(items)
+    override fun setFilters(value: Filter) {
+        filterStorage.filters = filterMapper.map(value)
+    }
+
+    override fun getSearchFilters(): Filter {
+        return filterMapper.map(filterStorage.searchFilters)
+    }
+
+    override fun setSearchFilters(value: Filter) {
+        filterStorage.searchFilters = filterMapper.map(value)
     }
 
     override fun clearFilters() = setFilters(Filter.empty)

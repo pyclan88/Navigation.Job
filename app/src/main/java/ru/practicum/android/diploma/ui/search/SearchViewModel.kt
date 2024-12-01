@@ -7,16 +7,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
 import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.GetSearchFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase,
-    private val getFiltersUseCase: GetFiltersUseCase
+    private val getFiltersUseCase: GetFiltersUseCase,
+    private val getSearchFiltersUseCase: GetSearchFiltersUseCase
 ) : ViewModel() {
 
     private var lastExpression = ""
@@ -39,10 +42,14 @@ class SearchViewModel(
         coroutineScope = viewModelScope,
         useLastParam = true
     ) { changedText ->
-        if (changedText != lastExpression) {
+        if (changedText != lastExpression && changedText.isNotBlank()) {
             search(changedText)
         }
     }
+
+    private fun getFilter() = getFiltersUseCase.execute()
+
+    fun isFilterApplied() = getFilter() != Filter.empty
 
     fun clearSearch() {
         _state.value = VacancyState(Input.Empty, VacanciesList.Start)
@@ -63,8 +70,9 @@ class SearchViewModel(
         val result = getVacanciesUseCase.execute(
             expression = expression,
             page = currentPage,
-            filter = getFiltersUseCase.execute()
+            filter = getSearchFiltersUseCase.execute()
         )
+        println("requestToServer:${getSearchFiltersUseCase.execute()}")
 
         val resultData = result.first?.items
         val totalVacancyCount = result.first?.found ?: 0
@@ -90,7 +98,7 @@ class SearchViewModel(
     }
 
     fun searchDebounce(expression: String) {
-        if (expression.isBlank()) return
+        if (expression.isBlank()) clearSearch()
         searchDebounceAction(expression)
     }
 

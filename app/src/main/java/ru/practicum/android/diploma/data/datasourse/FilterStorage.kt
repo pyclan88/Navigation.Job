@@ -6,4 +6,6 @@ interface FilterStorage {
 
     var filters: FilterDto
 
+    var searchFilters: FilterDto
+
 }

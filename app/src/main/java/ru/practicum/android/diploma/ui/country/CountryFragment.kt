@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.domain.state.CountryState.Data
 import ru.practicum.android.diploma.domain.state.CountryState.Empty
 import ru.practicum.android.diploma.domain.state.CountryState.Error
 import ru.practicum.android.diploma.domain.state.CountryState.Loading
+import ru.practicum.android.diploma.domain.state.CountryState.NoInternet
 import ru.practicum.android.diploma.ui.adapters.FilterAdapter
 import ru.practicum.android.diploma.ui.adapters.FilterAdapter.SaveFilterListener
 import ru.practicum.android.diploma.ui.adapters.ItemFilter
@@ -53,6 +54,7 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
             is Empty -> showEmpty()
             is Error -> showError()
             is Loading -> showLoading()
+            is NoInternet -> showNoInternet()
         }
     }
 
@@ -69,26 +71,26 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
         }
     }
 
-/*    private fun showNoInternet() {
+    private fun showNoInternet() {
         with(binding) {
             rvCountries.invisible()
             pbSearch.invisible()
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.placeholder_vacancy_search_no_internet_skull,
                 resources.getString(R.string.no_internet)
             )
         }
-    }*/
+    }
 
     private fun showLoading() {
         with(binding) {
             pbSearch.visible()
             rvCountries.invisible()
-            placeholder.invisible()
+            placeholder.layoutPlaceholder.invisible()
         }
     }
 
@@ -96,11 +98,11 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
         with(binding) {
             rvCountries.invisible()
             pbSearch.invisible()
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
                 resources.getString(R.string.no_vacancy_list)
             )
@@ -111,11 +113,11 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
         with(binding) {
             rvCountries.invisible()
             pbSearch.invisible()
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.placeholder_vacancy_search_server_error_cry,
                 resources.getString(R.string.server_error)
             )
@@ -128,7 +130,7 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
             rvCountries.visible()
             pbSearch.invisible()
             filterAdapter.updateCountries(countryList)
-            placeholder.invisible()
+            placeholder.layoutPlaceholder.invisible()
         }
     }
 }
