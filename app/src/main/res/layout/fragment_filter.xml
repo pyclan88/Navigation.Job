@@ -129,6 +129,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/mark_60dp"
         android:layout_marginBottom="@dimen/mark_8dp"
+        app:layout_goneMarginBottom="@dimen/mark_16dp"
         android:background="@drawable/blue_shape"
         android:text="@string/apply"
         android:visibility="gone"

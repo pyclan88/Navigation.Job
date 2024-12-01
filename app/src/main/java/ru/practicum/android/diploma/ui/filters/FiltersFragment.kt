@@ -45,12 +45,14 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         configureWithoutSalaryButton()
         configureApplyButtonListener()
         configureResetButtonListener()
-        configureResetButtonVisible()
 
         viewModel.getCurrentFilter(fragmentSource)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.collect { state -> render(state) }
+            viewModel.state.collect { state ->
+                render(state)
+                configureResetButtonVisible()
+            }
         }
     }
 
@@ -134,6 +136,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     private fun configureResetButtonListener() = with(binding) {
         tvResetButton.setOnClickListener {
             viewModel.resetCurrentFilter()
+            tvResetButton.invisible()
             configureResetButtonVisible()
         }
     }
