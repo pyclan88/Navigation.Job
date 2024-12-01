@@ -27,8 +27,8 @@ class FiltersViewModel(
     private val getSearchFiltersUseCase: GetSearchFiltersUseCase
 ) : ViewModel() {
 
-    private var currentFilter = Filter.empty
-    private var storageFilter = Filter.empty
+    private var currentFilter: Filter = getSearchFiltersUseCase.execute()
+    private var storageFilter:Filter = getSearchFiltersUseCase.execute()
 
     private val _state: MutableStateFlow<FiltersState> = MutableStateFlow(FiltersState.Empty)
     val state: StateFlow<FiltersState>
@@ -44,17 +44,15 @@ class FiltersViewModel(
     }
 
     private fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
-
         val filters = getFiltersUseCase.execute()
         currentFilter = currentFilter.copy(area = filters.area, region = filters.region, industry = filters.industry)
-
         _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
     }
 
     private fun getSearchFilter() = viewModelScope.launch(Dispatchers.Main) {
         storageFilter = getSearchFiltersUseCase.execute()
         currentFilter = storageFilter
-        _state.value = FiltersState.Data(storageFilter, applyButtonVisible())
+        _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
     }
 
     fun setCurrentSalary(salary: String) {
@@ -75,13 +73,11 @@ class FiltersViewModel(
     }
 
     fun setEmptyCountry() {
-        currentFilter = getFiltersUseCase.execute().copy(area = null, region = null)
-        setFiltersUseCase.execute(currentFilter.copy(industry = null))
+        setFiltersUseCase.execute(currentFilter.copy(area = null, region = null))
         getFilters()
     }
 
     fun setEmptyIndustry() {
-        currentFilter = getFiltersUseCase.execute().copy(industry = null)
         setFiltersUseCase.execute(currentFilter.copy(industry = null))
         getFilters()
     }
@@ -89,7 +85,6 @@ class FiltersViewModel(
     fun setFilters(salary: Int?, withoutSalaryButton: Boolean) {
         val filters = getFiltersUseCase.execute()
             .copy(salary = salary, withoutSalaryButton = withoutSalaryButton)
-        println("setFilters:${getFiltersUseCase.execute()}")
         setSearchFiltersUseCase.execute(filters)
     }
 
