@@ -4,7 +4,7 @@ import ru.practicum.android.diploma.data.dto.filter.FilterDto
 
 interface FilterStorage {
 
-    var filters: FilterDto
+    var tmpFilters: FilterDto
 
     var searchFilters: FilterDto
 

@@ -7,12 +7,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.state.LocationState
-import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.GetTmpFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.SetTmpFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.ClearLocationUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.GetLocationUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.SetLocationUseCase
 
 class LocationViewModel(
-    private val getFiltersUseCase: GetFiltersUseCase,
-    private val setFiltersUseCase: SetFiltersUseCase
+    private val getLocationUseCase: GetLocationUseCase,
+    private val setLocationUseCase: SetLocationUseCase,
+    private val clearLocationUseCase: ClearLocationUseCase,
+    private val getTmpFiltersUseCase: GetTmpFiltersUseCase,
+    private val setTmpFilterUseCase: SetTmpFiltersUseCase,
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<LocationState> = MutableStateFlow(
@@ -21,34 +27,36 @@ class LocationViewModel(
     val state: StateFlow<LocationState>
         get() = _state
 
-    fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
-        val filters = getFiltersUseCase.execute()
-        if (filters.area?.name.isNullOrEmpty() && filters.region?.name.isNullOrEmpty()) {
-            _state.value = LocationState.Empty
+    fun getLocation() = viewModelScope.launch(Dispatchers.Main) {
+        val location = getLocationUseCase.execute()
+        val state = if (location.isEmpty) {
+            LocationState.Empty
         } else {
-            _state.value = LocationState.Data(
-                country = filters.area,
-                region = filters.region
-            )
+            LocationState.Data(location)
         }
+
+        _state.value = state
     }
 
-    fun clearState() {
-        _state.value = LocationState.Empty
+    fun saveFilter() {
+        val location = getLocationUseCase.execute()
+        val filter = getTmpFiltersUseCase.execute()
+            .copy(location = location)
+
+        setTmpFilterUseCase.execute(filter)
+        clearLocationUseCase.execute()
     }
 
-    fun setFilter(countryIsNotEmpty: Boolean, regionIsNotEmpty: Boolean) {
-        val state = _state.value as? LocationState.Data
-        val country = state?.takeIf { countryIsNotEmpty }?.country
-        val region = state?.takeIf { regionIsNotEmpty }?.region
+    fun clearLocation() = clearLocationUseCase.execute()
 
-        val filters = getFiltersUseCase.execute().copy(area = country, region = region)
-        setFiltersUseCase.execute(filters)
+    fun clearCountry() {
+        clearLocationUseCase.execute()
+        getLocation()
     }
 
-    fun setEmptyFilter() {
-        val filters = getFiltersUseCase.execute().copy(area = null, region = null)
-        setFiltersUseCase.execute(filters)
+    fun clearRegion() {
+        val location = getLocationUseCase.execute()
+            .copy(region = null)
+        setLocationUseCase.execute(location)
     }
 }
-

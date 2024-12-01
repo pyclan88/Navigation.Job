@@ -14,7 +14,7 @@ class FilterStorageImpl(
     private val gson: Gson
 ) : FilterStorage {
 
-    override var filters: FilterDto
+    override var tmpFilters: FilterDto
         get() {
             val json: String? = sharedPreferences.getString(KEY_FILTERS, null)
             return if (json != null) {

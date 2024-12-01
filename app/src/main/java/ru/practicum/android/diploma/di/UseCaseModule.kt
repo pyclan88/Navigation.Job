@@ -12,10 +12,13 @@ import ru.practicum.android.diploma.domain.usecase.favorite.DeleteVacancyFromFav
 import ru.practicum.android.diploma.domain.usecase.favorite.GetAllFavoriteVacanciesUseCase
 import ru.practicum.android.diploma.domain.usecase.favorite.GetFavoriteVacancyByIdUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.ClearFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.GetTmpFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.GetSearchFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.SetTmpFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.SetSearchFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.ClearLocationUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.GetLocationUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.SetLocationUseCase
 
 val useCaseModule = module {
 
@@ -48,7 +51,7 @@ val useCaseModule = module {
     }
 
     single {
-        SetFiltersUseCase(get())
+        SetTmpFiltersUseCase(get())
     }
 
     single {
@@ -56,7 +59,7 @@ val useCaseModule = module {
     }
 
     single {
-        GetFiltersUseCase(get())
+        GetTmpFiltersUseCase(get())
     }
 
     single {
@@ -73,5 +76,17 @@ val useCaseModule = module {
 
     single {
         GetSearchFiltersUseCase(get())
+    }
+
+    single {
+        ClearLocationUseCase(get())
+    }
+
+    single {
+        GetLocationUseCase(get())
+    }
+
+    single {
+        SetLocationUseCase(get())
     }
 }

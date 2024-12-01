@@ -65,7 +65,7 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
         rvCountries.adapter = filterAdapter
         filterAdapter.saveFilterListener = object : SaveFilterListener {
             override fun onItemClicked(item: ItemFilter) {
-                viewModel.setFilter(item.data as Country)
+                viewModel.setCountry(item.data as Country)
                 findNavController().navigateUp()
             }
         }

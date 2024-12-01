@@ -15,8 +15,8 @@ class OptionMapper {
         options["per_page"] = COUNT_PER_PAGE
         options["only_with_salary"] = filter.withoutSalaryButton
 
-        filter.area?.let { options["area"] = it.id }
-        filter.region?.let { options["area"] = it.id }
+        filter.location?.country?.let { options["area"] = it.id }
+        filter.location?.region?.let { options["area"] = it.id }
         filter.salary?.let { options["salary"] = it }
         filter.industry?.let { options["industry"] = it.id }
 

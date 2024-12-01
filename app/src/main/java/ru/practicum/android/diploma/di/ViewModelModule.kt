@@ -16,7 +16,7 @@ val viewModelModule = module {
     viewModel {
         SearchViewModel(
             getVacanciesUseCase = get(),
-            getFiltersUseCase = get(),
+            getTmpFiltersUseCase = get(),
             getSearchFiltersUseCase = get()
         )
     }
@@ -39,15 +39,18 @@ val viewModelModule = module {
 
     viewModel {
         LocationViewModel(
-            getFiltersUseCase = get(),
-            setFiltersUseCase = get()
+            getLocationUseCase = get(),
+            clearLocationUseCase = get(),
+            setLocationUseCase = get(),
+            getTmpFiltersUseCase = get(),
+            setTmpFilterUseCase = get()
         )
     }
 
     viewModel {
         FiltersViewModel(
-            setFiltersUseCase = get(),
-            getFiltersUseCase = get(),
+            setTmpFiltersUseCase = get(),
+            getTmpFiltersUseCase = get(),
             clearFiltersUseCase = get(),
             setSearchFiltersUseCase = get()
         )
@@ -56,23 +59,22 @@ val viewModelModule = module {
     viewModel {
         CountryViewModel(
             getCountriesUseCase = get(),
-            getFiltersUseCase = get(),
-            setFiltersUseCase = get()
+            setLocationUseCase = get()
         )
     }
 
     viewModel {
         IndustryViewModel(
             getIndustriesUseCase = get(),
-            getFiltersUseCase = get(),
-            setFiltersUseCase = get()
+            getTmpFiltersUseCase = get(),
+            setTmpFiltersUseCase = get()
         )
     }
 
     viewModel {
         RegionViewModel(
-            getFiltersUseCase = get(),
-            setFiltersUseCase = get(),
+            setLocationUseCase = get(),
+            getLocationUseCase = get(),
             getCountriesUseCase = get()
         )
     }

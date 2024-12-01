@@ -1,12 +1,9 @@
 package ru.practicum.android.diploma.data.dto.filter
 
-import ru.practicum.android.diploma.data.dto.area.AreaDto
-import ru.practicum.android.diploma.data.dto.area.SubAreaDto
 import ru.practicum.android.diploma.data.dto.industry.IndustryDto
 
 data class FilterDto(
-    val area: AreaDto?,
-    val subArea: SubAreaDto?,
+    val location: LocationDto?,
     val industry: IndustryDto?,
     val salary: Int?,
     val withoutSalaryButton: Boolean
@@ -14,8 +11,7 @@ data class FilterDto(
 
     companion object {
         val empty = FilterDto(
-            area = null,
-            subArea = null,
+            location = LocationDto.empty,
             industry = null,
             salary = null,
             withoutSalaryButton = false
