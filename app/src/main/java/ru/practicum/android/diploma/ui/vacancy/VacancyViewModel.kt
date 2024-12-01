@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.Source
+import ru.practicum.android.diploma.common.Source.INDUSTRY
+import ru.practicum.android.diploma.common.Source.LOCATION
 import ru.practicum.android.diploma.common.Source.FAVORITE
 import ru.practicum.android.diploma.common.Source.SEARCH
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
@@ -49,6 +51,8 @@ class VacancyViewModel(
         val vacancyState = when (source) {
             SEARCH -> handleSearchSource(id)
             FAVORITE -> handleFavoriteSource(favoriteVacancy)
+            INDUSTRY -> handleSearchSource(id)
+            LOCATION -> handleSearchSource(id)
         }
 
         _state.postValue(VacancyDetailsState(vacancyState, favoriteState))

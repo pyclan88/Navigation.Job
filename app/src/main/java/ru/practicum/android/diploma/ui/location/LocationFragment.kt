@@ -10,8 +10,10 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.Source.LOCATION
 import ru.practicum.android.diploma.databinding.FragmentLocationBinding
 import ru.practicum.android.diploma.domain.state.LocationState
+import ru.practicum.android.diploma.ui.filters.FiltersFragment
 import ru.practicum.android.diploma.util.BindingFragment
 
 class LocationFragment : BindingFragment<FragmentLocationBinding>() {
@@ -37,7 +39,12 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
     }
 
     private fun configureBackButton() =
-        binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
+        binding.tbHeader.setNavigationOnClickListener {
+            findNavController().navigate(
+                R.id.action_location_fragment_to_filters_fragment,
+                FiltersFragment.createArgs(source = LOCATION)
+            )
+        }
 
     private fun setupListeners() {
         setupFieldListeners(

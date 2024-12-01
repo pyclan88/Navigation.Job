@@ -25,6 +25,7 @@ import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Erro
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Loading
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.NoInternet
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Start
+import ru.practicum.android.diploma.ui.filters.FiltersFragment
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.EndingConvertor
@@ -231,7 +232,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun configureFilterButton() {
         binding.ivFilter.setOnClickListener {
-            findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_filtersFragment,
+                FiltersFragment.createArgs(source = SEARCH)
+            )
         }
     }
 

@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.Source.INDUSTRY
 import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.state.IndustryState
@@ -23,6 +24,7 @@ import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Error
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Loading
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.NoInternet
 import ru.practicum.android.diploma.ui.adapters.industry.IndustryAdapter
+import ru.practicum.android.diploma.ui.filters.FiltersFragment
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.ImageAndTextHelper
 import ru.practicum.android.diploma.util.invisible
@@ -37,7 +39,10 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
             visible()
             setOnClickListener {
                 viewModel.setFilters(industry)
-                findNavController().popBackStack()
+                findNavController().navigate(
+                    R.id.action_industry_fragment_to_filters_fragment,
+                    FiltersFragment.createArgs(source = INDUSTRY)
+                )
             }
         }
     }

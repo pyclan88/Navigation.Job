@@ -6,6 +6,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.Source
+import ru.practicum.android.diploma.common.Source.SEARCH
+import ru.practicum.android.diploma.common.Source.INDUSTRY
+import ru.practicum.android.diploma.common.Source.LOCATION
+import ru.practicum.android.diploma.common.Source.FAVORITE
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.domain.usecase.filters.ClearFiltersUseCase
@@ -23,55 +29,62 @@ class FiltersViewModel(
 ) : ViewModel() {
 
     private var currentFilter = Filter.empty
-    private var applyButtonState = false
+    private var storageFilter = Filter.empty
 
     private val _state: MutableStateFlow<FiltersState> = MutableStateFlow(FiltersState.Empty)
     val state: StateFlow<FiltersState>
         get() = _state
 
-    fun getCurrentFilter() {
-        val getFilters = getFiltersUseCase.execute()
-        val getSearchFilters = getSearchFiltersUseCase.execute()
-
-//        println("($getFilters)($getSearchFilters)")
-
-        currentFilter = if (with(getFilters) {
-                location.isNullOrEmpty() &&
-                    industry?.name.isNullOrEmpty()
-//                    salary == null &&
-//                    !withoutSalaryButton
-            })  getSearchFilters else getFilters
-
-        applyButtonState = when {
-            getFilters.location.isNullOrEmpty() || getFilters.location == getSearchFilters.location -> false
-            getFilters.industry?.name.isNullOrEmpty() || getFilters.industry == getSearchFilters.industry -> false
-            getFilters.salary == null || getFilters.salary == getSearchFilters.salary -> false
-            !getFilters.withoutSalaryButton || getFilters.withoutSalaryButton == getSearchFilters.withoutSalaryButton -> false
-            else -> true
+    fun getCurrentFilter(source: Source) = viewModelScope.launch(Dispatchers.Main) {
+        when (source) {
+            SEARCH -> getSearchFilter()
+            FAVORITE -> {}
+            INDUSTRY -> getFilters()
+            LOCATION -> getFilters()
         }
-
-        _state.value = FiltersState.Data(currentFilter, applyButtonState)
     }
 
+    private fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
 
-    fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
+        val filters = getFiltersUseCase.execute()
+        currentFilter = currentFilter.copy(area = filters.area, region = filters.region, industry = filters.industry)
 
-//        _state.value = FiltersState.Data(getFiltersUseCase.execute(), getSearchFiltersUseCase.execute())
+        _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
     }
 
-    fun getSearchFilters() = viewModelScope.launch(Dispatchers.Main) {
-//        val searchFilter = FiltersState.Data(getSearchFiltersUseCase.execute(), getSearchFiltersUseCase.execute())
-//        _state.value = searchFilter
+    private fun getSearchFilter() = viewModelScope.launch(Dispatchers.Main) {
+        storageFilter = getSearchFiltersUseCase.execute()
+        currentFilter = storageFilter
+        _state.value = FiltersState.Data(storageFilter, applyButtonVisible())
+    }
+
+    fun setCurrentSalary(salary: String) {
+        currentFilter = currentFilter.copy(salary = salary.toIntOrNull())
+        _state.value = FiltersState.Data(currentFilter.copy(), applyButtonVisible())
+    }
+
+    fun setWithoutSalaryButton(set: Boolean) {
+        currentFilter = currentFilter.copy(withoutSalaryButton = set)
+        _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
+    }
+
+    fun applyButtonVisible(): Boolean {
+        return currentFilter.location != storageFilter.location ||
+            currentFilter.industry != storageFilter.industry ||
+            currentFilter.salary != storageFilter.salary ||
+            currentFilter.withoutSalaryButton != storageFilter.withoutSalaryButton
     }
 
     fun setEmptyCountry() {
-        val filters = getFiltersUseCase.execute().copy(area = null, region = null)
-        setFiltersUseCase.execute(filters)
+        currentFilter = getFiltersUseCase.execute().copy(area = null, region = null)
+        setFiltersUseCase.execute(currentFilter.copy(industry = null))
+        getFilters()
     }
 
     fun setEmptyIndustry() {
-        val filters = getFiltersUseCase.execute().copy(industry = null)
-        setFiltersUseCase.execute(filters)
+        currentFilter = getFiltersUseCase.execute().copy(industry = null)
+        setFiltersUseCase.execute(currentFilter.copy(industry = null))
+        getFilters()
     }
 
     fun setFilters(salary: Int?, withoutSalaryButton: Boolean) {
@@ -81,12 +94,24 @@ class FiltersViewModel(
         setSearchFiltersUseCase.execute(filters)
     }
 
-    fun setSearchFilters() {
-        setSearchFiltersUseCase.execute(currentFilter)
+    fun setSearchFilters() = viewModelScope.launch(Dispatchers.Main) {
+        val filters = getFiltersUseCase.execute().copy(
+            area = currentFilter.area,
+            region = currentFilter.region,
+            salary = currentFilter.salary,
+            withoutSalaryButton = currentFilter.withoutSalaryButton
+        )
+        println(currentFilter)
+        setSearchFiltersUseCase.execute(filters)
+    }
+
+    fun resetCurrentFilter() {
+        clearFilters()
+        currentFilter = Filter.empty
+        _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
     }
 
     fun clearFilters() {
         clearFiltersUseCase.execute()
-        getFilters()
     }
 }

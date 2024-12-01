@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_filters_fragment_to_search_fragment"
             app:destination="@id/search_fragment" />
+        <action
+            android:id="@+id/action_filters_fragment_to_search_fragment2"
+            app:destination="@id/search_fragment" />
     </fragment>
     <fragment
         android:id="@+id/vacancy_fragment"
@@ -62,12 +65,19 @@
         <action
             android:id="@+id/action_location_fragment_to_regionFragment"
             app:destination="@id/region_fragment" />
+        <action
+            android:id="@+id/action_location_fragment_to_filters_fragment"
+            app:destination="@id/filters_fragment" />
     </fragment>
     <fragment
         android:id="@+id/industry_fragment"
         android:name="ru.practicum.android.diploma.ui.industry.IndustryFragment"
         android:label="fragment_industry"
-        tools:layout="@layout/fragment_industry" />
+        tools:layout="@layout/fragment_industry" >
+        <action
+            android:id="@+id/action_industry_fragment_to_filters_fragment"
+            app:destination="@id/filters_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/country_fragment"
         android:name="ru.practicum.android.diploma.ui.country.CountryFragment"

@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.ui.filters
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
@@ -14,8 +14,9 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
+import ru.practicum.android.diploma.common.Source
+import ru.practicum.android.diploma.common.Source.SEARCH
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
-import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.util.BindingFragment
@@ -24,7 +25,7 @@ import ru.practicum.android.diploma.util.toIntOrNull
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private val viewModel: FiltersViewModel by viewModel()
-    private var currentFilter = Filter.empty
+    private var fragmentSource = SEARCH
 
     override fun createBinding(
         inflater: LayoutInflater,
@@ -34,7 +35,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        fragmentSource = requireArguments().getSerializable(SOURCE_KEY) as Source
 
         configureBackButton()
         configureWorkButton()
@@ -42,11 +43,10 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         configureSalaryInput()
         configureWithoutSalaryButton()
         configureApplyButtonListener()
-        configureApplyButtonVisible()
         configureResetButtonListener()
         configureResetButtonVisible()
 
-        viewModel.getCurrentFilter()
+        viewModel.getCurrentFilter(fragmentSource)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state -> render(state) }
@@ -61,7 +61,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     }
 
     private fun configureBackButton() =
-        binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
+        binding.tbHeader.setNavigationOnClickListener { findNavController().navigate(R.id.action_filters_fragment_to_search_fragment) }
 
     private fun configureWorkButton() = with(binding) {
         tlPlaceWorkLayout.editText?.setOnClickListener {
@@ -74,7 +74,6 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
             }
             etBranch.doOnTextChanged { _, _, _, _ ->
                 configureResetButtonVisible()
-                configureApplyButtonVisible()
             }
         }
     }
@@ -91,42 +90,30 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
             etBranch.doOnTextChanged { _, _, _, _ ->
                 configureResetButtonVisible()
-                configureApplyButtonVisible()
             }
         }
     }
 
     private fun configureSalaryInput() = with(binding) {
-        tiSalaryInputText.doOnTextChanged { _, _, _, _ ->
+        tiSalaryInputText.doOnTextChanged { salary, _, _, _ ->
+            viewModel.setCurrentSalary(salary.toString())
             configureResetButtonVisible()
-            configureApplyButtonVisible()
         }
     }
 
     private fun configureWithoutSalaryButton() = with(binding) {
-        cbWithoutSalaryButton.setOnCheckedChangeListener { _, _ ->
+        cbWithoutSalaryButton.setOnCheckedChangeListener { _, set ->
+            viewModel.setWithoutSalaryButton(set)
             configureResetButtonVisible()
-            configureApplyButtonVisible()
         }
     }
 
     private fun configureApplyButtonListener() = with(binding) {
         cbApplyButton.setOnClickListener {
             viewModel.setSearchFilters()
-//            configureResetButtonVisible()
-//            configureApplyButtonVisible()
             findNavController().navigate(R.id.action_filters_fragment_to_search_fragment)
         }
     }
-
-    private fun configureApplyButtonVisible() = with(binding) {
-//        val isEmpty = etPlaceWork.text.toString() == (currentFilter.location ?: EMPTY_PARAM_VALUE) &&
-//            etBranch.text.toString() == (currentFilter.industry ?: EMPTY_PARAM_VALUE) &&
-//            tiSalaryInputText.text.toIntOrNull() == currentFilter.salary &&
-//            cbWithoutSalaryButton.isChecked == currentFilter.withoutSalaryButton
-//        cbApplyButton.isVisible = !isEmpty
-    }
-
 
     private fun configureResetButtonVisible() = with(binding) {
         val isEmpty = etPlaceWork.text.isNullOrBlank()
@@ -137,17 +124,20 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     }
 
     private fun configureResetButtonListener() = with(binding) {
-        tvResetButton.setOnClickListener { viewModel.clearFilters() }
+        tvResetButton.setOnClickListener {
+            viewModel.resetCurrentFilter()
+            configureResetButtonVisible()
+        }
     }
 
     private fun showContent(filter: Filter, appleButtonState: Boolean) {
         setViewState(binding.tlPlaceWorkLayout, filter.location)
         setViewState(binding.tlBranchLayout, filter.industry?.name)
-        binding.tiSalaryInputText.setText(filter.salary?.toString() ?: "")
+
+        if (binding.tiSalaryInputText.text.toIntOrNull() != filter.salary)
+            binding.tiSalaryInputText.setText(filter.salary?.toString() ?: "")
+
         binding.cbWithoutSalaryButton.isChecked = filter.withoutSalaryButton
-
-        println("($filter)($)")
-
         binding.cbApplyButton.isVisible = appleButtonState
     }
 
@@ -166,8 +156,10 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-//        viewModel.clearFilters()
+    companion object {
+        private const val SOURCE_KEY = "source_key"
+        fun createArgs(source: Source) = bundleOf(
+            SOURCE_KEY to source
+        )
     }
 }
