@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.util.BindingFragment
+import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.toIntOrNull
 
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
@@ -55,7 +56,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private fun render(state: FiltersState) {
         when (state) {
-            is FiltersState.Empty -> {}
+            is FiltersState.Empty -> showEmpty()
             is FiltersState.Data -> showContent(state.filters, state.buttonApplyState)
         }
     }
@@ -139,6 +140,14 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
         binding.cbWithoutSalaryButton.isChecked = filter.withoutSalaryButton
         binding.cbApplyButton.isVisible = appleButtonState
+    }
+
+    private fun showEmpty() {
+        setViewState(binding.tlPlaceWorkLayout, null)
+        setViewState(binding.tlBranchLayout, null)
+        binding.tiSalaryInputText.text = null
+        binding.cbWithoutSalaryButton.isChecked = false
+        binding.cbApplyButton.invisible()
     }
 
     private fun setViewState(layout: TextInputLayout, content: String?) {

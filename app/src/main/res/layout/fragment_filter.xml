@@ -123,27 +123,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_not_show_without_salary" />
 
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="cb_apply_button,tv_reset_button" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cb_apply_button"
         style="@style/SelectionApplyButton"
         android:layout_width="0dp"
         android:layout_height="@dimen/mark_60dp"
-        android:layout_marginBottom="@dimen/mark_92dp"
+        android:layout_marginBottom="@dimen/mark_8dp"
         android:background="@drawable/blue_shape"
         android:text="@string/apply"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_reset_button"
         app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
         app:layout_constraintStart_toStartOf="@id/start_guideline_16dp" />
 
     <TextView
         android:id="@+id/tv_reset_button"
         style="@style/SelectionResetButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/mark_44dp"
+        android:layout_marginBottom="@dimen/mark_24dp"
+        android:paddingVertical="@dimen/mark_20dp"
         android:text="@string/reset"
-        android:visibility="gone"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
         app:layout_constraintStart_toStartOf="@id/start_guideline_16dp" />

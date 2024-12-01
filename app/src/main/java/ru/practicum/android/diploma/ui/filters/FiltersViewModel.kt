@@ -101,8 +101,10 @@ class FiltersViewModel(
 
     fun resetCurrentFilter() {
         clearFilters()
-        currentFilter = Filter.empty
-        _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
+//        storageFilter=currentFilter
+//        currentFilter =storageFilter
+        _state.value = FiltersState.Empty
+//        _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
     }
 
     fun clearFilters() {
