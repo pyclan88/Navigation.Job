@@ -114,7 +114,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     }
 
     private fun showContent(state: Filter) {
-        setViewState(binding.tlPlaceWorkLayout, state.location?.asString)
+        setViewState(binding.tlPlaceWorkLayout, state.location?.description)
         setViewState(binding.tlBranchLayout, state.industry?.name)
         binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
         binding.cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
