@@ -66,7 +66,7 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
 
     private fun showContent(vacancies: List<Vacancy>) {
         with(binding) {
-            placeholder.invisible()
+            placeholder.layoutPlaceholder.invisible()
             rvVacancies.visible()
             vacanciesAdapter.clear()
             vacanciesAdapter.updateVacancies(vacancies)
@@ -75,12 +75,12 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
 
     private fun showEmpty() {
         with(binding) {
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             rvVacancies.invisible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.favorite_empty_list_andy,
                 resources.getString(R.string.list_is_empty)
             )
@@ -89,12 +89,12 @@ class FavoriteFragment : BindingFragment<FragmentFavoriteBinding>() {
 
     private fun showError() {
         with(binding) {
-            placeholder.visible()
+            placeholder.layoutPlaceholder.visible()
             rvVacancies.invisible()
             imageAndTextHelper.setImageAndText(
                 requireContext(),
-                layoutPlaceholder.ivPlaceholder,
-                layoutPlaceholder.tvPlaceholder,
+                placeholder.ivPlaceholder,
+                placeholder.tvPlaceholder,
                 R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
                 resources.getString(R.string.no_vacancy_list)
             )

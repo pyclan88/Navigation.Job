@@ -25,6 +25,7 @@ class RegionViewModel(
 ) : ViewModel() {
 
     private var lastExpression = ""
+    private var countries: List<Country> = emptyList()
 
     private val _state: MutableStateFlow<RegionState> =
         MutableStateFlow(RegionState(Input.Empty, Data.Loading))
@@ -32,18 +33,21 @@ class RegionViewModel(
         get() = _state
 
     fun getRegions(sortExpression: String = "") = viewModelScope.launch(Dispatchers.Main) {
-        val countries = getCountriesUseCase.execute()
+        val response = getCountriesUseCase.execute()
+        countries = response.first ?: emptyList()
+
         val dataState = when {
-            countries.first?.isEmpty() == true -> Data.Empty
-            countries.second?.isNotEmpty() == true -> {
-                if (countries.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
+            response.first?.isEmpty() == true -> Data.Empty
+            response.second?.isNotEmpty() == true -> {
+                if (response.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
                     Data.NoInternet
                 } else {
                     Data.Error
                 }
             }
+
             else -> {
-                val sortedRegions = sortRegionsIfNeeded(parseRegions(countries.first!!), sortExpression)
+                val sortedRegions = sortRegionsIfNeeded(parseRegions(response.first!!), sortExpression)
                 if (sortedRegions.isEmpty()) Data.Empty else Data.Data(sortedRegions)
             }
         }
@@ -81,7 +85,10 @@ class RegionViewModel(
     }
 
     fun setFilter(region: Region) {
-        val filters = getFiltersUseCase.execute().copy(region = region)
+        val country = findCountryByRegion(region)
+        val filters = getFiltersUseCase.execute()
+            .copy(area = country, region = region)
+
         setFiltersUseCase.execute(filters)
     }
 
@@ -94,4 +101,7 @@ class RegionViewModel(
         }
         return regions
     }
+
+    private fun findCountryByRegion(neededRegion: Region): Country? = countries
+        .firstOrNull { country -> country.regions.contains(neededRegion) }
 }
