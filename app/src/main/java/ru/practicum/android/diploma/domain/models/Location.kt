@@ -8,11 +8,12 @@ data class Location(
     val isEmpty: Boolean
         get() = country?.name.isNullOrEmpty() && region?.name.isNullOrEmpty()
 
-    fun asString(): String? = if (country == null) {
-        region?.name
-    } else {
-        region?.let { country.name + ", " + it.name } ?: country.name
-    }
+    val asString: String?
+        get() = if (country == null) {
+            region?.name
+        } else {
+            region?.let { country.name + ", " + it.name } ?: country.name
+        }
 
     companion object {
         val empty = Location(country = null, region = null)
