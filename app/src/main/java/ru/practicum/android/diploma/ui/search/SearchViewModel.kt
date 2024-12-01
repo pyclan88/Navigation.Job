@@ -42,7 +42,7 @@ class SearchViewModel(
         coroutineScope = viewModelScope,
         useLastParam = true
     ) { changedText ->
-        if (changedText != lastExpression) {
+        if (changedText != lastExpression && changedText.isNotBlank()) {
             search(changedText)
         }
     }
@@ -98,7 +98,7 @@ class SearchViewModel(
     }
 
     fun searchDebounce(expression: String) {
-        if (expression.isBlank()) return
+        if (expression.isBlank()) clearSearch()
         searchDebounceAction(expression)
     }
 

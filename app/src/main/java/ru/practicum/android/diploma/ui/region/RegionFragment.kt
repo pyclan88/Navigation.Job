@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.domain.state.RegionState.Data.Data
 import ru.practicum.android.diploma.domain.state.RegionState.Data.Empty
 import ru.practicum.android.diploma.domain.state.RegionState.Data.Error
 import ru.practicum.android.diploma.domain.state.RegionState.Data.Loading
+import ru.practicum.android.diploma.domain.state.RegionState.Data.NoInternet
 import ru.practicum.android.diploma.ui.adapters.FilterAdapter
 import ru.practicum.android.diploma.ui.adapters.FilterAdapter.SaveFilterListener
 import ru.practicum.android.diploma.ui.adapters.ItemFilter
@@ -59,6 +60,7 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
             is Empty -> showEmpty()
             is Error -> showError()
             is Loading -> showLoading()
+            is NoInternet -> showNoInternet()
         }
     }
 
@@ -95,6 +97,21 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
             pbSearch.visible()
             rvRegions.invisible()
             placeholder.invisible()
+        }
+    }
+
+    private fun showNoInternet() {
+        with(binding) {
+            rvRegions.invisible()
+            pbSearch.invisible()
+            placeholder.visible()
+            imageAndTextHelper.setImageAndText(
+                requireContext(),
+                layoutPlaceholder.ivPlaceholder,
+                layoutPlaceholder.tvPlaceholder,
+                R.drawable.placeholder_vacancy_search_no_internet_skull,
+                resources.getString(R.string.no_internet)
+            )
         }
     }
 
