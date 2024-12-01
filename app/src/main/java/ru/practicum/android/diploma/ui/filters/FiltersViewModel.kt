@@ -66,7 +66,7 @@ class FiltersViewModel(
         _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
     }
 
-    fun applyButtonVisible(): Boolean {
+    private fun applyButtonVisible(): Boolean {
         return currentFilter.location != storageFilter.location ||
             currentFilter.industry != storageFilter.industry ||
             currentFilter.salary != storageFilter.salary ||
@@ -96,19 +96,22 @@ class FiltersViewModel(
             salary = currentFilter.salary,
             withoutSalaryButton = currentFilter.withoutSalaryButton
         )
-        println(currentFilter)
         setSearchFiltersUseCase.execute(filters)
     }
 
-    fun resetCurrentFilter() {
+    fun resetFilters() {
         clearFilters()
-//        storageFilter=currentFilter
-//        currentFilter =storageFilter
+        setSearchFiltersUseCase.execute(Filter.empty)
         _state.value = FiltersState.Empty
+
+//        clearFilters()
+//        storageFilter=currentFilter
+        currentFilter =storageFilter
+//        _state.value = FiltersState.Empty
 //        _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
     }
 
-    fun clearFilters() {
+    private fun clearFilters() {
         clearFiltersUseCase.execute()
     }
 }

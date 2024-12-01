@@ -44,7 +44,6 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         configureSalaryInput()
         configureWithoutSalaryButton()
         configureApplyButtonListener()
-        configureResetButtonListener()
 
         viewModel.getCurrentFilter(fragmentSource)
 
@@ -52,6 +51,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
             viewModel.state.collect { state ->
                 render(state)
                 configureResetButtonVisible()
+                configureResetButtonListener()
             }
         }
     }
@@ -135,29 +135,29 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private fun configureResetButtonListener() = with(binding) {
         tvResetButton.setOnClickListener {
-            viewModel.resetCurrentFilter()
-            tvResetButton.invisible()
+            viewModel.resetFilters()
             configureResetButtonVisible()
         }
     }
 
-    private fun showContent(filter: Filter, appleButtonState: Boolean) {
-        setViewState(binding.tlPlaceWorkLayout, filter.location)
-        setViewState(binding.tlBranchLayout, filter.industry?.name)
+    private fun showContent(filter: Filter, appleButtonState: Boolean) = with(binding) {
+        setViewState(tlPlaceWorkLayout, filter.location)
+        setViewState(tlBranchLayout, filter.industry?.name)
 
-        if (binding.tiSalaryInputText.text.toIntOrNull() != filter.salary)
-            binding.tiSalaryInputText.setText(filter.salary?.toString() ?: "")
+        if (tiSalaryInputText.text.toIntOrNull() != filter.salary)
+            tiSalaryInputText.setText(filter.salary?.toString() ?: "")
 
-        binding.cbWithoutSalaryButton.isChecked = filter.withoutSalaryButton
-        binding.cbApplyButton.isVisible = appleButtonState
+        cbWithoutSalaryButton.isChecked = filter.withoutSalaryButton
+        cbApplyButton.isVisible = appleButtonState
     }
 
-    private fun showEmpty() {
-        setViewState(binding.tlPlaceWorkLayout, null)
-        setViewState(binding.tlBranchLayout, null)
-        binding.tiSalaryInputText.text = null
-        binding.cbWithoutSalaryButton.isChecked = false
-        binding.cbApplyButton.invisible()
+    private fun showEmpty() = with(binding) {
+        setViewState(tlPlaceWorkLayout, null)
+        setViewState(tlBranchLayout, null)
+        tiSalaryInputText.text = null
+        cbWithoutSalaryButton.isChecked = false
+        cbApplyButton.invisible()
+        tvResetButton.invisible()
     }
 
     private fun setViewState(layout: TextInputLayout, content: String?) {
