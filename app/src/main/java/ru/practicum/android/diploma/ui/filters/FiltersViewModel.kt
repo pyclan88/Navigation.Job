@@ -38,13 +38,18 @@ class FiltersViewModel(
 
     fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
         tmpFilters = getTmpFiltersUseCase.execute()
+        val data: FiltersState.Data = when (tmpFilters) {
+            Filter.empty -> Empty
+            else -> Payload(tmpFilters)
+        }
+        // можно переписать оставить FilterState только с data
         val editorState = if (compareTmpAndSearchFilters()) {
             Unchanged
         } else {
             Changed
         }
 
-        _state.value = FiltersState(editorState, Payload(tmpFilters))
+        _state.value = FiltersState(editorState, data)
     }
 
     fun clearLocation() = setTmpFilters { copy(location = Location.empty) }
@@ -72,6 +77,7 @@ class FiltersViewModel(
     private fun compareTmpAndSearchFilters(): Boolean {
         val tmpFilters = getTmpFiltersUseCase.execute()
         val searchFilters = getSearchFiltersUseCase.execute()
+//        Log.d("TST", "$tmpFilters $searchFilters")
         return tmpFilters == searchFilters
     }
 }
