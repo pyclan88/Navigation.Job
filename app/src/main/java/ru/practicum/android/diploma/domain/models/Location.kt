@@ -8,7 +8,7 @@ data class Location(
     val isEmpty: Boolean
         get() = country?.name.isNullOrEmpty() && region?.name.isNullOrEmpty()
 
-    val asString: String?
+    val description: String?
         get() = if (country == null) {
             region?.name
         } else {
