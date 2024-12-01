@@ -79,11 +79,11 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         rvVacancies.invisible()
         pbSearch.invisible()
         cbApplyButton.invisible()
-        placeholder.visible()
+        placeholder.layoutPlaceholder.visible()
         imageAndTextHelper.setImageAndText(
             requireContext(),
-            layoutPlaceholder.ivPlaceholder,
-            layoutPlaceholder.tvPlaceholder,
+            placeholder.ivPlaceholder,
+            placeholder.tvPlaceholder,
             R.drawable.placeholder_vacancy_search_no_internet_skull,
             resources.getString(R.string.no_internet)
         )
@@ -93,18 +93,18 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         pbSearch.visible()
         rvVacancies.invisible()
         cbApplyButton.invisible()
-        placeholder.invisible()
+        placeholder.layoutPlaceholder.invisible()
     }
 
     private fun showEmpty() = with(binding) {
         rvVacancies.invisible()
         pbSearch.invisible()
         cbApplyButton.invisible()
-        placeholder.visible()
+        placeholder.layoutPlaceholder.visible()
         imageAndTextHelper.setImageAndText(
             requireContext(),
-            layoutPlaceholder.ivPlaceholder,
-            layoutPlaceholder.tvPlaceholder,
+            placeholder.ivPlaceholder,
+            placeholder.tvPlaceholder,
             R.drawable.placeholder_no_vacancy_list_or_region_plate_cat,
             resources.getString(R.string.no_such_industry)
         )
@@ -114,11 +114,11 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         rvVacancies.invisible()
         cbApplyButton.invisible()
         pbSearch.invisible()
-        placeholder.visible()
+        placeholder.layoutPlaceholder.visible()
         imageAndTextHelper.setImageAndText(
             requireContext(),
-            layoutPlaceholder.ivPlaceholder,
-            layoutPlaceholder.tvPlaceholder,
+            placeholder.ivPlaceholder,
+            placeholder.tvPlaceholder,
             R.drawable.placeholder_vacancy_search_server_error_cry,
             resources.getString(R.string.server_error)
         )
@@ -128,7 +128,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     private fun showContent(industryList: List<Industry>) = with(binding) {
         rvVacancies.visible()
         pbSearch.invisible()
-        placeholder.invisible()
+        placeholder.layoutPlaceholder.invisible()
         cbApplyButton.isVisible = industryList.any { it.isSelected }
         filterAdapter.updateIndustries(industryList)
     }
