@@ -43,9 +43,10 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
 
     private fun configureBackButton() =
         binding.tbHeader.setNavigationOnClickListener {
-            viewModel.setEmptyFilter()
-            R.id.action_location_fragment_to_filters_fragment,
-            FiltersFragment.createArgs(source = LOCATION)
+            findNavController().navigate(
+                R.id.action_location_fragment_to_filters_fragment,
+                FiltersFragment.createArgs(source = LOCATION)
+            )
         }
 
     private fun setupListeners() {
@@ -116,7 +117,10 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
             val isCountryFilled = !binding.tiCountry.editText?.text.isNullOrEmpty()
             val isRegionFilled = !binding.tiRegion.editText?.text.isNullOrEmpty()
             viewModel.setFilter(isCountryFilled, isRegionFilled)
-            findNavController().popBackStack()
+            findNavController().navigate(
+                R.id.action_location_fragment_to_filters_fragment,
+                FiltersFragment.createArgs(source = LOCATION)
+            )
         }
     }
 }

@@ -65,7 +65,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         binding.tbHeader.setNavigationOnClickListener { findNavController().navigate(R.id.action_filters_fragment_to_search_fragment) }
 
     private fun configureWorkButton() = with(binding) {
-        tlPlaceWorkLayout.editText?.setOnClickListener {
+        tlPlaceWorkLayout.setEndIconOnClickListener {
             when (tlPlaceWorkLayout.editText?.text.toString().isEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
                 else -> {
@@ -77,10 +77,14 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
                 configureResetButtonVisible()
             }
         }
+        tlPlaceWorkLayout.editText?.setOnClickListener {
+            findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
+        }
     }
 
     private fun configureIndustryButton() = with(binding) {
-        tlBranchLayout.editText?.setOnClickListener {
+
+        tlBranchLayout.setEndIconOnClickListener {
             when (tlBranchLayout.editText?.text.isNullOrEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
                 else -> {
@@ -88,10 +92,13 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
                     setViewState(tlBranchLayout, EMPTY_PARAM_VALUE)
                 }
             }
-
             etBranch.doOnTextChanged { _, _, _, _ ->
                 configureResetButtonVisible()
             }
+        }
+
+        tlBranchLayout.editText?.setOnClickListener {
+            findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
         }
     }
 

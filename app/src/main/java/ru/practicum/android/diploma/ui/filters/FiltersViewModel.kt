@@ -50,6 +50,7 @@ class FiltersViewModel(
     }
 
     private fun getSearchFilter() = viewModelScope.launch(Dispatchers.Main) {
+        setFiltersUseCase.execute(Filter.empty)
         storageFilter = getSearchFiltersUseCase.execute()
         currentFilter = storageFilter
         _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
