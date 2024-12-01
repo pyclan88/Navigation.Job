@@ -16,8 +16,11 @@ import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
+import ru.practicum.android.diploma.domain.state.FiltersState.Data.Empty
+import ru.practicum.android.diploma.domain.state.FiltersState.Data.Payload
+import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Changed
+import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Unchanged
 import ru.practicum.android.diploma.util.BindingFragment
-import ru.practicum.android.diploma.util.toIntOrNull
 
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
@@ -35,26 +38,28 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         configureWorkButton()
         configureIndustryButton()
         configureSalaryInput()
-        configureWithoutSalaryButton()
-
-        configureApplyButtonListener()
-        configureApplyButtonVisible()
-
-        configureResetButtonListener()
-        configureResetButtonVisible()
+        configureWithoutSalaryCheckbox()
+        configureApplyButton()
+        configureResetButton()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state -> render(state) }
         }
 
         viewModel.getFilters()
-        println("FiltersFragment:onViewCreated")
     }
 
     private fun render(state: FiltersState) {
-        when (state) {
-            is FiltersState.Empty -> {}
-            is FiltersState.Data -> showContent(state.filters)
+        val isButtonsVisible = when (state.editor) {
+            Changed -> true
+            Unchanged -> false
+        }
+        binding.cbApplyButton.isVisible = isButtonsVisible
+        binding.tvResetButton.isVisible = isButtonsVisible
+
+        when (val dataState = state.data) {
+            is Empty -> {}
+            is Payload -> showContent(dataState.filters)
         }
     }
 
@@ -66,13 +71,9 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
             when (tlPlaceWorkLayout.editText?.text.toString().isEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
                 else -> {
-                    viewModel.setEmptyCountry()
+                    viewModel.clearLocation()
                     setViewState(tlPlaceWorkLayout, EMPTY_PARAM_VALUE)
                 }
-            }
-            etBranch.doOnTextChanged { _, _, _, _ ->
-                configureResetButtonVisible()
-                configureApplyButtonVisible()
             }
         }
     }
@@ -82,59 +83,33 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
             when (tlBranchLayout.editText?.text.isNullOrEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
                 else -> {
-                    viewModel.setEmptyIndustry()
+                    viewModel.clearIndustry()
                     setViewState(tlBranchLayout, EMPTY_PARAM_VALUE)
                 }
-            }
-
-            etBranch.doOnTextChanged { _, _, _, _ ->
-                configureResetButtonVisible()
-                configureApplyButtonVisible()
             }
         }
     }
 
     private fun configureSalaryInput() = with(binding) {
-        tiSalaryInputText.doOnTextChanged { _, _, _, _ ->
-            configureResetButtonVisible()
-            configureApplyButtonVisible()
+        tiSalaryInputText.doOnTextChanged { text, _, _, _ ->
+            viewModel.setSalary(text.toString())
         }
     }
 
-    private fun configureWithoutSalaryButton() = with(binding) {
-        cbWithoutSalaryButton.setOnCheckedChangeListener { _, _ ->
-            configureResetButtonVisible()
-            configureApplyButtonVisible()
+    private fun configureWithoutSalaryCheckbox() = with(binding) {
+        cbWithoutSalaryButton.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setWithoutSalaryButton(isChecked)
         }
     }
 
-    private fun configureApplyButtonListener() = with(binding) {
+    private fun configureApplyButton() = with(binding) {
         cbApplyButton.setOnClickListener {
-            viewModel.setFilters(
-                salary = tiSalaryInputText.text.toIntOrNull(),
-                withoutSalaryButton = cbWithoutSalaryButton.isChecked,
-            )
+            viewModel.saveFilters()
             findNavController().navigate(R.id.action_filters_fragment_to_search_fragment)
         }
     }
 
-    private fun configureApplyButtonVisible() = with(binding) {
-        val isEmpty = etPlaceWork.text.isNullOrBlank()
-            && etBranch.text.isNullOrBlank()
-            && tiSalaryInputText.text.isNullOrBlank()
-            && !cbWithoutSalaryButton.isChecked
-        cbApplyButton.isVisible = !isEmpty
-    }
-
-    private fun configureResetButtonVisible() = with(binding) {
-        val isEmpty = etPlaceWork.text.isNullOrBlank()
-            && etBranch.text.isNullOrBlank()
-            && tiSalaryInputText.text.isNullOrBlank()
-            && !cbWithoutSalaryButton.isChecked
-        tvResetButton.isVisible = !isEmpty
-    }
-
-    private fun configureResetButtonListener() = with(binding) {
+    private fun configureResetButton() = with(binding) {
         tvResetButton.setOnClickListener { viewModel.clearFilters() }
     }
 

@@ -127,7 +127,7 @@ val dataModule = module {
     single<FilterRepository> {
         FilterRepositoryImpl(
             filterStorage = get(),
-            filterMapper = get()
+            mapper = get()
         )
     }
 

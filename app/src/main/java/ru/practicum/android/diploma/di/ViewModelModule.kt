@@ -51,7 +51,9 @@ val viewModelModule = module {
         FiltersViewModel(
             setTmpFiltersUseCase = get(),
             getTmpFiltersUseCase = get(),
-            clearFiltersUseCase = get(),
+            clearSearchFiltersUseCase = get(),
+            clearTmpFiltersUseCase = get(),
+            getSearchFiltersUseCase = get(),
             setSearchFiltersUseCase = get()
         )
     }

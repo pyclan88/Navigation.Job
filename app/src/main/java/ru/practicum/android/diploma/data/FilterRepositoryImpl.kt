@@ -6,25 +6,23 @@ import ru.practicum.android.diploma.domain.api.FilterRepository
 import ru.practicum.android.diploma.domain.models.Filter
 
 class FilterRepositoryImpl(
+    private val mapper: FilterMapper,
     private val filterStorage: FilterStorage,
-    private val filterMapper: FilterMapper
 ) : FilterRepository {
 
     override fun setTmpFilters(value: Filter) {
-        filterStorage.tmpFilters = filterMapper.map(value)
+        filterStorage.tmpFilters = mapper.map(value)
     }
 
-    override fun getSearchFilters(): Filter {
-        return filterMapper.map(filterStorage.searchFilters)
-    }
+    override fun clearTmpFilters() = filterStorage.clearTmpFilers()
+
+    override fun getSearchFilters(): Filter = mapper.map(filterStorage.searchFilters)
 
     override fun setSearchFilters(value: Filter) {
-        filterStorage.searchFilters = filterMapper.map(value)
+        filterStorage.searchFilters = mapper.map(value)
     }
 
-    override fun clearFilters() = setTmpFilters(Filter.empty)
+    override fun clearSearchFilters() = filterStorage.clearSearchFilters()
 
-    override fun getTmpFilters(): Filter {
-        return filterMapper.map(filterStorage.tmpFilters)
-    }
+    override fun getTmpFilters(): Filter = mapper.map(filterStorage.tmpFilters)
 }

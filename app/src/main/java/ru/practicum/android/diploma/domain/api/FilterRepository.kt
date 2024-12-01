@@ -6,10 +6,10 @@ interface FilterRepository {
 
     fun getTmpFilters(): Filter
     fun setTmpFilters(value: Filter)
+    fun clearTmpFilters()
 
     fun getSearchFilters(): Filter
     fun setSearchFilters(value: Filter)
-
-    fun clearFilters()
+    fun clearSearchFilters()
 
 }

@@ -16,8 +16,8 @@ import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Loadin
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.NoInternet
 import ru.practicum.android.diploma.domain.state.IndustryState.Input.Empty
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.GetTmpFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.SetTmpFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.SetTmpFiltersUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class IndustryViewModel(

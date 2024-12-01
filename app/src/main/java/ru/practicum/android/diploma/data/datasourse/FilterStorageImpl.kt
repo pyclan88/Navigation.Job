@@ -5,44 +5,41 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.practicum.android.diploma.data.dto.filter.FilterDto
 
-private const val KEY_FILTERS = "items_filter"
-private const val KEY_SEARCH_FILTERS = "items_search_filter"
-
-
 class FilterStorageImpl(
     private val sharedPreferences: SharedPreferences,
     private val gson: Gson
 ) : FilterStorage {
 
     override var tmpFilters: FilterDto
-        get() {
-            val json: String? = sharedPreferences.getString(KEY_FILTERS, null)
-            return if (json != null) {
-                gson.fromJson(json, object : TypeToken<FilterDto>() {}.type)
-            } else {
-                FilterDto.empty
-            }
-        }
-        set(value) {
-            val json = gson.toJson(value)
-            sharedPreferences.edit()
-                .putString(KEY_FILTERS, json)
-                .apply()
-        }
+        get() = getFilters(FILTERS_KEY)
+        set(value) = setFilters(value, FILTERS_KEY)
+
+    override fun clearTmpFilers() = clear(FILTERS_KEY)
 
     override var searchFilters: FilterDto
-        get() {
-            val json: String? = sharedPreferences.getString(KEY_SEARCH_FILTERS, null)
-            return if (json != null) {
-                gson.fromJson(json, object : TypeToken<FilterDto>() {}.type)
-            } else {
-                FilterDto.empty
-            }
+        get() = getFilters(SEARCH_FILTERS_KEY)
+        set(value) = setFilters(value, SEARCH_FILTERS_KEY)
+
+    override fun clearSearchFilters() = clear(SEARCH_FILTERS_KEY)
+
+    private fun getFilters(key: String): FilterDto {
+        val json = sharedPreferences.getString(key, null)
+        return if (json == null) {
+            FilterDto.empty
+        } else {
+            gson.fromJson(json, object : TypeToken<FilterDto>() {}.type)
         }
-        set(value) {
-            val json = gson.toJson(value)
-            sharedPreferences.edit()
-                .putString(KEY_SEARCH_FILTERS, json)
-                .apply()
-        }
+    }
+
+    private fun setFilters(filters: FilterDto, key: String) {
+        val json = gson.toJson(filters)
+        sharedPreferences.edit().putString(key, json).apply()
+    }
+
+    private fun clear(key: String) = sharedPreferences.edit().remove(key).apply()
+
+    companion object {
+        private const val FILTERS_KEY = "FILTERS_KEY"
+        private const val SEARCH_FILTERS_KEY = "SEARCH_FILTERS_KEY"
+    }
 }
