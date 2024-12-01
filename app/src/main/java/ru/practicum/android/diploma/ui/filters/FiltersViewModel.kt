@@ -11,7 +11,6 @@ import ru.practicum.android.diploma.common.Source.SEARCH
 import ru.practicum.android.diploma.common.Source.INDUSTRY
 import ru.practicum.android.diploma.common.Source.LOCATION
 import ru.practicum.android.diploma.common.Source.FAVORITE
-import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.domain.usecase.filters.ClearFiltersUseCase
