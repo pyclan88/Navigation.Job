@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.filters
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +47,9 @@ class FiltersViewModel(
     private fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
         val filters = getFiltersUseCase.execute()
         currentFilter = currentFilter.copy(area = filters.area, region = filters.region, industry = filters.industry)
-        _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
+        // здесь была проблема. добавил условие
+//        _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
+        if (currentFilter != Filter.empty) _state.value = FiltersState.Data(currentFilter, applyButtonVisible())
     }
 
     private fun getSearchFilter() = viewModelScope.launch(Dispatchers.Main) {
