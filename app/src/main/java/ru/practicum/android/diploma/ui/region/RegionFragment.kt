@@ -71,7 +71,7 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
         rvRegions.adapter = filterAdapter
         filterAdapter.saveFilterListener = object : SaveFilterListener {
             override fun onItemClicked(item: ItemFilter) {
-                viewModel.setFilter(item.data as Region)
+                viewModel.setRegion(item.data as Region)
                 findNavController().navigateUp()
             }
         }

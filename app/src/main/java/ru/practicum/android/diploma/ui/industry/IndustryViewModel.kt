@@ -16,14 +16,14 @@ import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Loadin
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.NoInternet
 import ru.practicum.android.diploma.domain.state.IndustryState.Input.Empty
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.SetTmpFiltersUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class IndustryViewModel(
     private val getIndustriesUseCase: GetIndustriesUseCase,
-    private val getFiltersUseCase: GetFiltersUseCase,
-    private val setFiltersUseCase: SetFiltersUseCase
+    private val getTmpFiltersUseCase: GetTmpFiltersUseCase,
+    private val setTmpFiltersUseCase: SetTmpFiltersUseCase
 ) : ViewModel() {
 
     private var industries: List<Industry> = mutableListOf()
@@ -57,9 +57,9 @@ class IndustryViewModel(
     }
 
     fun setFilters(industry: Industry) {
-        val filters = getFiltersUseCase.execute()
+        val filters = getTmpFiltersUseCase.execute()
             .copy(industry = industry)
-        setFiltersUseCase.execute(filters)
+        setTmpFiltersUseCase.execute(filters)
     }
 
     private fun searchFilter(searchText: String) {

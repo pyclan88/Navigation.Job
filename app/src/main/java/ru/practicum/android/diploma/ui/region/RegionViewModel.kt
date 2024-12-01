@@ -9,18 +9,19 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.domain.models.Country
+import ru.practicum.android.diploma.domain.models.Location
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.state.RegionState
 import ru.practicum.android.diploma.domain.state.RegionState.Data
 import ru.practicum.android.diploma.domain.state.RegionState.Input
 import ru.practicum.android.diploma.domain.usecase.GetCountriesUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.GetLocationUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.SetLocationUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class RegionViewModel(
-    private val getFiltersUseCase: GetFiltersUseCase,
-    private val setFiltersUseCase: SetFiltersUseCase,
+    private val setLocationUseCase: SetLocationUseCase,
+    private val getLocationUseCase: GetLocationUseCase,
     private val getCountriesUseCase: GetCountriesUseCase
 ) : ViewModel() {
 
@@ -84,20 +85,18 @@ class RegionViewModel(
         searchDebounceAction(expression)
     }
 
-    fun setFilter(region: Region) {
+    fun setRegion(region: Region) {
         val country = findCountryByRegion(region)
-        val filters = getFiltersUseCase.execute()
-            .copy(area = country, region = region)
-
-        setFiltersUseCase.execute(filters)
+        val location = Location(country, region)
+        setLocationUseCase.execute(location)
     }
 
     private fun parseRegions(countries: List<Country>): List<Region> {
-        val filter = getFiltersUseCase.execute()
-        val regions = if (filter.area == null) {
+        val filter = getLocationUseCase.execute()
+        val regions = if (filter.country == null) {
             countries.flatMap { it.regions }
         } else {
-            filter.area.regions
+            filter.country.regions
         }
         return regions
     }
