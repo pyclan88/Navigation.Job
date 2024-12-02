@@ -12,12 +12,15 @@ import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
 import ru.practicum.android.diploma.domain.usecase.filters.search.GetSearchFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.search.SetSearchFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.ClearTmpFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase,
-    private val getSearchFiltersUseCase: GetSearchFiltersUseCase
+    private val getSearchFiltersUseCase: GetSearchFiltersUseCase,
+    private val clearTmpFiltersUseCase: ClearTmpFiltersUseCase
 ) : ViewModel() {
 
     private var lastExpression = ""
@@ -101,5 +104,9 @@ class SearchViewModel(
 
     fun onLastItemReached() {
         if (!isNextPageLoading) requestToServer(lastExpression)
+    }
+
+    fun clearTmpFilter() {
+        clearTmpFiltersUseCase.execute()
     }
 }

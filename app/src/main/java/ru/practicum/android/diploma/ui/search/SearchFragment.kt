@@ -231,6 +231,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun configureFilterButton() {
         binding.ivFilter.setOnClickListener {
+            viewModel.clearTmpFilter()
             findNavController().navigate(R.id.action_searchFragment_to_filtersFragment)
         }
     }

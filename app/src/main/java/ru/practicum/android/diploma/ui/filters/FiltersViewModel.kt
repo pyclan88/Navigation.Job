@@ -68,10 +68,6 @@ class FiltersViewModel(
         getFilters()
     }
 
-    fun clearTmpFilter() {
-        clearTmpFiltersUseCase.execute()
-    }
-
     private fun setTmpFilters(lambda: Filter.() -> Filter) {
         val filter = getTmpFiltersUseCase.execute().lambda()
         setTmpFiltersUseCase.execute(filter)
@@ -81,7 +77,6 @@ class FiltersViewModel(
     private fun compareTmpAndSearchFilters(): Boolean {
         val tmpFilters = getTmpFiltersUseCase.execute()
         val searchFilters = getSearchFiltersUseCase.execute()
-//        Log.d("TST", "$tmpFilters $searchFilters")
         return tmpFilters == searchFilters
     }
 }

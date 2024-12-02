@@ -140,9 +140,4 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
             }
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.clearTmpFilter()
-    }
 }
