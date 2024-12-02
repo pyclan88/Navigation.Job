@@ -28,7 +28,6 @@ class LocationViewModel(
         }
     }
 
-
     private val startLocationState =
         getTmpFiltersUseCase.execute().location?.let { LocationState.Data(it) } ?: LocationState.Empty
 
