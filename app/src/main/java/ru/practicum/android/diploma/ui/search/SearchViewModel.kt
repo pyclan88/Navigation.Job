@@ -28,6 +28,7 @@ class SearchViewModel(
         get() = currentPage < maxPage
 
     private var isNextPageLoading = false
+    private var lastFilter: Filter? = null
 
     private val _state: MutableStateFlow<VacancyState> = MutableStateFlow(
         VacancyState(Input.Empty, VacanciesList.Start)
@@ -42,6 +43,9 @@ class SearchViewModel(
     ) { changedText ->
         if (changedText != lastExpression && changedText.isNotBlank()) {
             search(changedText)
+        }
+        if (!compareTmpAndSearchFilters() && changedText == lastExpression && changedText.isNotBlank()) {
+            search(lastExpression)
         }
     }
 
@@ -66,10 +70,12 @@ class SearchViewModel(
 
     private fun requestToServer(expression: String) = viewModelScope.launch {
         isNextPageLoading = true
+        val filter = getSearchFiltersUseCase.execute()
+        lastFilter = filter
         val result = getVacanciesUseCase.execute(
             expression = expression,
             page = currentPage,
-            filter = getSearchFiltersUseCase.execute()
+            filter = filter
         )
 
         val resultData = result.first?.items
@@ -102,5 +108,12 @@ class SearchViewModel(
 
     fun onLastItemReached() {
         if (!isNextPageLoading) requestToServer(lastExpression)
+    }
+
+    private fun compareTmpAndSearchFilters(): Boolean {
+        val tmpFilters = lastFilter
+        val searchFilters = getSearchFiltersUseCase.execute()
+//        Log.d("TST", "$tmpFilters $searchFilters")
+        return tmpFilters == searchFilters
     }
 }
