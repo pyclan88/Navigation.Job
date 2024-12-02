@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.ui.industry
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -37,7 +38,7 @@ class IndustryViewModel(
         useLastParam = true
     ) { changedText -> getIndustries(changedText) }
 
-    fun getIndustries(sortExpression: String = "") = viewModelScope.launch {
+    fun getIndustries(sortExpression: String = "") = viewModelScope.launch(Dispatchers.Main) {
         val response = getIndustriesUseCase.execute()
         val dataState = when {
             response.first?.isEmpty() == true -> Industries.Empty
@@ -48,6 +49,7 @@ class IndustryViewModel(
                     Error
                 }
             }
+
             else -> {
                 val sortIndustry = searchFilter(response.first!!, sortExpression)
                 if (sortIndustry.isEmpty()) Industries.Empty else Data(sortIndustry)
