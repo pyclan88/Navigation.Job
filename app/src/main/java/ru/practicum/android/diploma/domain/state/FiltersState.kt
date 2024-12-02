@@ -13,7 +13,6 @@ data class FiltersState(
     }
 
     sealed interface Data {
-        data object Empty : Data
         data class Payload(val filters: Filter) : Data
     }
 }

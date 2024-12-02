@@ -17,10 +17,8 @@ import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
-import ru.practicum.android.diploma.domain.state.FiltersState.Data.Empty
 import ru.practicum.android.diploma.domain.state.FiltersState.Data.Payload
 import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Changed
-import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Unchanged
 import ru.practicum.android.diploma.util.BindingFragment
 
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
@@ -51,16 +49,13 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     }
 
     private fun render(state: FiltersState) {
-        val isButtonsVisible = when (state.editor) {
-            Changed -> true
-            Unchanged -> false
-        }
-        binding.cbApplyButton.isVisible = isButtonsVisible
-        binding.tvResetButton.isVisible = isButtonsVisible
+        binding.cbApplyButton.isVisible = state.editor == Changed
 
         when (val dataState = state.data) {
-            is Empty -> {}
-            is Payload -> showContent(dataState.filters)
+            is Payload -> {
+                showContent(dataState.filters)
+                binding.tvResetButton.isVisible = dataState.filters != Filter.empty
+            }
         }
     }
 
