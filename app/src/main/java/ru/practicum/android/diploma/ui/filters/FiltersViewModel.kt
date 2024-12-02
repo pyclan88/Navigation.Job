@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.filters
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +29,8 @@ class FiltersViewModel(
     private val setSearchFiltersUseCase: SetSearchFiltersUseCase
 ) : ViewModel() {
 
-    private var tmpFilters: Filter = getSearchFiltersUseCase.execute()
+    private var searchFilters: Filter = getSearchFiltersUseCase.execute()
+    private var isTmpFiltersInitialized = false
 
     private val _state: MutableStateFlow<FiltersState> =
         MutableStateFlow(FiltersState(editor = Unchanged, data = Empty))
@@ -38,8 +38,12 @@ class FiltersViewModel(
         get() = _state
 
     fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
-        tmpFilters = getTmpFiltersUseCase.execute()
-        val data: FiltersState.Data = when (tmpFilters) {
+        if (!isTmpFiltersInitialized) {
+            setTmpFiltersUseCase.execute(searchFilters)
+            isTmpFiltersInitialized = true
+        }
+
+        val data: FiltersState.Data = when (val tmpFilters = getTmpFiltersUseCase.execute()) {
             Filter.empty -> Empty
             else -> Payload(tmpFilters)
         }
@@ -70,7 +74,6 @@ class FiltersViewModel(
     }
 
     private fun setTmpFilters(lambda: Filter.() -> Filter) {
-        Log.d("TST", getTmpFiltersUseCase.execute().salary.toString())
         val filter = getTmpFiltersUseCase.execute().lambda()
         setTmpFiltersUseCase.execute(filter)
         getFilters()
@@ -79,7 +82,6 @@ class FiltersViewModel(
     private fun compareTmpAndSearchFilters(): Boolean {
         val tmpFilters = getTmpFiltersUseCase.execute()
         val searchFilters = getSearchFiltersUseCase.execute()
-//        Log.d("TST", "$tmpFilters $searchFilters")
         return tmpFilters == searchFilters
     }
 }
