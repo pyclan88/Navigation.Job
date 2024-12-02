@@ -12,7 +12,6 @@ import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
 import ru.practicum.android.diploma.domain.usecase.filters.search.GetSearchFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.search.SetSearchFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.tmp.ClearTmpFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
