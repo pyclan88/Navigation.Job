@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.filters
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -69,6 +70,7 @@ class FiltersViewModel(
     }
 
     private fun setTmpFilters(lambda: Filter.() -> Filter) {
+        Log.d("TST", getTmpFiltersUseCase.execute().salary.toString())
         val filter = getTmpFiltersUseCase.execute().lambda()
         setTmpFiltersUseCase.execute(filter)
         getFilters()
