@@ -121,8 +121,9 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     private fun showContent(state: Filter) = with(binding) {
         setViewState(tlPlaceWorkLayout, state.location?.description)
         setViewState(tlBranchLayout, state.industry?.name)
-        if (tiSalaryInputText.text.toIntOrNull() != state.salary)
+        if (tiSalaryInputText.text.toIntOrNull() != state.salary) {
             tiSalaryInputText.setText(state.salary?.toString() ?: "")
+        }
         cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
         cbApplyButton.visible()
         tvResetButton.visible()
