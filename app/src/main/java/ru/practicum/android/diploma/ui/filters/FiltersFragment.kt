@@ -123,6 +123,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         setViewState(tlBranchLayout, state.industry?.name)
         if (tiSalaryInputText.text.toIntOrNull() != state.salary) {
             tiSalaryInputText.setText(state.salary?.toString() ?: "")
+            tiSalaryInputText.requestFocus()
         }
         cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
         cbApplyButton.visible()
