@@ -104,7 +104,8 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     private fun configureApplyButton() = with(binding) {
         cbApplyButton.setOnClickListener {
             viewModel.saveFilters()
-            findNavController().navigate(R.id.action_filters_fragment_to_search_fragment)
+            // Саня?
+            findNavController().popBackStack()
         }
     }
 
