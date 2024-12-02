@@ -42,7 +42,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         }
     }
 
-   private var inputMethodManager: InputMethodManager? = null
+    private var inputMethodManager: InputMethodManager? = null
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentIndustryBinding.inflate(inflater, container, false)
