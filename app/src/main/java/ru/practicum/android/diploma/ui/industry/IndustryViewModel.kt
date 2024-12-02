@@ -26,8 +26,6 @@ class IndustryViewModel(
     private val setTmpFiltersUseCase: SetTmpFiltersUseCase
 ) : ViewModel() {
 
-//    private var industries: List<Industry> = mutableListOf()
-
     private val _state: MutableStateFlow<IndustryState> =
         MutableStateFlow(IndustryState(Empty, Loading))
     val state: StateFlow<IndustryState>
@@ -71,7 +69,6 @@ class IndustryViewModel(
     }
 
     fun clearSearch() {
-//        _state.value = IndustryState(Empty, Industries.Empty)
         getIndustries()
     }
 }
