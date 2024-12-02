@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.domain.state.FiltersState.Data.Empty
 import ru.practicum.android.diploma.domain.state.FiltersState.Data.Payload
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.invisible
+import ru.practicum.android.diploma.util.toIntOrNull
 import ru.practicum.android.diploma.util.visible
 
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
@@ -117,13 +118,14 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         binding.tvResetButton.invisible()
     }
 
-    private fun showContent(state: Filter) {
-        setViewState(binding.tlPlaceWorkLayout, state.location?.description)
-        setViewState(binding.tlBranchLayout, state.industry?.name)
-        binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
-        binding.cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
-        binding.cbApplyButton.visible()
-        binding.tvResetButton.visible()
+    private fun showContent(state: Filter) = with(binding) {
+        setViewState(tlPlaceWorkLayout, state.location?.description)
+        setViewState(tlBranchLayout, state.industry?.name)
+        if (tiSalaryInputText.text.toIntOrNull() != state.salary)
+            tiSalaryInputText.setText(state.salary?.toString() ?: "")
+        cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
+        cbApplyButton.visible()
+        tvResetButton.visible()
     }
 
     private fun setViewState(layout: TextInputLayout, content: String?) {
