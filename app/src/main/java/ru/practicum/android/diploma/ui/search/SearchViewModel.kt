@@ -45,7 +45,6 @@ class SearchViewModel(
         }
     }
 
-    // поменял фильтр на основной
     private fun getFilter() = getSearchFiltersUseCase.execute()
 
     fun isFilterApplied() = getFilter() != Filter.empty

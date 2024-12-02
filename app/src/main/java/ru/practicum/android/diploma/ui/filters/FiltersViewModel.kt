@@ -68,6 +68,10 @@ class FiltersViewModel(
         getFilters()
     }
 
+    fun clearTmpFilter() {
+        clearTmpFiltersUseCase.execute()
+    }
+
     private fun setTmpFilters(lambda: Filter.() -> Filter) {
         val filter = getTmpFiltersUseCase.execute().lambda()
         setTmpFiltersUseCase.execute(filter)
