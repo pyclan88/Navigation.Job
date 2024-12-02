@@ -30,19 +30,19 @@ class FiltersViewModel(
 ) : ViewModel() {
 
     private var searchFilters: Filter = getSearchFiltersUseCase.execute()
-    private var isTmpFiltersInitialized = false
 
     private val _state: MutableStateFlow<FiltersState> =
         MutableStateFlow(FiltersState(editor = Unchanged, data = Empty))
     val state: StateFlow<FiltersState>
         get() = _state
 
-    fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
-        if (!isTmpFiltersInitialized) {
+    init {
+        viewModelScope.launch(Dispatchers.Main) {
             setTmpFiltersUseCase.execute(searchFilters)
-            isTmpFiltersInitialized = true
         }
+    }
 
+    fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
         val data: FiltersState.Data = when (val tmpFilters = getTmpFiltersUseCase.execute()) {
             Filter.empty -> Empty
             else -> Payload(tmpFilters)
