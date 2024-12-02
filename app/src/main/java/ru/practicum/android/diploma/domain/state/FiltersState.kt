@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.domain.state
 import ru.practicum.android.diploma.domain.models.Filter
 
 data class FiltersState(
+    // поле editor после изменений не используется
     val editor: Editor,
     val data: Data
 ) {

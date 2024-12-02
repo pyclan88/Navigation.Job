@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,9 +18,9 @@ import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.domain.state.FiltersState.Data.Empty
 import ru.practicum.android.diploma.domain.state.FiltersState.Data.Payload
-import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Changed
-import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Unchanged
 import ru.practicum.android.diploma.util.BindingFragment
+import ru.practicum.android.diploma.util.invisible
+import ru.practicum.android.diploma.util.visible
 
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
@@ -51,15 +50,8 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     }
 
     private fun render(state: FiltersState) {
-        val isButtonsVisible = when (state.editor) {
-            Changed -> true
-            Unchanged -> false
-        }
-        binding.cbApplyButton.isVisible = isButtonsVisible
-        binding.tvResetButton.isVisible = isButtonsVisible
-
         when (val dataState = state.data) {
-            is Empty -> {}
+            is Empty -> showEmpty()
             is Payload -> showContent(dataState.filters)
         }
     }
@@ -116,11 +108,22 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         tvResetButton.setOnClickListener { viewModel.clearFilters() }
     }
 
+    private fun showEmpty() {
+        setViewState(binding.tlPlaceWorkLayout, null)
+        setViewState(binding.tlBranchLayout, null)
+        binding.tiSalaryInputText.text = null
+        binding.cbWithoutSalaryButton.isChecked = false
+        binding.cbApplyButton.invisible()
+        binding.tvResetButton.invisible()
+    }
+
     private fun showContent(state: Filter) {
         setViewState(binding.tlPlaceWorkLayout, state.location?.description)
         setViewState(binding.tlBranchLayout, state.industry?.name)
         binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
         binding.cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
+        binding.cbApplyButton.visible()
+        binding.tvResetButton.visible()
     }
 
     private fun setViewState(layout: TextInputLayout, content: String?) {
