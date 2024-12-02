@@ -79,6 +79,9 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private fun configureIndustryButton() = with(binding) {
         tlBranchLayout.editText?.setOnClickListener {
+            findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
+        }
+        tlBranchLayout.setEndIconOnClickListener {
             when (tlBranchLayout.editText?.text.isNullOrEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
                 else -> {

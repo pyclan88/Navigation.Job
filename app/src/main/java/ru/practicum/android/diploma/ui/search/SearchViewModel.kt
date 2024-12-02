@@ -78,7 +78,6 @@ class SearchViewModel(
             page = currentPage,
             filter = filter
         )
-        println("requestToServer:${getSearchFiltersUseCase.execute()}")
 
         val resultData = result.first?.items
         val totalVacancyCount = result.first?.found ?: 0
