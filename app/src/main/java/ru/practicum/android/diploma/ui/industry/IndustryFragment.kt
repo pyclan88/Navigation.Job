@@ -42,6 +42,8 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         }
     }
 
+   private var inputMethodManager: InputMethodManager? = null
+
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentIndustryBinding.inflate(inflater, container, false)
 
@@ -51,6 +53,8 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         configureBackButton()
         configureIndustriesAdapter()
         configureSearch()
+
+        inputMethodManager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state -> render(state) }
@@ -131,6 +135,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         placeholder.layoutPlaceholder.invisible()
         cbApplyButton.isVisible = industryList.any { it.isSelected }
         filterAdapter.updateIndustries(industryList)
+        inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     private fun configureSearch() = binding.etSearch.doOnTextChanged { text, _, _, _ ->
@@ -145,6 +150,8 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
                 clearFocus()
             }
         }
-        text?.let { viewModel.searchDebounce(it.toString()) }
+        text?.let {
+            viewModel.searchDebounce(it.toString())
+        }
     }
 }
