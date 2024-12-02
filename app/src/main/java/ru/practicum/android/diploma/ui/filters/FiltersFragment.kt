@@ -36,7 +36,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         configureBackButton()
-        configureWorkButton()
+        configureLocationWorkButton()
         configureIndustryButton()
         configureSalaryInput()
         configureWithoutSalaryCheckbox()
@@ -60,8 +60,11 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     private fun configureBackButton() =
         binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
 
-    private fun configureWorkButton() = with(binding) {
+    private fun configureLocationWorkButton() = with(binding) {
         tlPlaceWorkLayout.editText?.setOnClickListener {
+            findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
+        }
+        tlPlaceWorkLayout.setEndIconOnClickListener {
             when (tlPlaceWorkLayout.editText?.text.toString().isEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
                 else -> {

@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.state.LocationState
-import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.tmp.SetTmpFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.location.ClearLocationUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.location.GetLocationUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.location.SetLocationUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.SetTmpFiltersUseCase
 
 class LocationViewModel(
     private val getLocationUseCase: GetLocationUseCase,
@@ -20,9 +20,20 @@ class LocationViewModel(
     private val getTmpFiltersUseCase: GetTmpFiltersUseCase,
     private val setTmpFilterUseCase: SetTmpFiltersUseCase,
 ) : ViewModel() {
+    init {
+        val initLocationState =
+            getTmpFiltersUseCase.execute().location
+        if (initLocationState != null) {
+            setLocationUseCase.execute(initLocationState)
+        }
+    }
+
+    private val startLocationState =
+        getTmpFiltersUseCase.execute().location?.let { LocationState.Data(it) } ?: LocationState.Empty
+
 
     private val _state: MutableStateFlow<LocationState> = MutableStateFlow(
-        LocationState.Empty
+        startLocationState
     )
     val state: StateFlow<LocationState>
         get() = _state

@@ -32,7 +32,7 @@ class FiltersViewModel(
     private var tmpFilters: Filter = getSearchFiltersUseCase.execute()
 
     private val _state: MutableStateFlow<FiltersState> =
-        MutableStateFlow(FiltersState(editor = Unchanged, data = Empty))
+        MutableStateFlow(FiltersState(editor = Unchanged, data = Payload(tmpFilters)))
     val state: StateFlow<FiltersState>
         get() = _state
 
