@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.common.AppConstants.CLICK_DEBOUNCE_DELAY
+import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.state.IndustryState
@@ -26,7 +26,7 @@ class IndustryViewModel(
     private val setTmpFiltersUseCase: SetTmpFiltersUseCase
 ) : ViewModel() {
 
-    private var industries: List<Industry> = mutableListOf()
+//    private var industries: List<Industry> = mutableListOf()
 
     private val _state: MutableStateFlow<IndustryState> =
         MutableStateFlow(IndustryState(Empty, Loading))
@@ -34,14 +34,13 @@ class IndustryViewModel(
         get() = _state
 
     val searchDebounce: (String) -> Unit = debounce(
-        delayMillis = CLICK_DEBOUNCE_DELAY,
+        delayMillis = SEARCH_DEBOUNCE_DELAY,
         coroutineScope = viewModelScope,
         useLastParam = true
-    ) { changedText -> searchFilter(changedText) }
+    ) { changedText -> getIndustries(changedText) }
 
-    fun getIndustries() = viewModelScope.launch {
+    fun getIndustries(sortExpression: String = "") = viewModelScope.launch {
         val response = getIndustriesUseCase.execute()
-        industries = response.first ?: mutableListOf()
         val dataState = when {
             response.first?.isEmpty() == true -> Industries.Empty
             response.second?.isNotEmpty() == true -> {
@@ -51,7 +50,10 @@ class IndustryViewModel(
                     Error
                 }
             }
-            else -> Data(industries = response.first!!)
+            else -> {
+                val sortIndustry = searchFilter(response.first!!, sortExpression)
+                if (sortIndustry.isEmpty()) Industries.Empty else Data(sortIndustry)
+            }
         }
         _state.value = state.value.copy(data = dataState)
     }
@@ -62,21 +64,14 @@ class IndustryViewModel(
         setTmpFiltersUseCase.execute(filters)
     }
 
-    private fun searchFilter(searchText: String) {
-        val filteredIndustries = industries.filter {
-            it.name.lowercase().contains(searchText.lowercase())
+    private fun searchFilter(regions: List<Industry>, sortExpression: String): List<Industry> {
+        return regions.filter {
+            it.name.lowercase().contains(sortExpression.lowercase())
         }
-        _state.value =
-            if (filteredIndustries.isNotEmpty()) {
-                state.value.copy(data = Data(filteredIndustries))
-            } else {
-                state.value.copy(
-                    data = Industries.Empty
-                )
-            }
     }
 
     fun clearSearch() {
-        _state.value = IndustryState(Empty, Data(industries))
+//        _state.value = IndustryState(Empty, Industries.Empty)
+        getIndustries()
     }
 }
