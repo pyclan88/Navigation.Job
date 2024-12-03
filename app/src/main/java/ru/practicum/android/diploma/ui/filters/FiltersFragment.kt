@@ -1,9 +1,11 @@
 package ru.practicum.android.diploma.ui.filters
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -95,7 +97,15 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private fun configureSalaryInput() = with(binding) {
         tiSalaryInputText.doOnTextChanged { text, _, _, _ ->
+            tlSalaryLayout.editText?.isFocusable = true
             viewModel.setSalary(text.toString())
+        }
+        tlSalaryLayout.setEndIconOnClickListener {
+            val inputMethodManager =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(tlSalaryLayout.windowToken, 0)
+            tlSalaryLayout.clearFocus()
+            viewModel.setSalary("")
         }
     }
 
