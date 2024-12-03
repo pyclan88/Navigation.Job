@@ -136,7 +136,8 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         }
         val isFieldEmpty = binding.tiSalaryInputText.text.isNullOrEmpty()
         if (!isFieldEmpty) {
-            binding.tlSalaryLayout.defaultHintTextColor = requireContext().getColorStateList(R.color.text_color_hint_selection)
+            binding.tlSalaryLayout.defaultHintTextColor =
+                requireContext().getColorStateList(R.color.text_color_hint_selection)
         } else {
             binding.tlSalaryLayout.defaultHintTextColor = requireContext().getColorStateList(R.color.text_color_hint)
         }
