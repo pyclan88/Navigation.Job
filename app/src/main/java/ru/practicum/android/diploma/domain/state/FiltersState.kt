@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.domain.state
 import ru.practicum.android.diploma.domain.models.Filter
 
 data class FiltersState(
-    // поле editor после изменений не используется
     val editor: Editor,
     val data: Data
 ) {
@@ -14,7 +13,6 @@ data class FiltersState(
     }
 
     sealed interface Data {
-        data object Empty : Data
         data class Payload(val filters: Filter) : Data
     }
 }

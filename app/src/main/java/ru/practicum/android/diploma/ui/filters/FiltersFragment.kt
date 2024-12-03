@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -16,12 +17,9 @@ import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
-import ru.practicum.android.diploma.domain.state.FiltersState.Data.Empty
 import ru.practicum.android.diploma.domain.state.FiltersState.Data.Payload
+import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Changed
 import ru.practicum.android.diploma.util.BindingFragment
-import ru.practicum.android.diploma.util.invisible
-import ru.practicum.android.diploma.util.toIntOrNull
-import ru.practicum.android.diploma.util.visible
 
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
@@ -51,9 +49,13 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     }
 
     private fun render(state: FiltersState) {
+        binding.cbApplyButton.isVisible = state.editor == Changed
+
         when (val dataState = state.data) {
-            is Empty -> showEmpty()
-            is Payload -> showContent(dataState.filters)
+            is Payload -> {
+                showContent(dataState.filters)
+                binding.tvResetButton.isVisible = dataState.filters != Filter.empty
+            }
         }
     }
 
@@ -77,6 +79,9 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
     private fun configureIndustryButton() = with(binding) {
         tlBranchLayout.editText?.setOnClickListener {
+            findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
+        }
+        tlBranchLayout.setEndIconOnClickListener {
             when (tlBranchLayout.editText?.text.isNullOrEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
                 else -> {
@@ -104,7 +109,6 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     private fun configureApplyButton() = with(binding) {
         cbApplyButton.setOnClickListener {
             viewModel.saveFilters()
-            // Саня?
             findNavController().popBackStack()
         }
     }
@@ -113,24 +117,11 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         tvResetButton.setOnClickListener { viewModel.clearFilters() }
     }
 
-    private fun showEmpty() {
-        setViewState(binding.tlPlaceWorkLayout, null)
-        setViewState(binding.tlBranchLayout, null)
-        binding.tiSalaryInputText.text = null
-        binding.cbWithoutSalaryButton.isChecked = false
-        binding.cbApplyButton.invisible()
-        binding.tvResetButton.invisible()
-    }
-
-    private fun showContent(state: Filter) = with(binding) {
-        setViewState(tlPlaceWorkLayout, state.location?.description)
-        setViewState(tlBranchLayout, state.industry?.name)
-        if (tiSalaryInputText.text.toIntOrNull() != state.salary) {
-            tiSalaryInputText.setText(state.salary?.toString() ?: "")
-        }
-        cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
-        cbApplyButton.visible()
-        tvResetButton.visible()
+    private fun showContent(state: Filter) {
+        setViewState(binding.tlPlaceWorkLayout, state.location?.description)
+        setViewState(binding.tlBranchLayout, state.industry?.name)
+        binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
+        binding.cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
     }
 
     private fun setViewState(layout: TextInputLayout, content: String?) {

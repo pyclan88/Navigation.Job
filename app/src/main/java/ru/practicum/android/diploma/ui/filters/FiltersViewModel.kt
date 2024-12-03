@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Location
 import ru.practicum.android.diploma.domain.state.FiltersState
-import ru.practicum.android.diploma.domain.state.FiltersState.Data.Empty
 import ru.practicum.android.diploma.domain.state.FiltersState.Data.Payload
 import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Changed
 import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Unchanged
@@ -38,18 +37,13 @@ class FiltersViewModel(
 
     fun getFilters() = viewModelScope.launch(Dispatchers.Main) {
         tmpFilters = getTmpFiltersUseCase.execute()
-        val data: FiltersState.Data = when (tmpFilters) {
-            Filter.empty -> Empty
-            else -> Payload(tmpFilters)
-        }
-        // можно переписать оставить FilterState только с data
         val editorState = if (compareTmpAndSearchFilters()) {
             Unchanged
         } else {
             Changed
         }
 
-        _state.value = FiltersState(editorState, data)
+        _state.value = FiltersState(editorState, Payload(tmpFilters))
     }
 
     fun clearLocation() = setTmpFilters { copy(location = Location.empty) }
@@ -77,7 +71,6 @@ class FiltersViewModel(
     private fun compareTmpAndSearchFilters(): Boolean {
         val tmpFilters = getTmpFiltersUseCase.execute()
         val searchFilters = getSearchFiltersUseCase.execute()
-//        Log.d("TST", "$tmpFilters $searchFilters")
         return tmpFilters == searchFilters
     }
 }

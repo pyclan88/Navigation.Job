@@ -11,7 +11,6 @@ class IndustryAdapter(
 ) : RecyclerView.Adapter<IndustryViewHolder>() {
 
     private var lastCheckedIndustry: Industry? = null
-    private var lastPosition: Int = -1
     private var industries: List<Industry> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
@@ -29,7 +28,12 @@ class IndustryAdapter(
         holder.itemView.setOnClickListener {
             clickListener.onIndustryClick(industry)
 
-            lastCheckedIndustry?.let { it.isSelected = false }
+            lastCheckedIndustry?.let {
+                it.isSelected = false
+                industries.find { industry -> industry.id == it.id }
+                    ?.let { industry -> industry.isSelected = false }
+            }
+
             industries[position].isSelected = true
             lastCheckedIndustry = industries[position]
             notifyDataSetChanged()
