@@ -53,7 +53,6 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
             onClearField = { viewModel.clearCountry() },
             onClickEmptyField = { findNavController().navigate(R.id.action_location_fragment_to_countryFragment) },
         )
-
         setupFieldListeners(
             view = binding.tiRegion,
             onClearField = { viewModel.clearRegion() },
@@ -67,9 +66,9 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
         onClickEmptyField: () -> Unit,
     ) {
         view.editText?.setOnClickListener {
-            if (view.editText?.text.isNullOrEmpty()) {
+
                 onClickEmptyField()
-            }
+
         }
 
         view.setEndIconOnClickListener {
@@ -80,6 +79,7 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
                 renderField(view = view, text = null)
             }
         }
+
     }
 
     private fun renderField(view: TextInputLayout, text: String?) {
