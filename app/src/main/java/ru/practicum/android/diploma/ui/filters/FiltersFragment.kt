@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.domain.state.FiltersState
 import ru.practicum.android.diploma.domain.state.FiltersState.Data.Payload
 import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Changed
 import ru.practicum.android.diploma.util.BindingFragment
+import ru.practicum.android.diploma.util.toIntOrNull
 
 class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
 
@@ -120,7 +121,10 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     private fun showContent(state: Filter) {
         setViewState(binding.tlPlaceWorkLayout, state.location?.description)
         setViewState(binding.tlBranchLayout, state.industry?.name)
-        binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
+        if(binding.tiSalaryInputText.text.toIntOrNull()!=state.salary){
+            binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
+            binding.tlSalaryLayout.defaultHintTextColor = requireContext().getColorStateList(R.color.black)
+        }
         binding.cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
     }
 
