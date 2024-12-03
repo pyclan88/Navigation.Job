@@ -133,8 +133,14 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         setViewState(binding.tlBranchLayout, state.industry?.name)
         if (binding.tiSalaryInputText.text.toIntOrNull() != state.salary) {
             binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
-            binding.tlSalaryLayout.defaultHintTextColor = requireContext().getColorStateList(R.color.black)
         }
+        val isFieldEmpty = binding.tiSalaryInputText.text.isNullOrEmpty()
+        if (!isFieldEmpty) {
+            binding.tlSalaryLayout.defaultHintTextColor = requireContext().getColorStateList(R.color.text_color_hint_selection)
+        } else {
+            binding.tlSalaryLayout.defaultHintTextColor = requireContext().getColorStateList(R.color.text_color_hint)
+        }
+
         binding.cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
     }
 

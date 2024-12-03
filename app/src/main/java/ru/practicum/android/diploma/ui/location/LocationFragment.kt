@@ -66,9 +66,7 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
         onClickEmptyField: () -> Unit,
     ) {
         view.editText?.setOnClickListener {
-
-                onClickEmptyField()
-
+            onClickEmptyField()
         }
 
         view.setEndIconOnClickListener {
