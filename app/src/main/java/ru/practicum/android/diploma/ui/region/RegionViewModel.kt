@@ -82,7 +82,7 @@ class RegionViewModel(
 
     fun sortDebounce(expression: String) {
         if (expression.isBlank()) return
-        searchDebounceAction(expression)
+        searchDebounceAction(expression.trim())
     }
 
     fun setRegion(region: Region) {
