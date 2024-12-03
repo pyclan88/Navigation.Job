@@ -41,6 +41,7 @@
         android:elevation="@dimen/mark_1dp"
         android:hint="@string/search_hint"
         android:inputType="text"
+        android:paddingEnd="@dimen/mark_48dp"
         android:padding="@dimen/mark_20dp"
         android:textColor="@color/black"
         android:textColorHint="?attr/dark_grey_to_white"
