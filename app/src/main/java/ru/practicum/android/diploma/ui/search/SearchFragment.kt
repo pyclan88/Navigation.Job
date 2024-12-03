@@ -188,6 +188,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun configureSearchInput() = binding.etSearch.doOnTextChanged { text, _, _, _ ->
+        binding.ivEditTextButton.isEnabled = false
         with(binding.ivEditTextButton) {
             setImageResource(if (text.isNullOrEmpty()) R.drawable.ic_search else R.drawable.ic_close)
             setOnClickListener {
@@ -199,7 +200,10 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
                 clearFocus()
             }
         }
-        text?.let { viewModel.searchDebounce(it.toString()) }
+        text?.let {
+            viewModel.searchDebounce(it.toString())
+            binding.ivEditTextButton.isEnabled = true
+        }
     }
 
     private fun configureRecycler() {
