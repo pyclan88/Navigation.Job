@@ -121,7 +121,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     private fun showContent(state: Filter) {
         setViewState(binding.tlPlaceWorkLayout, state.location?.description)
         setViewState(binding.tlBranchLayout, state.industry?.name)
-        if(binding.tiSalaryInputText.text.toIntOrNull()!=state.salary){
+        if (binding.tiSalaryInputText.text.toIntOrNull() != state.salary) {
             binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
             binding.tlSalaryLayout.defaultHintTextColor = requireContext().getColorStateList(R.color.black)
         }
