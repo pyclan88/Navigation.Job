@@ -48,7 +48,7 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
             viewModel.state.collect { state -> render(state) }
         }
 
-        //viewModel.getFilters()
+        // viewModel.getFilters()
     }
 
     private fun render(state: FiltersState) {
