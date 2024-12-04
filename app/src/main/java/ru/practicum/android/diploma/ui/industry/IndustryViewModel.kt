@@ -39,6 +39,7 @@ class IndustryViewModel(
     ) { changedText -> getIndustries(changedText) }
 
     fun getIndustries(sortExpression: String = "") = viewModelScope.launch(Dispatchers.Main) {
+        val filters = getTmpFiltersUseCase.execute()
         val response = getIndustriesUseCase.execute()
         val dataState = when {
             response.first?.isEmpty() == true -> Industries.Empty
@@ -55,20 +56,20 @@ class IndustryViewModel(
                 if (sortIndustry.isEmpty()) Industries.Empty else Data(sortIndustry)
             }
         }
-        _state.value = state.value.copy(data = dataState)
+
+        _state.value = state.value.copy(data = dataState, selectedIndustry = filters.industry)
     }
 
-    fun setFilters(industry: Industry) {
+    fun setFilters(industry: Industry?) {
         val filters = getTmpFiltersUseCase.execute()
             .copy(industry = industry)
         setTmpFiltersUseCase.execute(filters)
+
+        _state.value = state.value.copy(selectedIndustry = industry)
     }
 
-    private fun searchFilter(regions: List<Industry>, sortExpression: String): List<Industry> {
-        return regions.filter {
-            it.name.lowercase().contains(sortExpression.lowercase())
-        }
-    }
+    private fun searchFilter(regions: List<Industry>, sortExpression: String) =
+        regions.filter { it.name.lowercase().contains(sortExpression.lowercase()) }
 
     fun clearSearch() {
         getIndustries()

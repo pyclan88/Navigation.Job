@@ -23,34 +23,34 @@ class IndustryAdapter(
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
         val industry = industries[position]
-        holder.bind(industry)
+        holder.bind(industry, lastCheckedIndustry == industry)
 
         holder.itemView.setOnClickListener {
-            clickListener.onIndustryClick(industry)
-
-            lastCheckedIndustry?.let {
-                it.isSelected = false
-                industries.find { industry -> industry.id == it.id }
-                    ?.let { industry -> industry.isSelected = false }
+            if (lastCheckedIndustry == industry) {
+                // Сбрасываем
+                lastCheckedIndustry = null
+                notifyDataSetChanged()
+                clickListener.onIndustryClick(null)
+            } else {
+                // Устанавливаем
+                lastCheckedIndustry = industry
+                notifyDataSetChanged()
+                clickListener.onIndustryClick(industry)
             }
-
-            industries[position].isSelected = true
-            lastCheckedIndustry = industries[position]
-            notifyDataSetChanged()
         }
     }
 
     fun updateIndustries(industries: List<Industry>) {
-        lastCheckedIndustry?.let {
-            val match = industries.find { industry -> industry.id == it.id }
-            match?.isSelected = it.isSelected
-        }
-
         this.industries = industries
         notifyDataSetChanged()
     }
 
+    fun setCheckedIndustry(industry: Industry?) {
+        lastCheckedIndustry = industry
+        notifyDataSetChanged()
+    }
+
     fun interface IndustryClickListener {
-        fun onIndustryClick(industry: Industry)
+        fun onIndustryClick(industry: Industry?)
     }
 }

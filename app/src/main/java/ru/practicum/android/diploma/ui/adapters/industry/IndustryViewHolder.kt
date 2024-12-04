@@ -8,9 +8,9 @@ class IndustryViewHolder(
     private val binding: IndustryItemBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(industry: Industry) = with(binding) {
+    fun bind(industry: Industry, isChecked: Boolean) = with(binding) {
         rbIndustryButton.text = industry.name
-        rbIndustryButton.isChecked = industry.isSelected
+        rbIndustryButton.isChecked = isChecked
     }
 
 }

@@ -5,6 +5,7 @@ import ru.practicum.android.diploma.domain.models.Industry
 data class IndustryState(
     val input: Input,
     val data: Industries,
+    val selectedIndustry: Industry? = null
 ) {
 
     sealed interface Input {

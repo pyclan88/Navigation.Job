@@ -11,7 +11,7 @@ class IndustryMapper {
             group.industries.map { industry -> map(industry) }
         }
 
-    fun map(dto: IndustryDto) = Industry(id = dto.id, name = dto.name, isSelected = false)
+    fun map(dto: IndustryDto) = Industry(id = dto.id, name = dto.name)
 
     fun map(industry: Industry) = IndustryDto(id = industry.id, name = industry.name)
 }

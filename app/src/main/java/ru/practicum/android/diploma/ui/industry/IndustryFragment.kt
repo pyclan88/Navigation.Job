@@ -32,17 +32,12 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
 
     private val viewModel: IndustryViewModel by viewModel()
     private val imageAndTextHelper: ImageAndTextHelper by inject()
-    private val filterAdapter: IndustryAdapter = IndustryAdapter { industry ->
-        with(binding.cbApplyButton) {
-            visible()
-            setOnClickListener {
-                viewModel.setFilters(industry)
-                findNavController().popBackStack()
-            }
-        }
-    }
 
     private var inputMethodManager: InputMethodManager? = null
+    private val filterAdapter: IndustryAdapter = IndustryAdapter { industry ->
+        viewModel.setFilters(industry)
+        binding.cbApplyButton.isVisible = industry != null
+    }
 
     override fun createBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentIndustryBinding.inflate(inflater, container, false)
@@ -50,9 +45,10 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        configureBackButton()
-        configureIndustriesAdapter()
         configureSearch()
+        configureBackButton()
+        configureApplyButton()
+        configureIndustriesAdapter()
 
         inputMethodManager = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -63,21 +59,25 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     }
 
     private fun render(state: IndustryState) {
+        handleSelectedIndustry(state.selectedIndustry)
+
         when (state.data) {
-            is Data -> showContent(state.data.industries)
             is Empty -> showEmpty()
             is Error -> showError()
             is Loading -> showLoading()
             is NoInternet -> showNoInternet()
+            is Data -> showContent(state.data.industries)
         }
     }
 
     private fun configureBackButton() = binding.tbHeader
         .setNavigationOnClickListener { findNavController().popBackStack() }
 
-    private fun configureIndustriesAdapter() = with(binding) {
-        rvVacancies.adapter = filterAdapter
-    }
+    private fun configureApplyButton() = binding.cbApplyButton
+        .setOnClickListener { findNavController().popBackStack() }
+
+    private fun configureIndustriesAdapter() =
+        with(binding) { rvVacancies.adapter = filterAdapter }
 
     private fun showNoInternet() = with(binding) {
         rvVacancies.invisible()
@@ -133,7 +133,6 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         rvVacancies.visible()
         pbSearch.invisible()
         placeholder.layoutPlaceholder.invisible()
-        cbApplyButton.isVisible = industryList.any { it.isSelected }
         filterAdapter.updateIndustries(industryList)
         inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
@@ -150,8 +149,11 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
                 clearFocus()
             }
         }
-        text?.let {
-            viewModel.searchDebounce(it.toString())
-        }
+        text?.let { viewModel.searchDebounce(it.toString()) }
+    }
+
+    private fun handleSelectedIndustry(industry: Industry?) {
+        filterAdapter.setCheckedIndustry(industry)
+        binding.cbApplyButton.isVisible = industry != null
     }
 }
