@@ -139,8 +139,8 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
                 requireContext(),
                 placeholder.ivPlaceholder,
                 placeholder.tvPlaceholder,
-                R.drawable.placeholder_vacancy_search_server_error_cry,
-                resources.getString(R.string.server_error)
+                R.drawable.placeholder_no_region_list_carpet,
+                resources.getString(R.string.no_region_list)
             )
             showToast(R.string.toast_error_has_occurred)
         }
