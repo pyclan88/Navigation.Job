@@ -140,9 +140,11 @@
     <TextView
         android:id="@+id/tv_reset_button"
         style="@style/SelectionResetButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/mark_44dp"
+        android:layout_marginBottom="@dimen/mark_22dp"
+        android:paddingVertical="@dimen/mark_22dp"
+        android:textAlignment="center"
         android:text="@string/reset"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
