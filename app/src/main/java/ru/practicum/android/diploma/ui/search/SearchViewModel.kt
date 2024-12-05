@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.domain.models.Filter
@@ -13,16 +14,18 @@ import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
 import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.search.GetSearchFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.search.SetSearchFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase,
     private val getTmpFiltersUseCase: GetTmpFiltersUseCase,
-    private val getSearchFiltersUseCase: GetSearchFiltersUseCase
+    private val getSearchFiltersUseCase: GetSearchFiltersUseCase,
+    private val setSearchFiltersUseCase: SetSearchFiltersUseCase
 ) : ViewModel() {
 
-    private var lastExpression = ""
+    private var lastExpression = EMPTY_PARAM_VALUE
     private var currentPage = 1
     private var maxPage = 0
 
@@ -56,6 +59,7 @@ class SearchViewModel(
     fun isFilterApplied() = getFilter() != Filter.empty
 
     fun clearSearch() {
+        lastExpression = EMPTY_PARAM_VALUE
         _state.value = VacancyState(Input.Empty, VacanciesList.Start)
     }
 
@@ -65,6 +69,7 @@ class SearchViewModel(
             input = Input.Text(lastExpression),
             vacanciesList = VacanciesList.Empty,
         )
+        setSearchFiltersUseCase.execute(getTmpFiltersUseCase.execute())
         _state.value = VacancyState(Input.Text(expression), VacanciesList.Loading)
         requestToServer(expression)
     }
