@@ -13,6 +13,8 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentLocationBinding
 import ru.practicum.android.diploma.domain.state.LocationState
 import ru.practicum.android.diploma.util.BindingFragment
+import ru.practicum.android.diploma.util.invisible
+import ru.practicum.android.diploma.util.visible
 
 class LocationFragment : BindingFragment<FragmentLocationBinding>() {
 
@@ -28,12 +30,18 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
 
         configureBackButton()
         setupListeners()
+        configureApplyButton()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state -> render(state) }
         }
 
-        viewModel.getFilters()
+        viewModel.getLocation()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.clearLocation()
     }
 
     private fun configureBackButton() =
@@ -41,31 +49,35 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
 
     private fun setupListeners() {
         setupFieldListeners(
-            binding.tiCountry
-        ) { findNavController().navigate(R.id.action_location_fragment_to_countryFragment) }
-
+            view = binding.tiCountry,
+            onClearField = { viewModel.clearCountry() },
+            onClickEmptyField = { findNavController().navigate(R.id.action_location_fragment_to_countryFragment) },
+        )
         setupFieldListeners(
-            binding.tiRegion
-        ) { findNavController().navigate(R.id.action_location_fragment_to_regionFragment) }
+            view = binding.tiRegion,
+            onClearField = { viewModel.clearRegion() },
+            onClickEmptyField = { findNavController().navigate(R.id.action_location_fragment_to_regionFragment) },
+        )
     }
 
     private fun setupFieldListeners(
         view: TextInputLayout,
-        onClickEmptyField: () -> Unit
+        onClearField: () -> Unit,
+        onClickEmptyField: () -> Unit,
     ) {
         view.editText?.setOnClickListener {
-            if (view.editText?.text.isNullOrEmpty()) {
-                onClickEmptyField()
-            }
+            onClickEmptyField()
         }
 
         view.setEndIconOnClickListener {
             if (view.editText?.text.isNullOrEmpty()) {
                 onClickEmptyField()
             } else {
+                onClearField()
                 renderField(view = view, text = null)
             }
         }
+
     }
 
     private fun renderField(view: TextInputLayout, text: String?) {
@@ -84,7 +96,25 @@ class LocationFragment : BindingFragment<FragmentLocationBinding>() {
     }
 
     private fun render(state: LocationState) {
-        renderField(view = binding.tiCountry, text = state.country)
-        renderField(view = binding.tiRegion, text = state.region)
+        when (state) {
+            is LocationState.Data -> with(binding) {
+                cbApplyButton.visible()
+                renderField(view = tiCountry, text = state.location.country?.name)
+                renderField(view = tiRegion, text = state.location.region?.name)
+            }
+
+            is LocationState.Empty -> with(binding) {
+                cbApplyButton.invisible()
+                renderField(view = tiCountry, text = "")
+                renderField(view = tiRegion, text = "")
+            }
+        }
+    }
+
+    private fun configureApplyButton() {
+        binding.cbApplyButton.setOnClickListener {
+            viewModel.saveFilter()
+            findNavController().popBackStack()
+        }
     }
 }

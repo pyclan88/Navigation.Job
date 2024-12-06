@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.data.mapper
 
 import ru.practicum.android.diploma.common.AppConstants.EMPTY_INT_PARAM_VALUE
-import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.vacancy.self.VacancyDto
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -19,18 +18,13 @@ class VacancyMapper {
         id = dto.id,
         imageUrl = dto.employer.logoUrls?.original,
         name = dto.name,
-        city = getValueOrDefault(dto.area?.name),
+        city = dto.area?.name.orEmpty(),
         salaryFrom = dto.salary?.from ?: EMPTY_INT_PARAM_VALUE,
         salaryTo = dto.salary?.to ?: EMPTY_INT_PARAM_VALUE,
-        currency = getValueOrDefault(dto.salary?.currency),
-        employerName = dto.employer.name ?: EMPTY_PARAM_VALUE,
-        experience = getValueOrDefault(dto.experience?.name),
-        employmentName = getValueOrDefault(dto.employment?.name),
-        schedule = getValueOrDefault(dto.schedule?.name)
+        currency = dto.salary?.currency.orEmpty(),
+        employerName = dto.employer.name.orEmpty(),
+        experience = dto.experience?.name.orEmpty(),
+        employmentName = dto.employment?.name.orEmpty(),
+        schedule = dto.schedule?.name.orEmpty()
     )
-
-    private fun <T> getValueOrDefault(
-        value: T?,
-    ): String = value?.toString() ?: EMPTY_PARAM_VALUE
-
 }

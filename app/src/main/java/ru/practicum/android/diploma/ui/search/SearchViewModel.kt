@@ -5,21 +5,27 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.VacancyState
 import ru.practicum.android.diploma.domain.state.VacancyState.Input
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
-import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.search.GetSearchFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.search.SetSearchFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacanciesUseCase
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
     private val getVacanciesUseCase: GetVacanciesUseCase,
-    private val getFiltersUseCase: GetFiltersUseCase
+    private val getTmpFiltersUseCase: GetTmpFiltersUseCase,
+    private val getSearchFiltersUseCase: GetSearchFiltersUseCase,
+    private val setSearchFiltersUseCase: SetSearchFiltersUseCase
 ) : ViewModel() {
 
-    private var lastExpression = ""
+    private var lastExpression = EMPTY_PARAM_VALUE
     private var currentPage = 1
     private var maxPage = 0
 
@@ -27,6 +33,7 @@ class SearchViewModel(
         get() = currentPage < maxPage
 
     private var isNextPageLoading = false
+    private var lastFilter: Filter? = null
 
     private val _state: MutableStateFlow<VacancyState> = MutableStateFlow(
         VacancyState(Input.Empty, VacanciesList.Start)
@@ -39,12 +46,20 @@ class SearchViewModel(
         coroutineScope = viewModelScope,
         useLastParam = true
     ) { changedText ->
-        if (changedText != lastExpression) {
+        if (changedText != lastExpression && changedText.isNotBlank()) {
             search(changedText)
+        }
+        if (!compareTmpAndSearchFilters() && changedText == lastExpression && changedText.isNotBlank()) {
+            search(lastExpression)
         }
     }
 
+    private fun getFilter() = getTmpFiltersUseCase.execute()
+
+    fun isFilterApplied() = getFilter() != Filter.empty
+
     fun clearSearch() {
+        lastExpression = EMPTY_PARAM_VALUE
         _state.value = VacancyState(Input.Empty, VacanciesList.Start)
     }
 
@@ -54,16 +69,19 @@ class SearchViewModel(
             input = Input.Text(lastExpression),
             vacanciesList = VacanciesList.Empty,
         )
+        setSearchFiltersUseCase.execute(getTmpFiltersUseCase.execute())
         _state.value = VacancyState(Input.Text(expression), VacanciesList.Loading)
         requestToServer(expression)
     }
 
     private fun requestToServer(expression: String) = viewModelScope.launch {
         isNextPageLoading = true
+        val filter = getSearchFiltersUseCase.execute()
+        lastFilter = filter
         val result = getVacanciesUseCase.execute(
             expression = expression,
             page = currentPage,
-            filter = getFiltersUseCase.execute()
+            filter = filter
         )
 
         val resultData = result.first?.items
@@ -90,11 +108,18 @@ class SearchViewModel(
     }
 
     fun searchDebounce(expression: String) {
-        if (expression.isBlank()) return
+        if (expression.isBlank()) clearSearch()
         searchDebounceAction(expression)
     }
 
     fun onLastItemReached() {
         if (!isNextPageLoading) requestToServer(lastExpression)
+    }
+
+    private fun compareTmpAndSearchFilters(): Boolean {
+        val tmpFilters = lastFilter
+        val searchFilters = getSearchFiltersUseCase.execute()
+//        Log.d("TST", "$tmpFilters $searchFilters")
+        return tmpFilters == searchFilters
     }
 }

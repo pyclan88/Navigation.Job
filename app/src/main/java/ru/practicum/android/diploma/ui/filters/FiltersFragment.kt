@@ -1,9 +1,12 @@
 package ru.practicum.android.diploma.ui.filters
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +19,8 @@ import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.FiltersState
+import ru.practicum.android.diploma.domain.state.FiltersState.Data.Payload
+import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Changed
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.toIntOrNull
 
@@ -32,16 +37,12 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         configureBackButton()
-        configureWorkButton()
+        configureLocationWorkButton()
         configureIndustryButton()
         configureSalaryInput()
-        configureWithoutSalaryButton()
-
-        configureApplyButtonListener()
-        configureApplyButtonVisible()
-
-        configureResetButtonListener()
-        configureResetButtonVisible()
+        configureWithoutSalaryCheckbox()
+        configureApplyButton()
+        configureResetButton()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state -> render(state) }
@@ -51,89 +52,96 @@ class FiltersFragment : BindingFragment<FragmentFilterBinding>() {
     }
 
     private fun render(state: FiltersState) {
-        when (state) {
-            is FiltersState.Empty -> { }
-            is FiltersState.Data -> showContent(state.filters)
+        binding.cbApplyButton.isVisible = state.editor == Changed
+
+        when (val dataState = state.data) {
+            is Payload -> {
+                showContent(dataState.filters)
+                binding.tvResetButton.isVisible = dataState.filters != Filter.empty
+            }
         }
     }
 
     private fun configureBackButton() =
         binding.tbHeader.setNavigationOnClickListener { findNavController().popBackStack() }
 
-    private fun configureWorkButton() = with(binding) {
+    private fun configureLocationWorkButton() = with(binding) {
+        tlPlaceWorkLayout.editText?.setOnClickListener {
+            findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
+        }
         tlPlaceWorkLayout.setEndIconOnClickListener {
-            when (tlPlaceWorkLayout.editText?.text.isNullOrEmpty()) {
+            when (tlPlaceWorkLayout.editText?.text.toString().isEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_location_fragment)
-                else -> setViewState(tlPlaceWorkLayout, EMPTY_PARAM_VALUE)
-            }
-            etBranch.doOnTextChanged { _, _, _, _ ->
-                configureResetButtonVisible()
-                configureApplyButtonVisible()
+                else -> {
+                    viewModel.clearLocation()
+                    setViewState(tlPlaceWorkLayout, EMPTY_PARAM_VALUE)
+                }
             }
         }
     }
 
     private fun configureIndustryButton() = with(binding) {
+        tlBranchLayout.editText?.setOnClickListener {
+            findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
+        }
         tlBranchLayout.setEndIconOnClickListener {
             when (tlBranchLayout.editText?.text.isNullOrEmpty()) {
                 true -> findNavController().navigate(R.id.action_filters_fragment_to_industryFragment)
-                else -> setViewState(tlBranchLayout, EMPTY_PARAM_VALUE)
-            }
-
-            etBranch.doOnTextChanged { _, _, _, _ ->
-                configureResetButtonVisible()
-                configureApplyButtonVisible()
+                else -> {
+                    viewModel.clearIndustry()
+                    setViewState(tlBranchLayout, EMPTY_PARAM_VALUE)
+                }
             }
         }
     }
 
     private fun configureSalaryInput() = with(binding) {
-        tiSalaryInputText.doOnTextChanged { _, _, _, _ ->
-            configureResetButtonVisible()
-            configureApplyButtonVisible()
+        tiSalaryInputText.doOnTextChanged { text, _, _, _ ->
+            tlSalaryLayout.editText?.isFocusable = true
+            viewModel.setSalary(text.toString())
+        }
+        tlSalaryLayout.setEndIconOnClickListener {
+            val inputMethodManager =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(tlSalaryLayout.windowToken, 0)
+            tlSalaryLayout.clearFocus()
+            viewModel.setSalary("")
         }
     }
 
-    private fun configureWithoutSalaryButton() = with(binding) {
-        cbWithoutSalaryButton.setOnCheckedChangeListener { _, _ ->
-            configureResetButtonVisible()
-            configureApplyButtonVisible()
+    private fun configureWithoutSalaryCheckbox() = with(binding) {
+        cbWithoutSalaryButton.setOnCheckedChangeListener { _, isChecked ->
+            val hintColor = if (isChecked) R.color.black else R.color.blue
+            tlSalaryLayout.hintTextColor = ContextCompat.getColorStateList(requireContext(), hintColor)
+            viewModel.setWithoutSalaryButton(isChecked)
         }
     }
 
-    private fun configureApplyButtonListener() = with(binding) {
+    private fun configureApplyButton() = with(binding) {
         cbApplyButton.setOnClickListener {
-            viewModel.setFilters(
-                salary = tiSalaryInputText.text.toIntOrNull(),
-                withoutSalaryButton = cbWithoutSalaryButton.isChecked
-            )
+            viewModel.saveFilters()
+            findNavController().popBackStack()
         }
     }
 
-    private fun configureApplyButtonVisible() = with(binding) {
-        val isEmpty = etPlaceWork.text.isNullOrBlank()
-            && etBranch.text.isNullOrBlank()
-            && tiSalaryInputText.text.isNullOrBlank()
-            && !cbWithoutSalaryButton.isChecked
-        cbApplyButton.isVisible = !isEmpty
-    }
-
-    private fun configureResetButtonVisible() = with(binding) {
-        val isEmpty = etPlaceWork.text.isNullOrBlank()
-            && etBranch.text.isNullOrBlank()
-            && tiSalaryInputText.text.isNullOrBlank()
-            && !cbWithoutSalaryButton.isChecked
-        tvResetButton.isVisible = !isEmpty
-    }
-
-    private fun configureResetButtonListener() = with(binding) {
+    private fun configureResetButton() = with(binding) {
         tvResetButton.setOnClickListener { viewModel.clearFilters() }
     }
 
     private fun showContent(state: Filter) {
-        setViewState(binding.tlPlaceWorkLayout, state.location)
+        setViewState(binding.tlPlaceWorkLayout, state.location?.description)
         setViewState(binding.tlBranchLayout, state.industry?.name)
-        binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
+        if (binding.tiSalaryInputText.text.toIntOrNull() != state.salary) {
+            binding.tiSalaryInputText.setText(state.salary?.toString() ?: "")
+        }
+        val isFieldEmpty = binding.tiSalaryInputText.text.isNullOrEmpty()
+        if (!isFieldEmpty) {
+            binding.tlSalaryLayout.defaultHintTextColor =
+                requireContext().getColorStateList(R.color.text_color_hint_selection)
+        } else {
+            binding.tlSalaryLayout.defaultHintTextColor = requireContext().getColorStateList(R.color.text_color_hint)
+        }
+
         binding.cbWithoutSalaryButton.isChecked = state.withoutSalaryButton
     }
 

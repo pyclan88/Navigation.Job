@@ -70,4 +70,18 @@
             android:layout_height="match_parent"
             android:paddingTop="@dimen/mark_24dp" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cb_apply_button"
+        style="@style/SelectionApplyButton"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/mark_60dp"
+        android:layout_marginBottom="@dimen/mark_24dp"
+        android:background="@drawable/blue_shape"
+        android:stateListAnimator="@null"
+        android:text="@string/select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline_16dp"
+        app:layout_constraintStart_toStartOf="@id/start_guideline_16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

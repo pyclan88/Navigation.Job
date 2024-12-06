@@ -3,23 +3,33 @@ package ru.practicum.android.diploma.data.mapper
 import ru.practicum.android.diploma.data.dto.area.AreaDto
 import ru.practicum.android.diploma.data.dto.area.AreaResponse
 import ru.practicum.android.diploma.domain.models.Country
-import ru.practicum.android.diploma.domain.models.Region
 
-class CountryMapper {
+class CountryMapper(
+    private val regionMapper: RegionMapper
+) {
 
-    fun map(dto: AreaResponse): List<Country> {
-        return dto.area.map {
-            convertAreaDtoToCountry(it)
-        }
+    companion object {
+        private const val OTHER_COUNTRY_ITEM_ID = "1001"
     }
 
-    private fun convertAreaDtoToCountry(dto: AreaDto): Country {
-        return Country(
-            id = dto.id,
-            name = dto.name,
-            regions = dto.areas.map {
-                Region(id = it.id, name = it.name)
-            }
-        )
+    fun map(dto: AreaResponse): List<Country> {
+        val countries = dto.area.map { map(it) }.toMutableList()
+
+        countries.find { it.id == OTHER_COUNTRY_ITEM_ID }?.let {
+            countries.remove(it)
+            countries.add(it)
+        }
+
+        return countries
+    }
+
+    fun map(dto: AreaDto): Country {
+        val regions = dto.areas.map { regionMapper.map(it) }
+        return Country(id = dto.id, name = dto.name, regions = regions)
+    }
+
+    fun map(country: Country): AreaDto {
+        val areas = country.regions.map { regionMapper.map(it, country.id) }
+        return AreaDto(id = country.id, name = country.name, areas = areas)
     }
 }

@@ -11,9 +11,15 @@ import ru.practicum.android.diploma.domain.usecase.favorite.AddVacancyToFavorite
 import ru.practicum.android.diploma.domain.usecase.favorite.DeleteVacancyFromFavoriteUseCase
 import ru.practicum.android.diploma.domain.usecase.favorite.GetAllFavoriteVacanciesUseCase
 import ru.practicum.android.diploma.domain.usecase.favorite.GetFavoriteVacancyByIdUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.ClearFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.GetFiltersUseCase
-import ru.practicum.android.diploma.domain.usecase.filters.SetFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.search.ClearSearchFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.search.GetSearchFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.SetTmpFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.search.SetSearchFiltersUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.ClearLocationUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.GetLocationUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.location.SetLocationUseCase
+import ru.practicum.android.diploma.domain.usecase.filters.tmp.ClearTmpFiltersUseCase
 
 val useCaseModule = module {
 
@@ -46,15 +52,19 @@ val useCaseModule = module {
     }
 
     single {
-        SetFiltersUseCase(get())
+        SetTmpFiltersUseCase(get())
     }
 
     single {
-        ClearFiltersUseCase(get())
+        ClearSearchFiltersUseCase(get())
     }
 
     single {
-        GetFiltersUseCase(get())
+        ClearTmpFiltersUseCase(get())
+    }
+
+    single {
+        GetTmpFiltersUseCase(get())
     }
 
     single {
@@ -63,5 +73,25 @@ val useCaseModule = module {
 
     single {
         GetCountriesUseCase(get())
+    }
+
+    single {
+        SetSearchFiltersUseCase(get())
+    }
+
+    single {
+        GetSearchFiltersUseCase(get())
+    }
+
+    single {
+        ClearLocationUseCase(get())
+    }
+
+    single {
+        GetLocationUseCase(get())
+    }
+
+    single {
+        SetLocationUseCase(get())
     }
 }
