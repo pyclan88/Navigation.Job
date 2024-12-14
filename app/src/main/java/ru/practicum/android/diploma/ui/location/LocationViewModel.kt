@@ -31,7 +31,6 @@ class LocationViewModel(
     private val startLocationState =
         getTmpFiltersUseCase.execute().location?.let { LocationState.Data(it) } ?: LocationState.Empty
 
-
     private val _state: MutableStateFlow<LocationState> = MutableStateFlow(
         startLocationState
     )

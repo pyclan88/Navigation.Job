@@ -5,9 +5,9 @@ import android.content.Context
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import ru.practicum.android.diploma.BuildConfig
-import ru.practicum.android.diploma.di.useCaseModule
 import ru.practicum.android.diploma.di.dataModule
 import ru.practicum.android.diploma.di.repositoryModule
+import ru.practicum.android.diploma.di.useCaseModule
 import ru.practicum.android.diploma.di.utilModule
 import ru.practicum.android.diploma.di.viewModelModule
 
