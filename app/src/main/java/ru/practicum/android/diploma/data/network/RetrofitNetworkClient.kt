@@ -3,13 +3,13 @@ package ru.practicum.android.diploma.data.network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.data.dto.industry.IndustryRequest
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.data.dto.area.AreaRequest
 import ru.practicum.android.diploma.data.dto.area.AreaResponse
+import ru.practicum.android.diploma.data.dto.industry.IndustryRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustryResponse
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.util.getConnected

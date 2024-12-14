@@ -21,10 +21,10 @@ import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.NoInte
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Data.Payload
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Favorite.InFavorite
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState.Favorite.NotInFavorite
-import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacancyDetailsUseCase
 import ru.practicum.android.diploma.domain.usecase.favorite.AddVacancyToFavoriteUseCase
 import ru.practicum.android.diploma.domain.usecase.favorite.DeleteVacancyFromFavoriteUseCase
 import ru.practicum.android.diploma.domain.usecase.favorite.GetFavoriteVacancyByIdUseCase
+import ru.practicum.android.diploma.domain.usecase.vacancy.GetVacancyDetailsUseCase
 
 class VacancyViewModel(
     private val getVacancyDetailsUseCase: GetVacancyDetailsUseCase,
