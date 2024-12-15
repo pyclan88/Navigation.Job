@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.common.AppConstants.EMPTY_PARAM_VALUE
-import ru.practicum.android.diploma.common.AppConstants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.state.VacancyState
@@ -25,7 +23,7 @@ class SearchViewModel(
     private val setSearchFiltersUseCase: SetSearchFiltersUseCase
 ) : ViewModel() {
 
-    private var lastExpression = EMPTY_PARAM_VALUE
+    private var lastExpression = ""
     private var currentPage = 1
     private var maxPage = 0
 
@@ -42,7 +40,7 @@ class SearchViewModel(
         get() = _state
 
     private val searchDebounceAction = debounce<String>(
-        delayMillis = SEARCH_DEBOUNCE_DELAY,
+        delayMillis = 2_000L,
         coroutineScope = viewModelScope,
         useLastParam = true
     ) { changedText ->
@@ -59,7 +57,7 @@ class SearchViewModel(
     fun isFilterApplied() = getFilter() != Filter.empty
 
     fun clearSearch() {
-        lastExpression = EMPTY_PARAM_VALUE
+        lastExpression = ""
         _state.value = VacancyState(Input.Empty, VacanciesList.Start)
     }
 
@@ -119,7 +117,8 @@ class SearchViewModel(
     private fun compareTmpAndSearchFilters(): Boolean {
         val tmpFilters = lastFilter
         val searchFilters = getSearchFiltersUseCase.execute()
-//        Log.d("TST", "$tmpFilters $searchFilters")
         return tmpFilters == searchFilters
     }
+
+
 }

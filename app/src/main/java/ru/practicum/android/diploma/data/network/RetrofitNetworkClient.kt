@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
+import ru.practicum.android.diploma.data.dto.ResponseSuccess
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
@@ -19,22 +20,25 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
-    override suspend fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(requestDto: Request): Response {
         if (!getConnected()) {
-            return Response().apply { resultCode = FAILED_INTERNET_CONNECTION_CODE }
+            return NetworkError.NoInternet()
         }
         return withContext(Dispatchers.IO) {
             try {
-                when (dto) {
-                    is VacancySearchRequest -> searchVacancies(dto)
-                    is VacancyDetailsRequest -> getVacancyDetails(dto)
+                when (requestDto) {
+                    is VacancySearchRequest -> searchVacancies(requestDto)
+                    is VacancyDetailsRequest -> getVacancyDetails(requestDto)
                     is IndustryRequest -> getIndustries()
                     is AreaRequest -> getArea()
-                    else -> Response().apply { resultCode = BAD_REQUEST_CODE }
+                    else -> NetworkError.BadCode("${requestDto.javaClass}", BAD_REQUEST_CODE)
                 }
             } catch (e: HttpException) {
-                val code = if (e.code() == NOT_FOUND_CODE) NOT_FOUND_CODE else SERVER_ERROR_CODE
-                Response().apply { resultCode = code }
+                if (e.code() == NOT_FOUND_CODE) {
+                    NetworkError.NoData("${requestDto.javaClass}")
+                } else {
+                    NetworkError.ServerError("${requestDto.javaClass}", "${e.code()}")
+                }
             }
         }
     }
@@ -44,25 +48,25 @@ class RetrofitNetworkClient(
     ): VacanciesSearchResponse {
         return headHunterApiService.searchVacancies(
             options = input.options
-        ).apply { resultCode = SUCCESS_CODE }
+        ).apply { ResponseSuccess() }
     }
 
     private suspend fun getVacancyDetails(
         input: VacancyDetailsRequest
     ): VacancyDetailsResponse = headHunterApiService.getVacancyDetails(
         vacancyId = input.id
-    ).apply { resultCode = SUCCESS_CODE }
+    ).apply { ResponseSuccess() }
 
     private suspend fun getIndustries(): IndustryResponse {
         val result = headHunterApiService.getIndustries()
         return IndustryResponse(industries = result)
-            .apply { resultCode = SUCCESS_CODE }
+            .apply { ResponseSuccess() }
     }
 
     private suspend fun getArea(): AreaResponse {
         val result = headHunterApiService.getArea()
         return AreaResponse(area = result)
-            .apply { resultCode = SUCCESS_CODE }
+            .apply { ResponseSuccess() }
     }
 
     companion object {
@@ -70,6 +74,5 @@ class RetrofitNetworkClient(
         const val SUCCESS_CODE = 200
         const val BAD_REQUEST_CODE = 400
         const val NOT_FOUND_CODE = 404
-        const val SERVER_ERROR_CODE = 500
     }
 }

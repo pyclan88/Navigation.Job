@@ -2,10 +2,13 @@ package ru.practicum.android.diploma.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.data.dto.Response
+import ru.practicum.android.diploma.data.dto.ResponseSuccess
 import ru.practicum.android.diploma.data.dto.area.AreaRequest
 import ru.practicum.android.diploma.data.dto.area.AreaResponse
 import ru.practicum.android.diploma.data.mapper.CountryMapper
 import ru.practicum.android.diploma.data.network.NetworkClient
+import ru.practicum.android.diploma.data.network.NetworkError
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.SUCCESS_CODE
 import ru.practicum.android.diploma.domain.api.CountryRepository
@@ -19,15 +22,16 @@ class CountryRepositoryImpl(
     override suspend fun getCountry(): Resource<List<Country>> {
         return withContext(Dispatchers.IO) {
             val response = networkClient.doRequest(AreaRequest())
-            when (response.resultCode) {
-                FAILED_INTERNET_CONNECTION_CODE -> Resource.Error("-1")
-
-                SUCCESS_CODE -> {
+            when (response) {
+                // Возвращаем сообщение, как проверить на UI
+                is NetworkError.NoInternet -> Resource.Error(response.message)
+                is NetworkError.ServerError -> Resource.Error(response.message)
+                is ResponseSuccess -> {
                     val data = countryMapper.map(response as AreaResponse)
                     Resource.Success(data)
                 }
 
-                else -> Resource.Error("Server Error")
+                else -> Resource.Error("Неизвестный ответ")
             }
         }
     }
