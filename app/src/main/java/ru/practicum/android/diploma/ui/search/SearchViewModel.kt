@@ -119,6 +119,4 @@ class SearchViewModel(
         val searchFilters = getSearchFiltersUseCase.execute()
         return tmpFilters == searchFilters
     }
-
-
 }

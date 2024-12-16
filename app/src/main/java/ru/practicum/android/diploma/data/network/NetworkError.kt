@@ -13,5 +13,5 @@ sealed class NetworkError(val message: String) : Response() {
     class BadCode(requestName: String, code: Int) :
         NetworkError("Server response with code: $code for requestName: $requestName")
 
-    class NoInternet() : NetworkError("No internet connection")
+    class NoInternet : NetworkError("No internet connection")
 }
