@@ -4,4 +4,4 @@ import ru.practicum.android.diploma.data.network.Request
 
 data class VacancyDetailsRequest(
     val id: String
-) : Request()
+) : Request
