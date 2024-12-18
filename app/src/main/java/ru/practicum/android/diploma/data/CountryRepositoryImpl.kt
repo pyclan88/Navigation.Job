@@ -19,16 +19,22 @@ class CountryRepositoryImpl(
     override suspend fun getCountry(): Resource<List<Country>> {
         return withContext(Dispatchers.IO) {
             val response = networkClient.doRequest(AreaRequest())
-            when (response) {
+            when (response.resultCode) {
                 // Возвращаем сообщение, как проверить на UI
-                is NetworkError.NoInternet -> Resource.Error(response.message)
-                is NetworkError.ServerError -> Resource.Error(response.message)
-                is ResponseSuccess -> {
+                NetworkError.FAILED_INTERNET_CONNECTION_CODE -> Resource.Error(message = NetworkError.NoInternet().javaClass.name)
+                NetworkError.BAD_REQUEST_CODE -> Resource.Error(
+                    message = NetworkError.BadCode(
+                        response.javaClass.name,
+                        code = response.resultCode
+                    ).javaClass.name
+                )
+
+                NetworkError.SUCCESS_CODE -> {
                     val data = countryMapper.map(response as AreaResponse)
                     Resource.Success(data)
                 }
 
-                else -> Resource.Error("Неизвестный ответ")
+                else -> Resource.Error()
             }
         }
     }
