@@ -28,7 +28,7 @@ abstract class RetrofitNetworkClient(
             try {
                 when (requestDto) {
                     is VacancySearchRequest -> {
-                        Log.e("responseCode","searchVacancies:200?")
+                        Log.e("responseCode", "searchVacancies:200?")
                         headHunterApiService.searchVacancies(
                             options = requestDto.options
                         ).apply { resultCode = SUCCESS_CODE }

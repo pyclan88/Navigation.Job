@@ -23,8 +23,18 @@ class IndustryRepositoryImpl(
         return withContext(Dispatchers.IO) {
             val response = networkClient.doRequest(IndustryRequest())
             when (response.resultCode) {
-                FAILED_INTERNET_CONNECTION_CODE -> Resource.Error(message = NetworkError.NoInternet().javaClass.name)
-                RetrofitNetworkClient.NOT_FOUND_CODE -> Resource.Error(message = NetworkError.NoData(requestName = response.javaClass.name).javaClass.name)
+                FAILED_INTERNET_CONNECTION_CODE -> Resource.Error(
+                    message = NetworkError
+                        .NoInternet()
+                        .javaClass.name
+                )
+
+                RetrofitNetworkClient.NOT_FOUND_CODE -> Resource.Error(
+                    message = NetworkError
+                        .NoData(requestName = response.javaClass.name)
+                        .javaClass.name
+                )
+
                 SUCCESS_CODE -> {
                     val data = industryMapper.map(response as IndustryResponse)
                     Resource.Success(data)
