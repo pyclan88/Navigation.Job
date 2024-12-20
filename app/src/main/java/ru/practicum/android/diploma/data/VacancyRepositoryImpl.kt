@@ -42,6 +42,7 @@ class VacancyRepositoryImpl(
             )
 
             NOT_FOUND_CODE -> Resource.Error(
+                networkError = NetworkError.NoData("searchVacancies"),
                 message = NetworkError
                     .NoData(requestName = response.javaClass.name)
                     .javaClass.name
