@@ -10,10 +10,10 @@ class SalaryFormatter(
 
     private val formatter = DecimalFormat("#,###")
 
-    fun salaryFormat(salaryTo: Int, salaryFrom: Int, currency: String): String {
+    fun salaryFormat(salaryTo: Int, salaryFrom: Int, currency: Currency): String {
         val formattedSalaryTo = formatter.format(salaryTo).replace(",", " ")
         val formattedSalaryFrom = formatter.format(salaryFrom).replace(",", " ")
-        val currencySymbol = fromCurrencyName(currency).symbol
+        val currencySymbol = currency.symbol
 
         return when {
             salaryTo != 0 && salaryFrom == 0 -> context.getString(
@@ -40,7 +40,7 @@ class SalaryFormatter(
     }
 
     companion object {
-        fun fromCurrencyName(name: String): Currency {
+        fun fromCurrencyName(name: String?): Currency {
             return Currency.entries.find { it.currencyName == name } ?: Currency.CURRENCY_UNSPECIFIED
         }
     }

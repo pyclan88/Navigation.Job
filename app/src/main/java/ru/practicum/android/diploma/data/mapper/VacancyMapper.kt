@@ -4,6 +4,7 @@ import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.vacancy.self.VacancyDto
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancySearchResult
+import ru.practicum.android.diploma.util.SalaryFormatter
 
 class VacancyMapper {
 
@@ -20,7 +21,7 @@ class VacancyMapper {
         city = dto.area?.name.orEmpty(),
         salaryFrom = dto.salary?.from ?: 0,
         salaryTo = dto.salary?.to ?: 0,
-        currency = dto.salary?.currency.orEmpty(),
+        currency = SalaryFormatter.fromCurrencyName(dto.salary?.currency),
         employerName = dto.employer.name.orEmpty(),
         experience = dto.experience?.name.orEmpty(),
         employmentName = dto.employment?.name.orEmpty(),

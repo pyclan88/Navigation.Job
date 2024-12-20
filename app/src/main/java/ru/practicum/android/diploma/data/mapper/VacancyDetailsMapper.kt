@@ -4,6 +4,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsRespo
 import ru.practicum.android.diploma.data.formatter.AddressFormatter
 import ru.practicum.android.diploma.data.formatter.SkillsFormatter
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.util.SalaryFormatter
 
 class VacancyDetailsMapper {
 
@@ -14,7 +15,7 @@ class VacancyDetailsMapper {
         area = dto.area.name.orEmpty(),
         salaryFrom = dto.salary?.from ?: 0,
         salaryTo = dto.salary?.to ?: 0,
-        currency = dto.salary?.currency.orEmpty(),
+        currency = SalaryFormatter.fromCurrencyName(dto.salary?.currency),
         employerName = dto.employer?.name.orEmpty(),
         experience = dto.experience?.name.orEmpty(),
         employmentName = dto.employment?.name.orEmpty(),
