@@ -12,7 +12,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.app.NavigationJobApp.Companion.applicationContext
 import ru.practicum.android.diploma.common.Source
-import ru.practicum.android.diploma.data.formatter.SalaryFormatter
+import ru.practicum.android.diploma.util.SalaryFormatter
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState

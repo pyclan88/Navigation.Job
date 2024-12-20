@@ -1,11 +1,11 @@
-package ru.practicum.android.diploma.data.formatter
+package ru.practicum.android.diploma.util
 
 import android.content.Context
 import ru.practicum.android.diploma.R
 import java.text.DecimalFormat
 
 class SalaryFormatter(
-    private val context: Context
+    private val context: Context,
 ) {
 
     private val formatter = DecimalFormat("#,###")
@@ -13,19 +13,7 @@ class SalaryFormatter(
     fun salaryFormat(salaryTo: Int, salaryFrom: Int, currency: String): String {
         val formattedSalaryTo = formatter.format(salaryTo).replace(",", " ")
         val formattedSalaryFrom = formatter.format(salaryFrom).replace(",", " ")
-        val currencySymbol = when (currency) {
-            "RUR", "RUB" -> "₽"
-            "BYR" -> "Br"
-            "USD" -> "$"
-            "EUR" -> "€"
-            "KZT" -> "₸"
-            "UAH" -> "₴"
-            "AZN" -> "₼"
-            "UZS" -> "Soʻm"
-            "GEL" -> "₾"
-            "KGT" -> "с•с"
-            else -> currency
-        }
+        val currencySymbol = fromCurrencyName(currency).symbol
 
         return when {
             salaryTo != 0 && salaryFrom == 0 -> context.getString(
@@ -48,6 +36,12 @@ class SalaryFormatter(
             )
 
             else -> context.getString(R.string.salary_is_not_specified)
+        }
+    }
+
+    companion object {
+        fun fromCurrencyName(name: String): Currency {
+            return Currency.entries.find { it.currencyName == name } ?: Currency.CURRENCY_UNSPECIFIED
         }
     }
 }
