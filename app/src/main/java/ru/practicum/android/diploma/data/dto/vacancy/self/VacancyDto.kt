@@ -7,7 +7,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.nested.ExperienceDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.SalaryDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.ScheduleDto
 
-data class VacancyDto(
+class VacancyDto(
     val id: String,
     val area: AreaDto?,
     val employer: EmployerDto,

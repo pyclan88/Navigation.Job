@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.nested.KeySkillDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.SalaryDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.ScheduleDto
 
-data class VacancyDetailsResponse(
+class VacancyDetailsResponse(
     val id: String,
     val address: AddressDto?,
     val alternateUrl: String?,

@@ -1,5 +1,5 @@
 package ru.practicum.android.diploma.data.dto.vacancy.nested
 
-data class LogoUrlsDto(
+class LogoUrlsDto(
     val original: String
 )
