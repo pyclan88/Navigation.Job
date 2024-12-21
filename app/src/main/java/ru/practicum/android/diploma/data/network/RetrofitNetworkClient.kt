@@ -12,7 +12,6 @@ import ru.practicum.android.diploma.data.dto.area.AreaResponse
 import ru.practicum.android.diploma.data.dto.industry.IndustryRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustryResponse
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsResponse
-import ru.practicum.android.diploma.data.mapper.VacancyMapper
 import ru.practicum.android.diploma.util.getConnected
 
 abstract class RetrofitNetworkClient(
@@ -22,25 +21,26 @@ abstract class RetrofitNetworkClient(
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
     override suspend fun <T> doRequest(requestDto: Request): Result<T> {
         if (!getConnected()) {
-            return Result.success(Response().apply { resultCode = FAILED_INTERNET_CONNECTION_CODE })
+            return Result.failure(NetworkError.NoInternet())
         }
         return withContext(Dispatchers.IO) {
             try {
-                Result.success(when (requestDto) {
+                when (requestDto) {
                     is VacancySearchRequest -> {
-                        headHunterApiService.searchVacancies(
+                        val res = headHunterApiService.searchVacancies(
                             options = requestDto.options
-                        ).apply { resultCode = SUCCESS_CODE }
+                        )
+                        Result.success(res)
                     }
 
-                    is VacancyDetailsRequest -> getVacancyDetails(requestDto)
-                    is IndustryRequest -> getIndustries()
-                    is AreaRequest -> getArea()
+                    is VacancyDetailsRequest -> Result.success(getVacancyDetails(requestDto))
+                    is IndustryRequest -> Result.success(getIndustries())
+                    is AreaRequest -> Result.success(getArea())
                     else -> throw NetworkError.BadCode(
                         requestDto.javaClass.name,
                         BAD_REQUEST_CODE
                     )/*Response().apply { resultCode = BAD_REQUEST_CODE }*/
-                })
+                }
             } catch (e: HttpException) {
                 Result.failure(
                     if (e.code() == NOT_FOUND_CODE) {
@@ -52,7 +52,7 @@ abstract class RetrofitNetworkClient(
                         )
                     }
                 )
-            }
+            } as Result<T>
         }
     }
 

@@ -29,6 +29,9 @@ class VacancyRepositoryImpl(
     ): Result<Response> = withContext(Dispatchers.IO) {
         val options = optionMapper.map(expression = expression, page = page, filter = filter)
         networkClient.doRequest(VacancySearchRequest(options))
+        // нужно замаппить vacancyMapper.map(response)
+
+
         /*when (response.resultCode) {
             FAILED_INTERNET_CONNECTION_CODE -> Resource.Error(
                 networkError = NetworkError.NoInternet(),
