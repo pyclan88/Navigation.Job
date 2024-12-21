@@ -22,7 +22,12 @@ class IndustryRepositoryImpl(
     override suspend fun getIndustries(): Resource<List<Industry>> {
         return withContext(Dispatchers.IO) {
             val response = networkClient.doRequest(IndustryRequest())
-            when (response.resultCode) {
+            Resource.Error(
+                message = NetworkError
+                    .NoData(requestName = response.javaClass.name)
+                    .javaClass.name
+            )
+            /*when (response.resultCode) {
                 FAILED_INTERNET_CONNECTION_CODE -> Resource.Error(
                     message = NetworkError
                         .NoInternet()
@@ -41,7 +46,7 @@ class IndustryRepositoryImpl(
                 }
 
                 else -> Resource.Error()
-            }
+            }*/
         }
     }
 }

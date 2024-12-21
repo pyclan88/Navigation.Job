@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.data.network
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -13,6 +12,7 @@ import ru.practicum.android.diploma.data.dto.area.AreaResponse
 import ru.practicum.android.diploma.data.dto.industry.IndustryRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustryResponse
 import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsResponse
+import ru.practicum.android.diploma.data.mapper.VacancyMapper
 import ru.practicum.android.diploma.util.getConnected
 
 abstract class RetrofitNetworkClient(
@@ -20,15 +20,14 @@ abstract class RetrofitNetworkClient(
 ) : NetworkClient {
 
     @Suppress("TooGenericExceptionCaught", "SwallowedException")
-    override suspend fun doRequest(requestDto: Request): Response {
+    override suspend fun <T> doRequest(requestDto: Request): Result<T> {
         if (!getConnected()) {
-            return Response().apply { resultCode = FAILED_INTERNET_CONNECTION_CODE }
+            return Result.success(Response().apply { resultCode = FAILED_INTERNET_CONNECTION_CODE })
         }
         return withContext(Dispatchers.IO) {
             try {
-                when (requestDto) {
+                Result.success(when (requestDto) {
                     is VacancySearchRequest -> {
-                        Log.e("responseCode", "searchVacancies:200?")
                         headHunterApiService.searchVacancies(
                             options = requestDto.options
                         ).apply { resultCode = SUCCESS_CODE }
@@ -37,11 +36,22 @@ abstract class RetrofitNetworkClient(
                     is VacancyDetailsRequest -> getVacancyDetails(requestDto)
                     is IndustryRequest -> getIndustries()
                     is AreaRequest -> getArea()
-                    else -> Response().apply { resultCode = BAD_REQUEST_CODE }
-                }
+                    else -> throw NetworkError.BadCode(
+                        requestDto.javaClass.name,
+                        BAD_REQUEST_CODE
+                    )/*Response().apply { resultCode = BAD_REQUEST_CODE }*/
+                })
             } catch (e: HttpException) {
-                val code = if (e.code() == NOT_FOUND_CODE) NOT_FOUND_CODE else SERVER_ERROR_CODE
-                Response().apply { resultCode = code }
+                Result.failure(
+                    if (e.code() == NOT_FOUND_CODE) {
+                        NetworkError.NoData(requestDto.javaClass.name)
+                    } else {
+                        NetworkError.ServerError(
+                            requestDto.javaClass.name,
+                            e.toString()
+                        )
+                    }
+                )
             }
         }
     }

@@ -1,23 +1,18 @@
 package ru.practicum.android.diploma.data
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
-import ru.practicum.android.diploma.data.dto.vacancy.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.data.mapper.OptionMapper
 import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
 import ru.practicum.android.diploma.data.network.NetworkError
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.SUCCESS_CODE
 import ru.practicum.android.diploma.data.network.VacancyNetworkClient
 import ru.practicum.android.diploma.domain.api.VacancyRepository
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.VacancyDetails
-import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.util.Resource
 
 class VacancyRepositoryImpl(
@@ -31,11 +26,10 @@ class VacancyRepositoryImpl(
         expression: String,
         page: Int,
         filter: Filter
-    ): Resource<VacancySearchResult> = withContext(Dispatchers.IO) {
+    ): Result<Response> = withContext(Dispatchers.IO) {
         val options = optionMapper.map(expression = expression, page = page, filter = filter)
-        val response = networkClient.execute(VacancySearchRequest(options))
-        Log.e("responseCode", "searchVacancies:${response.resultCode}")
-        when (response.resultCode) {
+        networkClient.doRequest(VacancySearchRequest(options))
+        /*when (response.resultCode) {
             FAILED_INTERNET_CONNECTION_CODE -> Resource.Error(
                 networkError = NetworkError.NoInternet(),
                 message = NetworkError.NoInternet().javaClass.name
@@ -55,13 +49,18 @@ class VacancyRepositoryImpl(
             }
 
             else -> Resource.Error()
-        }
+        }*/
     }
 
     override suspend fun getVacancyDetails(id: String): Resource<VacancyDetails> {
         return withContext(Dispatchers.IO) {
             val response = networkClient.doRequest(VacancyDetailsRequest(id))
-            when (response.resultCode) {
+            Resource.Error(
+                message = NetworkError
+                    .NoData(requestName = response.javaClass.name)
+                    .javaClass.name
+            )
+            /*when (response.resultCode) {
                 FAILED_INTERNET_CONNECTION_CODE -> Resource.Error(
                     message = NetworkError
                         .NoInternet()
@@ -80,7 +79,7 @@ class VacancyRepositoryImpl(
                 }
 
                 else -> Resource.Error()
-            }
+            }*/
         }
     }
 }

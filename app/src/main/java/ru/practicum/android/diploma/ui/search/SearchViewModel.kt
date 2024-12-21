@@ -82,7 +82,7 @@ class SearchViewModel(
             page = currentPage,
             filter = filter
         )
-        val vacancyState: VacancyState = when (result.networkError) {
+        val vacancyState: VacancyState = when (result.exceptionOrNull()) {
             is NetworkError.BadCode -> state.value.copy(vacanciesList = VacanciesList.Error)
             is NetworkError.NoData -> state.value.copy(vacanciesList = VacanciesList.Empty)
             is NetworkError.NoInternet -> state.value.copy(vacanciesList = VacanciesList.NoInternet)
@@ -90,7 +90,7 @@ class SearchViewModel(
             else -> {
                 isNextPageLoading = false
                 currentPage += 1
-                result.data.let { maxPage = it?.pages ?: 0 }
+                result.getOrNull().let { maxPage = it?.pages ?: 0 }
                 val totalVacancyCount = result.data?.totalVacancyCount
                 state.value.copy(
                     vacanciesList = VacanciesList.Data(

@@ -9,6 +9,7 @@ import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.NetworkError
 import ru.practicum.android.diploma.data.network.NetworkError.Companion.BAD_REQUEST_CODE
 import ru.practicum.android.diploma.data.network.NetworkError.Companion.FAILED_INTERNET_CONNECTION_CODE
+import ru.practicum.android.diploma.data.network.NetworkError.Companion.NOT_FOUND_CODE
 import ru.practicum.android.diploma.data.network.NetworkError.Companion.SUCCESS_CODE
 import ru.practicum.android.diploma.domain.api.CountryRepository
 import ru.practicum.android.diploma.domain.models.Country
@@ -21,11 +22,21 @@ class CountryRepositoryImpl(
     override suspend fun getCountry(): Resource<List<Country>> {
         return withContext(Dispatchers.IO) {
             val response = networkClient.doRequest(AreaRequest())
-            when (response.resultCode) {
+            Resource.Error(
+                message = NetworkError
+                    .NoData(requestName = response.javaClass.name)
+                    .javaClass.name
+            )
+            /*when (response.resultCode) {
                 // Возвращаем сообщение, как проверить на UI
                 FAILED_INTERNET_CONNECTION_CODE -> Resource.Error(
                     message = NetworkError
                         .NoInternet()
+                        .javaClass.name
+                )
+                NOT_FOUND_CODE -> Resource.Error(
+                    message = NetworkError
+                        .NoData(requestName = response.javaClass.name)
                         .javaClass.name
                 )
 
@@ -42,7 +53,7 @@ class CountryRepositoryImpl(
                 }
 
                 else -> Resource.Error()
-            }
+            }*/
         }
     }
 }
