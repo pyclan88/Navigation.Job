@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.data
+package ru.practicum.android.diploma.data.repository
 
 import ru.practicum.android.diploma.data.db.convertor.FavoriteVacancyDbConvertor
 import ru.practicum.android.diploma.data.db.dao.FavoriteVacanciesDao

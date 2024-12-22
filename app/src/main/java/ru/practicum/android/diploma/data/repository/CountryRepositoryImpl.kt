@@ -1,16 +1,10 @@
-package ru.practicum.android.diploma.data
+package ru.practicum.android.diploma.data.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.data.dto.area.AreaRequest
-import ru.practicum.android.diploma.data.dto.area.AreaResponse
 import ru.practicum.android.diploma.data.mapper.CountryMapper
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.NetworkError
-import ru.practicum.android.diploma.data.network.NetworkError.Companion.BAD_REQUEST_CODE
-import ru.practicum.android.diploma.data.network.NetworkError.Companion.FAILED_INTERNET_CONNECTION_CODE
-import ru.practicum.android.diploma.data.network.NetworkError.Companion.NOT_FOUND_CODE
-import ru.practicum.android.diploma.data.network.NetworkError.Companion.SUCCESS_CODE
 import ru.practicum.android.diploma.domain.api.CountryRepository
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.util.Resource
@@ -21,10 +15,10 @@ class CountryRepositoryImpl(
 ) : CountryRepository {
     override suspend fun getCountry(): Resource<List<Country>> {
         return withContext(Dispatchers.IO) {
-            val response = networkClient.doRequest(AreaRequest())
+            // val response = networkClient.doRequest(AreaRequest())
             Resource.Error(
                 message = NetworkError
-                    .NoData(requestName = response.javaClass.name)
+                    .NoData("requestName = response.javaClass.name")
                     .javaClass.name
             )
             /*when (response.resultCode) {

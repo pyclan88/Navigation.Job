@@ -11,8 +11,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.data.ExternalNavigatorImpl
-import ru.practicum.android.diploma.data.FilterRepositoryImpl
-import ru.practicum.android.diploma.data.LocationRepositoryImpl
 import ru.practicum.android.diploma.data.datasourse.FilterStorage
 import ru.practicum.android.diploma.data.datasourse.FilterStorageImpl
 import ru.practicum.android.diploma.data.datasourse.LocationStorage
@@ -29,7 +27,10 @@ import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
 import ru.practicum.android.diploma.data.network.AuthorizationInterceptor
 import ru.practicum.android.diploma.data.network.HeadHunterApiService
-import ru.practicum.android.diploma.data.network.VacancyNetworkClient
+import ru.practicum.android.diploma.data.network.clientIml.DetailsNetworkClient
+import ru.practicum.android.diploma.data.network.clientIml.VacancyNetworkClient
+import ru.practicum.android.diploma.data.repository.FilterRepositoryImpl
+import ru.practicum.android.diploma.data.repository.LocationRepositoryImpl
 import ru.practicum.android.diploma.domain.api.FilterRepository
 import ru.practicum.android.diploma.domain.api.LocationRepository
 import ru.practicum.android.diploma.domain.sharing.ExternalNavigator
@@ -101,6 +102,10 @@ val dataModule = module {
 
     single {
         VacancyNetworkClient(get())
+    }
+
+    single {
+        DetailsNetworkClient(get())
     }
 
     single<ExternalNavigator> {

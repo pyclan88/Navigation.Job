@@ -8,11 +8,15 @@ import ru.practicum.android.diploma.util.SalaryFormatter
 
 class VacancyMapper {
 
-    fun map(response: VacanciesSearchResponse) = VacancySearchResult(
-        items = response.items.map { vacancy -> map(vacancy) },
-        pages = response.pages,
-        totalVacancyCount = response.found,
-    )
+    fun map(response: Result<VacanciesSearchResponse>): Result<VacancySearchResult> {
+        return response.map { vacanciesResponse ->
+            VacancySearchResult(
+                items = vacanciesResponse.items.map { vacancy -> map(vacancy) },
+                pages = vacanciesResponse.pages,
+                totalVacancyCount = vacanciesResponse.found
+            )
+        }
+    }
 
     private fun map(dto: VacancyDto) = Vacancy(
         id = dto.id,

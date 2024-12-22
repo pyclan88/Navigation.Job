@@ -8,8 +8,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.Source
 import ru.practicum.android.diploma.common.Source.FAVORITE
 import ru.practicum.android.diploma.common.Source.SEARCH
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.NOT_FOUND_CODE
+import ru.practicum.android.diploma.data.network.NetworkError
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.sharing.SharingInteract
 import ru.practicum.android.diploma.domain.state.VacancyDetailsState
@@ -80,15 +79,12 @@ class VacancyViewModel(
     }
 
     private suspend fun handleSearchSource(vacancyId: String): Data {
-        val (vacancy, errorCode) = getVacancyDetailsUseCase.execute(vacancyId)
-        return if (vacancy == null) {
-            when (errorCode) {
-                FAILED_INTERNET_CONNECTION_CODE.toString() -> NoInternet
-                NOT_FOUND_CODE.toString() -> Empty
-                else -> Error
-            }
-        } else {
-            Payload(vacancy)
+        val result = getVacancyDetailsUseCase.execute(vacancyId)
+        return when (result.exceptionOrNull()) {
+            is NetworkError.BadCode, is NetworkError.ServerError -> Error
+            is NetworkError.NoData -> Empty
+            is NetworkError.NoInternet -> NoInternet
+            else -> result.getOrNull()?.let { Payload(it) } ?: Error
         }
     }
 

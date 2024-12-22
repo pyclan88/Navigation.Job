@@ -82,41 +82,30 @@ class SearchViewModel(
             filter = filter
         )
         val vacancyState: VacancyState = when (result.exceptionOrNull()) {
-            is NetworkError.BadCode -> state.value.copy(vacanciesList = VacanciesList.Error)
-            is NetworkError.NoData -> state.value.copy(vacanciesList = VacanciesList.Empty)
-            is NetworkError.NoInternet -> state.value.copy(vacanciesList = VacanciesList.NoInternet)
-            is NetworkError.ServerError -> state.value.copy(vacanciesList = VacanciesList.Error)
+            is NetworkError.BadCode, is NetworkError.ServerError ->
+                state.value.copy(vacanciesList = VacanciesList.Error)
+
+            is NetworkError.NoData ->
+                state.value.copy(vacanciesList = VacanciesList.Empty)
+
+            is NetworkError.NoInternet ->
+                state.value.copy(vacanciesList = VacanciesList.NoInternet)
+
             else -> {
                 isNextPageLoading = false
                 currentPage += 1
-                result.getOrNull().let { maxPage = it?.pages ?: 0 }
-                val totalVacancyCount = result.data?.totalVacancyCount
+
+                val data = result.getOrNull()
+                maxPage = data?.pages ?: 0
+
                 state.value.copy(
                     vacanciesList = VacanciesList.Data(
-                        result.data?.items ?: emptyList(),
-                        totalVacancyCount ?: 0
+                        data?.items.orEmpty(),
+                        data?.totalVacancyCount ?: 0
                     )
                 )
             }
         }
-        /*val vacancyState: VacancyState = when {
-            resultData == null -> {
-                if (result.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
-                    state.value.copy(vacanciesList = VacanciesList.NoInternet)
-                } else {
-                    state.value.copy(vacanciesList = VacanciesList.Error)
-                }
-            }
-
-            resultData.isEmpty() -> state.value.copy(vacanciesList = VacanciesList.Empty)
-
-            else -> {
-                isNextPageLoading = false
-                currentPage += 1
-                result.first?.let { maxPage = it.pages }
-                state.value.copy(vacanciesList = VacanciesList.Data(resultData, totalVacancyCount))
-            }
-        }*/
         _state.value = vacancyState
     }
 
