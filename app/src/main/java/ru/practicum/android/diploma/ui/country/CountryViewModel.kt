@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
+import ru.practicum.android.diploma.data.network.NetworkError
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Location
 import ru.practicum.android.diploma.domain.state.CountryState
@@ -23,20 +23,15 @@ class CountryViewModel(
         get() = _state
 
     fun getCountries() = viewModelScope.launch {
-        val countries = getCountriesUseCase.execute()
-        val industryState = when {
-            countries.first?.isEmpty() == true -> CountryState.Empty
-            countries.second?.isNotEmpty() == true -> {
-                if (countries.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
-                    CountryState.NoInternet
-                } else {
-                    CountryState.Error
-                }
-            }
 
-            else -> CountryState.Data(countries = countries.first!!)
+        val result = getCountriesUseCase.execute()
+        _state.value = when (result.exceptionOrNull()) {
+            is NetworkError.BadCode, is NetworkError.ServerError -> CountryState.Error
+            is NetworkError.NoData -> CountryState.Empty
+            is NetworkError.NoInternet -> CountryState.NoInternet
+            else -> result.getOrNull()?.let { CountryState.Data(it) } ?: CountryState.Error
         }
-        _state.value = industryState
+
     }
 
     fun setCountry(country: Country) {

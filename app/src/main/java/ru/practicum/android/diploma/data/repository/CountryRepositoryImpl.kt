@@ -3,51 +3,16 @@ package ru.practicum.android.diploma.data.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.mapper.CountryMapper
-import ru.practicum.android.diploma.data.network.NetworkClient
-import ru.practicum.android.diploma.data.network.NetworkError
+import ru.practicum.android.diploma.data.network.clientIml.CountryNetworkClient
 import ru.practicum.android.diploma.domain.api.CountryRepository
 import ru.practicum.android.diploma.domain.models.Country
-import ru.practicum.android.diploma.util.Resource
 
 class CountryRepositoryImpl(
-    private val networkClient: NetworkClient,
+    private val countryNetworkClient: CountryNetworkClient,
     private val countryMapper: CountryMapper,
 ) : CountryRepository {
-    override suspend fun getCountry(): Resource<List<Country>> {
-        return withContext(Dispatchers.IO) {
-            // val response = networkClient.doRequest(AreaRequest())
-            Resource.Error(
-                message = NetworkError
-                    .NoData("requestName = response.javaClass.name")
-                    .javaClass.name
-            )
-            /*when (response.resultCode) {
-                // Возвращаем сообщение, как проверить на UI
-                FAILED_INTERNET_CONNECTION_CODE -> Resource.Error(
-                    message = NetworkError
-                        .NoInternet()
-                        .javaClass.name
-                )
-                NOT_FOUND_CODE -> Resource.Error(
-                    message = NetworkError
-                        .NoData(requestName = response.javaClass.name)
-                        .javaClass.name
-                )
-
-                BAD_REQUEST_CODE -> Resource.Error(
-                    message = NetworkError.BadCode(
-                        response.javaClass.name,
-                        code = response.resultCode
-                    ).javaClass.name
-                )
-
-                SUCCESS_CODE -> {
-                    val data = countryMapper.map(response as AreaResponse)
-                    Resource.Success(data)
-                }
-
-                else -> Resource.Error()
-            }*/
+    override suspend fun getCountry(): Result<List<Country>> =
+        withContext(Dispatchers.IO) {
+            countryMapper.map(countryNetworkClient.execute())
         }
-    }
 }

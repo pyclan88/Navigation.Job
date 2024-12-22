@@ -27,7 +27,9 @@ import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
 import ru.practicum.android.diploma.data.network.AuthorizationInterceptor
 import ru.practicum.android.diploma.data.network.HeadHunterApiService
+import ru.practicum.android.diploma.data.network.clientIml.CountryNetworkClient
 import ru.practicum.android.diploma.data.network.clientIml.DetailsNetworkClient
+import ru.practicum.android.diploma.data.network.clientIml.IndustryNetworkClient
 import ru.practicum.android.diploma.data.network.clientIml.VacancyNetworkClient
 import ru.practicum.android.diploma.data.repository.FilterRepositoryImpl
 import ru.practicum.android.diploma.data.repository.LocationRepositoryImpl
@@ -106,6 +108,14 @@ val dataModule = module {
 
     single {
         DetailsNetworkClient(get())
+    }
+
+    single {
+        CountryNetworkClient(get())
+    }
+
+    single {
+        IndustryNetworkClient(get())
     }
 
     single<ExternalNavigator> {

@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.data.network.RetrofitNetworkClient.Companion.FAILED_INTERNET_CONNECTION_CODE
+import ru.practicum.android.diploma.data.network.NetworkError
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.state.IndustryState
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries
@@ -39,24 +39,17 @@ class IndustryViewModel(
 
     fun getIndustries(sortExpression: String = "") = viewModelScope.launch(Dispatchers.Main) {
         val filters = getTmpFiltersUseCase.execute()
-        val response = getIndustriesUseCase.execute()
-        // как проверить, к примеру, тут
-        val dataState = when {
-            response.first?.isEmpty() == true -> Industries.Empty
-            response.second?.isNotEmpty() == true -> {
-                if (response.second == FAILED_INTERNET_CONNECTION_CODE.toString()) {
-                    NoInternet
-                } else {
-                    Error
-                }
-            }
-
+        val result = getIndustriesUseCase.execute()
+        val dataState = when (result.exceptionOrNull()) {
+            is NetworkError.BadCode, is NetworkError.ServerError -> Error
+            is NetworkError.NoData -> Industries.Empty
+            is NetworkError.NoInternet -> NoInternet
             else -> {
-                val sortIndustry = searchFilter(response.first!!, sortExpression)
+                val sortIndustry = searchFilter(result.getOrDefault(emptyList()), sortExpression)
                 if (sortIndustry.isEmpty()) Industries.Empty else Data(sortIndustry)
+                result.getOrNull()?.let { Data(it) } ?: Error
             }
         }
-
         _state.value = state.value.copy(data = dataState, selectedIndustry = filters.industry)
     }
 
