@@ -1,16 +1,17 @@
-package ru.practicum.android.diploma.data.network.clientIml
+package ru.practicum.android.diploma.data.network.client
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.data.dto.industry.IndustryItemDto
+import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.network.HeadHunterApiService
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
 
-class IndustryNetworkClient(
+class VacancyNetworkClient(
     private val headHunterApiService: HeadHunterApiService
 ) : RetrofitNetworkClient() {
-    suspend fun execute(): Result<List<IndustryItemDto>> =
+
+    suspend fun execute(options: Map<String, Any>): Result<VacanciesSearchResponse> =
         withContext(Dispatchers.IO) {
-            super.doRequest { headHunterApiService.getIndustries() }
+            super.doRequest { headHunterApiService.searchVacancies(options) }
         }
 }

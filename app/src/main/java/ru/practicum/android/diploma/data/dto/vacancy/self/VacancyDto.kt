@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.nested.ExperienceDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.SalaryDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.ScheduleDto
 
+@Suppress("LongParameterList")
 class VacancyDto(
     val id: String,
     val area: AreaDto?,

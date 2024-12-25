@@ -5,8 +5,8 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.mapper.OptionMapper
 import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
-import ru.practicum.android.diploma.data.network.clientIml.DetailsNetworkClient
-import ru.practicum.android.diploma.data.network.clientIml.VacancyNetworkClient
+import ru.practicum.android.diploma.data.network.client.DetailsNetworkClient
+import ru.practicum.android.diploma.data.network.client.VacancyNetworkClient
 import ru.practicum.android.diploma.domain.api.VacancyRepository
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.VacancyDetails

@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.nested.KeySkillDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.SalaryDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.ScheduleDto
 
+@Suppress("LongParameterList")
 class VacancyDetailsResponse(
     val id: String,
     val address: AddressDto?,
