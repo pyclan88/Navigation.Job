@@ -25,7 +25,6 @@ import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.NoIn
 import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Start
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
-import ru.practicum.android.diploma.util.EndingConvertor
 import ru.practicum.android.diploma.util.debounce
 import ru.practicum.android.diploma.util.getConnected
 import ru.practicum.android.diploma.util.invisible
@@ -220,7 +219,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
     }
 
     private fun convertToFoundVacancies(amount: Int): String {
-        val vacanciesWord = resources.getString(EndingConvertor.vacancies(amount))
+        val vacanciesWord = resources.getQuantityString(R.plurals.vacancies, amount, amount)
         return "${resources.getString(R.string.found_word)} $amount $vacanciesWord"
     }
 }
