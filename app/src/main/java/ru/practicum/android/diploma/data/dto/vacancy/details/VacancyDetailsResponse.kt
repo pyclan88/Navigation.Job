@@ -26,4 +26,13 @@ class VacancyDetailsResponse(
     val name: String?,
     val salary: SalaryDto?,
     val schedule: ScheduleDto,
-) : Response()
+) : Response() {
+
+    fun isEmpty(): Boolean {
+        return id.isBlank() &&
+            keySkills.isEmpty() &&
+            (description.isNullOrBlank()) &&
+            (employer == null) &&
+            (salary == null)
+    }
+}

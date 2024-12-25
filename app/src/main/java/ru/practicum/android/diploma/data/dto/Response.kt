@@ -5,3 +5,4 @@ open class Response {
 }
 
 class ResponseSuccess : Response()
+// нужно ли обрабатывать код ошибки
