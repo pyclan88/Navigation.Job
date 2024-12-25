@@ -31,8 +31,8 @@ class VacancyDetailsResponse(
     fun isEmpty(): Boolean {
         return id.isBlank() &&
             keySkills.isEmpty() &&
-            (description.isNullOrBlank()) &&
-            (employer == null) &&
-            (salary == null)
+            description.isNullOrBlank() &&
+            employer == null &&
+            salary == null
     }
 }
