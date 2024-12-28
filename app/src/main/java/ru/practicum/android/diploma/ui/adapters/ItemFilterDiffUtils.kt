@@ -2,7 +2,11 @@ package ru.practicum.android.diploma.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
 
-class ItemFilterDiffUtils(private val oldList: List<ItemFilter>, private val newList: List<ItemFilter>) : DiffUtil.Callback() {
+class ItemFilterDiffUtils(
+    private val oldList: List<ItemFilter>,
+    private val newList: List<ItemFilter>
+) :
+    DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
     }

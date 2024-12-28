@@ -69,7 +69,6 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
         diffCourses.dispatchUpdatesTo(this)
     }
 
-
     interface SaveFilterListener {
         fun onItemClicked(item: ItemFilter)
     }
