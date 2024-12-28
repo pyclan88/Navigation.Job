@@ -39,7 +39,6 @@ class RegionViewModel(
             is NetworkError.NoData -> Data.Empty
             is NetworkError.NoInternet -> Data.NoInternet
             else -> {
-
                 val sortedRegions = sortRegionsIfNeeded(parseRegions(result.getOrDefault(emptyList())), sortExpression)
                 if (sortedRegions.isEmpty()) Data.Empty else Data.Data(sortedRegions)
             }

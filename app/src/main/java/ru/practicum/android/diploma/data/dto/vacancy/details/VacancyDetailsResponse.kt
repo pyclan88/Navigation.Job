@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.nested.KeySkillDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.SalaryDto
 import ru.practicum.android.diploma.data.dto.vacancy.nested.ScheduleDto
 
+@Suppress("LongParameterList")
 class VacancyDetailsResponse(
     val id: String,
     val address: AddressDto?,
@@ -25,4 +26,13 @@ class VacancyDetailsResponse(
     val name: String?,
     val salary: SalaryDto?,
     val schedule: ScheduleDto,
-) : Response()
+) : Response() {
+
+    fun isEmpty(): Boolean {
+        return id.isBlank() &&
+            keySkills.isEmpty() &&
+            description.isNullOrBlank() &&
+            employer == null &&
+            salary == null
+    }
+}

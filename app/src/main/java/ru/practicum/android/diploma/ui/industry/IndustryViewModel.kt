@@ -47,7 +47,6 @@ class IndustryViewModel(
             else -> {
                 val sortIndustry = searchFilter(result.getOrDefault(emptyList()), sortExpression)
                 if (sortIndustry.isEmpty()) Industries.Empty else Data(sortIndustry)
-                result.getOrNull()?.let { Data(it) } ?: Error
             }
         }
         _state.value = state.value.copy(data = dataState, selectedIndustry = filters.industry)

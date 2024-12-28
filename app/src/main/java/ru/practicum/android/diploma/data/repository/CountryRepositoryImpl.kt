@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.data.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.mapper.CountryMapper
-import ru.practicum.android.diploma.data.network.clientIml.CountryNetworkClient
+import ru.practicum.android.diploma.data.network.client.CountryNetworkClient
 import ru.practicum.android.diploma.domain.api.CountryRepository
 import ru.practicum.android.diploma.domain.models.Country
 
