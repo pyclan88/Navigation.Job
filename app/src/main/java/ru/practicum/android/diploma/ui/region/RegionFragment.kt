@@ -130,7 +130,8 @@ class RegionFragment : BindingFragment<FragmentRegionBinding>() {
 
     private fun showContent(regionList: List<Region>) {
         with(binding) {
-            filterAdapter.updateRegions(regionList)
+            //filterAdapter.updateRegions(regionList)
+            filterAdapter.setCourses(filterAdapter.convertToItemFilter(regionList, ItemFilter.TYPE_REGION))
             rvRegions.visible()
             pbSearch.invisible()
             placeholder.layoutPlaceholder.invisible()

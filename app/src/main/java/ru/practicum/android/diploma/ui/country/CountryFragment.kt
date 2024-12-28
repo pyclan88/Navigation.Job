@@ -111,7 +111,8 @@ class CountryFragment : BindingFragment<FragmentCountryBinding>() {
         with(binding) {
             rvCountries.visible()
             pbSearch.invisible()
-            filterAdapter.updateCountries(countryList)
+            //filterAdapter.updateCountries(countryList)
+            filterAdapter.setCourses(filterAdapter.convertToItemFilter(countryList, ItemFilter.TYPE_AREA))
             placeholder.layoutPlaceholder.invisible()
         }
     }
