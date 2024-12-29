@@ -12,8 +12,6 @@ class VacanciesAdapter(
 ) : RecyclerView.Adapter<VacanciesHolder>() {
 
     private var vacancyList: ArrayList<Vacancy> = ArrayList()
-    private val diffCallback = VacanciesDiffUtils(vacancyList, ArrayList())
-    private val diffCourses = DiffUtil.calculateDiff(diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacanciesHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
@@ -31,6 +29,8 @@ class VacanciesAdapter(
     override fun getItemCount(): Int = vacancyList.size
 
     fun updateVacancies(newVacancies: List<Vacancy>) {
+        val diffCallback = VacanciesDiffUtils(vacancyList, vacancyList + newVacancies)
+        val diffCourses = DiffUtil.calculateDiff(diffCallback)
         vacancyList.addAll(newVacancies)
         diffCourses.dispatchUpdatesTo(this)
     }

@@ -22,6 +22,7 @@ import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Error
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Loading
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.NoInternet
 import ru.practicum.android.diploma.ui.adapters.industry.IndustryAdapter
+import ru.practicum.android.diploma.ui.adapters.industry.IndustryItem
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.invisible
 import ru.practicum.android.diploma.util.visible
@@ -56,8 +57,6 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
     }
 
     private fun render(state: IndustryState) {
-        handleSelectedIndustry(state.selectedIndustry)
-
         when (state.data) {
             is Empty -> showEmpty()
             is Error -> showError()
@@ -111,7 +110,7 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         showToast(R.string.toast_error_has_occurred)
     }
 
-    private fun showContent(industryList: List<Industry>) = with(binding) {
+    private fun showContent(industryList: List<IndustryItem>) = with(binding) {
         rvVacancies.visible()
         pbSearch.invisible()
         placeholder.layoutPlaceholder.invisible()
@@ -134,8 +133,8 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         text?.let { viewModel.searchDebounce(it.toString()) }
     }
 
-    private fun handleSelectedIndustry(industry: Industry?) {
-        filterAdapter.setCheckedIndustry(industry)
-        binding.cbApplyButton.isVisible = industry != null
-    }
+//    private fun handleSelectedIndustry(industry: Industry?) {
+//        filterAdapter.setCheckedIndustry(industry)
+//        binding.cbApplyButton.isVisible = industry != null
+//    }
 }

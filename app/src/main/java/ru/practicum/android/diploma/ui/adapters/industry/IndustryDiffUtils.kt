@@ -1,11 +1,12 @@
-package ru.practicum.android.diploma.ui.adapters
+package ru.practicum.android.diploma.ui.adapters.industry
 
 import androidx.recyclerview.widget.DiffUtil
 
-class ItemFilterDiffUtils(
-    private val oldList: List<ItemFilter>,
-    private val newList: List<ItemFilter>
+class IndustryDiffUtils(
+    private val oldList: List<IndustryItem>,
+    private val newList: List<IndustryItem>
 ) : DiffUtil.Callback() {
+
     override fun getOldListSize(): Int {
         return oldList.size
     }
@@ -15,10 +16,10 @@ class ItemFilterDiffUtils(
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].getItemId() == newList[newItemPosition].getItemId()
+        return oldList[oldItemPosition].industry.id == newList[newItemPosition].industry.id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].getItemId() == newList[newItemPosition].getItemId()
+        return oldList[oldItemPosition].isChecked == newList[newItemPosition].isChecked
     }
 }

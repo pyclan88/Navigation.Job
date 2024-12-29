@@ -1,11 +1,12 @@
 package ru.practicum.android.diploma.domain.state
 
 import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.ui.adapters.industry.IndustryItem
 
 data class IndustryState(
     val input: Input,
     val data: Industries,
-    val selectedIndustry: Industry? = null
+    // val selectedIndustry: Industry? = null
 ) {
 
     sealed interface Input {
@@ -18,6 +19,6 @@ data class IndustryState(
         data object Empty : Industries
         data object Loading : Industries
         data object Error : Industries
-        data class Data(val industries: List<Industry>) : Industries
+        data class Data(val industries: List<IndustryItem>) : Industries
     }
 }
