@@ -31,7 +31,6 @@ class CountryViewModel(
             is NetworkError.NoInternet -> CountryState.NoInternet
             else -> result.getOrNull()?.let { CountryState.Data(it) } ?: CountryState.Error
         }
-
     }
 
     fun setCountry(country: Country) {

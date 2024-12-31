@@ -30,14 +30,12 @@ class VacanciesAdapter(
 
     fun updateVacancies(newVacancies: List<Vacancy>) {
         val diffCallback = VacanciesDiffUtils(vacancyList, vacancyList + newVacancies)
-        val diffCourses = DiffUtil.calculateDiff(diffCallback)
+        val diffVacancy = DiffUtil.calculateDiff(diffCallback)
         vacancyList.addAll(newVacancies)
-        diffCourses.dispatchUpdatesTo(this)
+        diffVacancy.dispatchUpdatesTo(this)
     }
 
-    fun clear() {
-        vacancyList.clear()
-    }
+    fun clear() = vacancyList.clear()
 
     fun interface VacancyClickListener {
         fun onVacancyClick(vacancyId: String)

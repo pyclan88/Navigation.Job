@@ -220,6 +220,6 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
 
     private fun convertToFoundVacancies(amount: Int): String {
         val vacanciesWord = resources.getQuantityString(R.plurals.vacancies, amount, amount)
-        return "${resources.getString(R.string.found_word)} $amount $vacanciesWord"
+        return "${resources.getString(R.string.found_word)} $vacanciesWord"
     }
 }

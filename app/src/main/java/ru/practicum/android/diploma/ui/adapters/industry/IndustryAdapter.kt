@@ -13,7 +13,6 @@ class IndustryAdapter(
 
     private var industryList: ArrayList<IndustryItem> = ArrayList()
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = IndustryItemBinding.inflate(layoutInflater, parent, false)
@@ -30,10 +29,10 @@ class IndustryAdapter(
 
     fun updateIndustries(industries: List<IndustryItem>) {
         val diffCallback = IndustryDiffUtils(industryList, industries)
-        val diffCourses = DiffUtil.calculateDiff(diffCallback)
+        val diffIndustry = DiffUtil.calculateDiff(diffCallback)
         industryList.clear()
         industryList.addAll(industries)
-        diffCourses.dispatchUpdatesTo(this)
+        diffIndustry.dispatchUpdatesTo(this)
     }
 
     fun interface IndustryClickListener {

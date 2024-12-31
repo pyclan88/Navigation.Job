@@ -62,11 +62,11 @@ class FilterAdapter : RecyclerView.Adapter<ViewHolder>() {
         return data.map { ItemFilter(data = it, type = typeItemFilter) }
     }
 
-    fun setCourses(newCourse: List<ItemFilter>) {
-        val diffCallback = ItemFilterDiffUtils(items, newCourse)
-        val diffCourses = DiffUtil.calculateDiff(diffCallback)
-        updateItems(newCourse)
-        diffCourses.dispatchUpdatesTo(this)
+    fun setCourses(newItems: List<ItemFilter>) {
+        val diffCallback = ItemFilterDiffUtils(items, newItems)
+        val diffItems = DiffUtil.calculateDiff(diffCallback)
+        updateItems(newItems)
+        diffItems.dispatchUpdatesTo(this)
     }
 
     interface SaveFilterListener {

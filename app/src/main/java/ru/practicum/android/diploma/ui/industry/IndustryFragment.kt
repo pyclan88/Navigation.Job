@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
-import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.state.IndustryState
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Data
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Empty
@@ -132,9 +131,4 @@ class IndustryFragment : BindingFragment<FragmentIndustryBinding>() {
         }
         text?.let { viewModel.searchDebounce(it.toString()) }
     }
-
-//    private fun handleSelectedIndustry(industry: Industry?) {
-//        filterAdapter.setCheckedIndustry(industry)
-//        binding.cbApplyButton.isVisible = industry != null
-//    }
 }

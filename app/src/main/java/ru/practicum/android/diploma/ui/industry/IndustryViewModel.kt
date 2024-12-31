@@ -50,7 +50,7 @@ class IndustryViewModel(
             is NetworkError.NoInternet -> NoInternet
             else -> {
                 listIndustry = result.getOrDefault(emptyList())
-                val sortIndustry = searchFilter(listIndustry , sortExpression, lastCheckedIndustry)
+                val sortIndustry = searchFilter(listIndustry, sortExpression, lastCheckedIndustry)
                 if (sortIndustry.isEmpty()) Industries.Empty else Data(sortIndustry)
             }
         }

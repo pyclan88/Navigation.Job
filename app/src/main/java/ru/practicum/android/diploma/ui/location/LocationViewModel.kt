@@ -20,6 +20,7 @@ class LocationViewModel(
     private val getTmpFiltersUseCase: GetTmpFiltersUseCase,
     private val setTmpFilterUseCase: SetTmpFiltersUseCase,
 ) : ViewModel() {
+
     init {
         val initLocationState =
             getTmpFiltersUseCase.execute().location
@@ -44,7 +45,6 @@ class LocationViewModel(
         } else {
             LocationState.Data(location)
         }
-
         _state.value = state
     }
 

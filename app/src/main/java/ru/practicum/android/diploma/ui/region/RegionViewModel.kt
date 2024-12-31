@@ -78,8 +78,7 @@ class RegionViewModel(
 
     fun setRegion(region: Region) {
         val country = findCountryByRegion(region)
-        val location = Location(country, region)
-        setLocationUseCase.execute(location)
+        setLocationUseCase.execute(Location(country, region))
     }
 
     private fun parseRegions(countries: List<Country>): List<Region> {
