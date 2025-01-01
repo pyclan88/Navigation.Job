@@ -18,7 +18,7 @@ import ru.practicum.android.diploma.domain.state.IndustryState.Input.Empty
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.tmp.SetTmpFiltersUseCase
-import ru.practicum.android.diploma.ui.adapters.industry.IndustryItem
+import ru.practicum.android.diploma.ui.mapper.IndustryMapper
 import ru.practicum.android.diploma.util.debounce
 
 class IndustryViewModel(
@@ -29,6 +29,7 @@ class IndustryViewModel(
 
     private var listIndustry: List<Industry> = emptyList()
     private var lastCheckedIndustry: Industry? = null
+    private val industryMapper = IndustryMapper()
 
     private val _state: MutableStateFlow<IndustryState> =
         MutableStateFlow(IndustryState(Empty, Loading))
@@ -62,20 +63,20 @@ class IndustryViewModel(
             .copy(industry = industry)
         setTmpFiltersUseCase.execute(filters)
         lastCheckedIndustry = industry
-        val test = Data(map(listIndustry, industry))
+        val test = Data(industryMapper.map(listIndustry, industry))
         _state.value = state.value.copy(data = test)
     }
 
-    private fun searchFilter(regions: List<Industry>, sortExpression: String, selectIndustry: Industry?) =
-        map(regions.filter { it.name.lowercase().contains(sortExpression.lowercase()) }, selectIndustry)
-
-    private fun map(regions: List<Industry>, selectIndustry: Industry?): List<IndustryItem> =
-        regions.map {
-            IndustryItem(
-                industry = Industry(it.id, it.name),
-                isChecked = selectIndustry == it
-            )
-        }
+    private fun searchFilter(
+        regions: List<Industry>,
+        sortExpression: String,
+        selectIndustry: Industry?
+    ) =
+        industryMapper.map(
+            regions.filter {
+                it.name.lowercase().contains(sortExpression.lowercase())
+            }, selectIndustry
+        )
 
     fun clearSearch() {
         getIndustries()
