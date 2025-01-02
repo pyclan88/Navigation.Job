@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.NetworkError
 import ru.practicum.android.diploma.domain.models.Industry
+import ru.practicum.android.diploma.domain.models.toIndustryItem
 import ru.practicum.android.diploma.domain.state.IndustryState
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries
 import ru.practicum.android.diploma.domain.state.IndustryState.Industries.Data
@@ -18,7 +19,6 @@ import ru.practicum.android.diploma.domain.state.IndustryState.Input.Empty
 import ru.practicum.android.diploma.domain.usecase.GetIndustriesUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.tmp.SetTmpFiltersUseCase
-import ru.practicum.android.diploma.ui.mapper.IndustryMapper
 import ru.practicum.android.diploma.util.debounce
 
 class IndustryViewModel(
@@ -29,7 +29,6 @@ class IndustryViewModel(
 
     private var listIndustry: List<Industry> = emptyList()
     private var lastCheckedIndustry: Industry? = null
-    private val industryMapper = IndustryMapper()
 
     private val _state: MutableStateFlow<IndustryState> =
         MutableStateFlow(IndustryState(Empty, Loading))
@@ -63,20 +62,14 @@ class IndustryViewModel(
             .copy(industry = industry)
         setTmpFiltersUseCase.execute(filters)
         lastCheckedIndustry = industry
-        val test = Data(industryMapper.map(listIndustry, industry))
+        val test = Data(listIndustry.toIndustryItem(industry))
         _state.value = state.value.copy(data = test)
     }
 
-    private fun searchFilter(
-        regions: List<Industry>,
-        sortExpression: String,
-        selectIndustry: Industry?
-    ) =
-        industryMapper.map(
-            regions.filter {
-                it.name.lowercase().contains(sortExpression.lowercase())
-            }, selectIndustry
-        )
+    private fun searchFilter(regions: List<Industry>, sortExpression: String, selectIndustry: Industry?) =
+        regions
+            .filter { it.name.lowercase().contains(sortExpression.lowercase()) }
+            .toIndustryItem(selectIndustry)
 
     fun clearSearch() {
         getIndustries()
