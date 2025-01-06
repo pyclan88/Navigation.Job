@@ -1,8 +1,8 @@
-package ru.practicum.android.diploma.domain.state
+package ru.practicum.android.diploma.ui.search
 
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-data class VacancyState(
+data class SearchState(
     val input: Input,
     val vacanciesList: VacanciesList,
 ) {

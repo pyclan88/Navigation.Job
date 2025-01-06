@@ -11,12 +11,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentCountryBinding
 import ru.practicum.android.diploma.domain.models.Country
-import ru.practicum.android.diploma.domain.state.CountryState
-import ru.practicum.android.diploma.domain.state.CountryState.Data
-import ru.practicum.android.diploma.domain.state.CountryState.Empty
-import ru.practicum.android.diploma.domain.state.CountryState.Error
-import ru.practicum.android.diploma.domain.state.CountryState.Loading
-import ru.practicum.android.diploma.domain.state.CountryState.NoInternet
+import ru.practicum.android.diploma.ui.country.CountryState.Data
+import ru.practicum.android.diploma.ui.country.CountryState.Empty
+import ru.practicum.android.diploma.ui.country.CountryState.Error
+import ru.practicum.android.diploma.ui.country.CountryState.Loading
+import ru.practicum.android.diploma.ui.country.CountryState.NoInternet
 import ru.practicum.android.diploma.ui.adapters.FilterAdapter
 import ru.practicum.android.diploma.ui.adapters.FilterAdapter.SaveFilterListener
 import ru.practicum.android.diploma.ui.adapters.ItemFilter

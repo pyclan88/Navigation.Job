@@ -8,8 +8,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.NetworkError
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Location
-import ru.practicum.android.diploma.domain.state.CountryState
-import ru.practicum.android.diploma.domain.state.CountryState.Loading
+import ru.practicum.android.diploma.ui.country.CountryState.Loading
 import ru.practicum.android.diploma.domain.usecase.GetCountriesUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.location.SetLocationUseCase
 

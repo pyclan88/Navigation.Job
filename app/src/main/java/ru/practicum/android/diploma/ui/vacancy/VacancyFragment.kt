@@ -14,7 +14,6 @@ import ru.practicum.android.diploma.app.NavigationJobApp.Companion.applicationCo
 import ru.practicum.android.diploma.common.Source
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
-import ru.practicum.android.diploma.domain.state.VacancyDetailsState
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.SalaryFormatter
 import ru.practicum.android.diploma.util.invisible

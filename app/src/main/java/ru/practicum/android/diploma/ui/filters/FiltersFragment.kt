@@ -17,9 +17,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.Filter
-import ru.practicum.android.diploma.domain.state.FiltersState
-import ru.practicum.android.diploma.domain.state.FiltersState.Data.Payload
-import ru.practicum.android.diploma.domain.state.FiltersState.Editor.Changed
+import ru.practicum.android.diploma.ui.filters.FiltersState.Data.Payload
+import ru.practicum.android.diploma.ui.filters.FiltersState.Editor.Changed
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.toIntOrNull
 

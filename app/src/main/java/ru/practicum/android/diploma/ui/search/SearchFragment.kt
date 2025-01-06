@@ -16,13 +16,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.Source.SEARCH
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.domain.state.VacancyState
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Data
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Empty
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Error
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Loading
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.NoInternet
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList.Start
+import ru.practicum.android.diploma.ui.search.SearchState.VacanciesList.Data
+import ru.practicum.android.diploma.ui.search.SearchState.VacanciesList.Empty
+import ru.practicum.android.diploma.ui.search.SearchState.VacanciesList.Error
+import ru.practicum.android.diploma.ui.search.SearchState.VacanciesList.Loading
+import ru.practicum.android.diploma.ui.search.SearchState.VacanciesList.NoInternet
+import ru.practicum.android.diploma.ui.search.SearchState.VacanciesList.Start
 import ru.practicum.android.diploma.ui.vacancy.VacancyFragment
 import ru.practicum.android.diploma.util.BindingFragment
 import ru.practicum.android.diploma.util.debounce
@@ -77,7 +76,7 @@ class SearchFragment : BindingFragment<FragmentSearchBinding>() {
         binding.ivFilter.setImageResource(resId)
     }
 
-    private fun render(state: VacancyState) {
+    private fun render(state: SearchState) {
         when (state.vacanciesList) {
             is Start -> showStart()
             is NoInternet -> showNoInternet()

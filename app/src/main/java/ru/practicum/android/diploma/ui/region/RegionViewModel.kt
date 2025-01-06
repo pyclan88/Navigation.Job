@@ -10,9 +10,8 @@ import ru.practicum.android.diploma.data.network.NetworkError
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Location
 import ru.practicum.android.diploma.domain.models.Region
-import ru.practicum.android.diploma.domain.state.RegionState
-import ru.practicum.android.diploma.domain.state.RegionState.Data
-import ru.practicum.android.diploma.domain.state.RegionState.Input
+import ru.practicum.android.diploma.ui.region.RegionState.Data
+import ru.practicum.android.diploma.ui.region.RegionState.Input
 import ru.practicum.android.diploma.domain.usecase.GetCountriesUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.location.GetLocationUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.location.SetLocationUseCase
@@ -34,6 +33,7 @@ class RegionViewModel(
 
     fun getRegions(sortExpression: String = "") = viewModelScope.launch(Dispatchers.Main) {
         val result = getCountriesUseCase.execute()
+        countries = result.getOrDefault(emptyList())
         val dataState: Data = when (result.exceptionOrNull()) {
             is NetworkError.BadCode, is NetworkError.ServerError -> Data.Error
             is NetworkError.NoData -> Data.Empty

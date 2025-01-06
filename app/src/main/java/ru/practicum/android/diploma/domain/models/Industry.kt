@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.domain.models
 
-import ru.practicum.android.diploma.ui.adapters.industry.IndustryItem
+import ru.practicum.android.diploma.ui.industry.adapter.IndustryItem
 
 data class Industry(
     val id: String,

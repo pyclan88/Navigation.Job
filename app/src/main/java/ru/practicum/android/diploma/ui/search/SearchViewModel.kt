@@ -7,9 +7,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.network.NetworkError
 import ru.practicum.android.diploma.domain.models.Filter
-import ru.practicum.android.diploma.domain.state.VacancyState
-import ru.practicum.android.diploma.domain.state.VacancyState.Input
-import ru.practicum.android.diploma.domain.state.VacancyState.VacanciesList
+import ru.practicum.android.diploma.ui.search.SearchState.Input
+import ru.practicum.android.diploma.ui.search.SearchState.VacanciesList
 import ru.practicum.android.diploma.domain.usecase.filters.search.GetSearchFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.search.SetSearchFiltersUseCase
 import ru.practicum.android.diploma.domain.usecase.filters.tmp.GetTmpFiltersUseCase
@@ -33,10 +32,10 @@ class SearchViewModel(
     private var isNextPageLoading = false
     private var lastFilter: Filter? = null
 
-    private val _state: MutableStateFlow<VacancyState> = MutableStateFlow(
-        VacancyState(Input.Empty, VacanciesList.Start)
+    private val _state: MutableStateFlow<SearchState> = MutableStateFlow(
+        SearchState(Input.Empty, VacanciesList.Start)
     )
-    val state: StateFlow<VacancyState>
+    val state: StateFlow<SearchState>
         get() = _state
 
     private val searchDebounceAction = debounce<String>(
@@ -58,17 +57,17 @@ class SearchViewModel(
 
     fun clearSearch() {
         lastExpression = ""
-        _state.value = VacancyState(Input.Empty, VacanciesList.Start)
+        _state.value = SearchState(Input.Empty, VacanciesList.Start)
     }
 
     private fun search(expression: String) {
         lastExpression = expression
-        _state.value = VacancyState(
+        _state.value = SearchState(
             input = Input.Text(lastExpression),
             vacanciesList = VacanciesList.Empty,
         )
         setSearchFiltersUseCase.execute(getTmpFiltersUseCase.execute())
-        _state.value = VacancyState(Input.Text(expression), VacanciesList.Loading)
+        _state.value = SearchState(Input.Text(expression), VacanciesList.Loading)
         requestToServer(expression)
     }
 
@@ -81,7 +80,7 @@ class SearchViewModel(
             page = currentPage,
             filter = filter
         )
-        val vacancyState: VacancyState = when (result.exceptionOrNull()) {
+        val searchState: SearchState = when (result.exceptionOrNull()) {
             is NetworkError.BadCode, is NetworkError.ServerError ->
                 state.value.copy(vacanciesList = VacanciesList.Error)
 
@@ -106,7 +105,7 @@ class SearchViewModel(
                 )
             }
         }
-        _state.value = vacancyState
+        _state.value = searchState
     }
 
     fun searchDebounce(expression: String) {

@@ -1,7 +1,6 @@
-package ru.practicum.android.diploma.domain.state
+package ru.practicum.android.diploma.ui.industry
 
-import ru.practicum.android.diploma.domain.models.Industry
-import ru.practicum.android.diploma.ui.adapters.industry.IndustryItem
+import ru.practicum.android.diploma.ui.industry.adapter.IndustryItem
 
 data class IndustryState(
     val input: Input,
