@@ -3,20 +3,15 @@ package ru.practicum.android.diploma.data.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.mapper.OptionMapper
-import ru.practicum.android.diploma.data.mapper.VacancyDetailsMapper
 import ru.practicum.android.diploma.data.mapper.VacancyMapper
-import ru.practicum.android.diploma.data.network.client.DetailsNetworkClient
 import ru.practicum.android.diploma.data.network.client.VacancyNetworkClient
 import ru.practicum.android.diploma.domain.api.VacancyRepository
 import ru.practicum.android.diploma.domain.models.Filter
-import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.models.VacancySearchResult
 
 class VacancyRepositoryImpl(
     private val vacancyNetworkClient: VacancyNetworkClient,
-    private val detailsNetworkClient: DetailsNetworkClient,
     private val vacancyMapper: VacancyMapper,
-    private val vacancyDetailsMapper: VacancyDetailsMapper,
     private val optionMapper: OptionMapper,
 ) : VacancyRepository {
 
@@ -27,11 +22,5 @@ class VacancyRepositoryImpl(
     ): Result<VacancySearchResult> = withContext(Dispatchers.IO) {
         val options = optionMapper.map(expression = expression, page = page, filter = filter)
         vacancyMapper.map(vacancyNetworkClient.execute(options))
-    }
-
-    override suspend fun getVacancyDetails(id: String): Result<VacancyDetails> {
-        return withContext(Dispatchers.IO) {
-            vacancyDetailsMapper.map(detailsNetworkClient.execute(id))
-        }
     }
 }

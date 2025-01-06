@@ -11,6 +11,4 @@ interface VacancyRepository {
         page: Int,
         filter: Filter
     ): Result<VacancySearchResult>
-
-    suspend fun getVacancyDetails(id: String): Result<VacancyDetails>
 }
